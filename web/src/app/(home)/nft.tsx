@@ -1,3 +1,5 @@
+'use client'
+
 import { RenderComponentProps } from 'masonic'
 import { data } from './data'
 import styles from './nft.module.css'

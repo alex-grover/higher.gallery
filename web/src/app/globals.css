@@ -1,4 +1,2 @@
-:root {
-  --max-width: 1100px;
-  --padding: 32px;
-}
+@import "open-props/open-props.min.css";
+@import "open-props/normalize.min.css";

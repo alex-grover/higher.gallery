@@ -3,7 +3,19 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  max-width: var(--max-width);
-  padding: 0 var(--padding);
+  max-width: var(--size-xl);
+  padding: var(--size-2) var(--size-10);
   margin: 0 auto;
+}
+
+.brand {
+  color: var(--text-1);
+  text-decoration: none;
+}
+
+.menu {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
 }
