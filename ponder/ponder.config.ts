@@ -1,41 +1,48 @@
-import { createConfig } from "@ponder/core";
-import { parseAbiItem } from "abitype";
-import { http } from "viem";
+import { createConfig } from '@ponder/core'
+import { getAbiItem, http } from 'viem'
+import { base, baseSepolia } from 'viem/chains'
+import { Higher1155Abi } from './abis/Higher1155Abi'
+import { IHigher1155FactoryAbi } from './abis/IHigher1155FactoryAbi'
+import { env } from './src/lib/env'
 
-import { LlamaCoreAbi } from "./abis/LlamaCoreAbi";
-import { LlamaPolicyAbi } from "./abis/LlamaPolicyAbi";
+const chain = env.ENV === 'production' ? base : baseSepolia
 
-const llamaFactoryEvent = parseAbiItem(
-  "event LlamaInstanceCreated(address indexed deployer, string indexed name, address llamaCore, address llamaExecutor, address llamaPolicy, uint256 chainId)",
-);
+const address = {
+  [base.id]: '0x0000000000000000000000000000000000000000' as const,
+  [baseSepolia.id]: '0x0000000000000000000000000000000000000000' as const,
+}[chain.id]
+
+const startBlock = {
+  [base.id]: 0,
+  [baseSepolia.id]: 0,
+}[chain.id]
 
 export default createConfig({
   networks: {
-    sepolia: {
-      chainId: 11155111,
-      transport: http(process.env.PONDER_RPC_URL_11155111),
+    base: {
+      chainId: chain.id,
+      transport: http(env.RPC_URL),
     },
   },
   contracts: {
-    LlamaCore: {
-      network: "sepolia",
-      abi: LlamaCoreAbi,
-      factory: {
-        address: "0xFf5d4E226D9A3496EECE31083a8F493edd79AbEB",
-        event: llamaFactoryEvent,
-        parameter: "llamaCore",
-      },
-      startBlock: 4121269,
+    IHigher1155Factory: {
+      network: 'base',
+      abi: IHigher1155FactoryAbi,
+      address,
+      startBlock,
     },
-    LlamaPolicy: {
-      network: "sepolia",
-      abi: LlamaPolicyAbi,
+    Higher1155: {
+      network: 'base',
+      abi: Higher1155Abi,
       factory: {
-        address: "0xFf5d4E226D9A3496EECE31083a8F493edd79AbEB",
-        event: llamaFactoryEvent,
-        parameter: "llamaPolicy",
+        address,
+        event: getAbiItem({
+          abi: IHigher1155FactoryAbi,
+          name: 'Higher1155Deployed',
+        }),
+        parameter: 'higher1155',
       },
-      startBlock: 4121269,
+      startBlock,
     },
   },
-});
+})
