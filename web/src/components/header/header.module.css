@@ -1,0 +1,9 @@
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  max-width: var(--max-width);
+  padding: 0 var(--padding);
+  margin: 0 auto;
+}
