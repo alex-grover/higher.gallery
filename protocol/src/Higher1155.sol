@@ -6,6 +6,12 @@ import {OwnableUpgradeable} from "openzeppelin-contracts-upgradeable/contracts/a
 import {ERC1155} from "solmate/tokens/ERC1155.sol";
 import {IHigher1155} from "src/IHigher1155.sol";
 
+/*
+
+higher ↑
+
+*/
+
 IERC20 constant HIGHER = IERC20(0x0578d8A44db98B23BF096A382e016e29a5Ce0ffe);
 address constant FEE_RECIPIENT = address(0); // TODO
 
