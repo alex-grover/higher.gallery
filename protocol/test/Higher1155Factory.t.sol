@@ -6,6 +6,7 @@ import {Clones} from "openzeppelin-contracts/contracts/proxy/Clones.sol";
 import {OwnableUpgradeable} from "openzeppelin-contracts-upgradeable/contracts/access/OwnableUpgradeable.sol";
 import {Higher1155} from "src/Higher1155.sol";
 import {Higher1155Factory} from "src/Higher1155Factory.sol";
+import {HigherMinter} from "src/HigherMinter.sol";
 
 contract Higher1155FactoryTest is Test {
     event Higher1155Deployed(address indexed creator, address higher1155);
@@ -26,8 +27,10 @@ contract Higher1155FactoryTest is Test {
         address higher1155 = factory.deploy(contractURI);
 
         this.assertCloneCode(higher1155.code, address(higher1155Implementation));
+        assert(factory.isHigher1155(higher1155));
         assertEq(OwnableUpgradeable(higher1155).owner(), creator);
         assertEq(Higher1155(higher1155).contractURI(), contractURI);
+        assertNotEq(Higher1155(higher1155).minter(), address(0));
     }
 
     function assertCloneCode(bytes calldata code, address implementation) public pure {
