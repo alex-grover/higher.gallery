@@ -17,32 +17,37 @@ address constant FEE_RECIPIENT = address(0); // TODO
 
 contract Higher1155 is IHigher1155, ERC1155, OwnableUpgradeable {
     uint256 internal _id;
-    string public contractURI;
+    string internal _contractURI;
     mapping(uint256 => string) internal _uris;
-    mapping(uint256 => uint256) internal _prices;
+    mapping(uint256 => MintConfig) internal _mintConfigs;
 
-    function initialize(address owner_, string calldata uri_) external initializer {
-        __Ownable_init(owner_);
+    function initialize(address owner, string calldata newContractURI) external initializer {
+        __Ownable_init(owner);
         _id = 1;
-        contractURI = uri_;
+        _contractURI = newContractURI;
     }
 
-    function create(string calldata uri_, uint256 price_) external override onlyOwner returns (uint256) {
-        _uris[_id] = uri_;
-        _prices[_id] = price_;
-        emit Create(_id, uri_, price_);
+    function create(string calldata tokenURI, MintConfig calldata newMintConfig)
+        external
+        override
+        onlyOwner
+        returns (uint256)
+    {
+        _uris[_id] = tokenURI;
+        _mintConfigs[_id] = newMintConfig;
+        emit Create(_id);
         return _id++;
     }
 
-    function mint(uint256 id_, uint256 amount_, string calldata comment_) external override {
-        uint256 cost = amount_ * _prices[id_];
+    function mint(uint256 id, uint256 amount, string calldata comment) external override {
+        uint256 cost = amount * _mintConfigs[id].price;
         HIGHER.transferFrom(msg.sender, address(this), cost);
 
         uint256 fee = cost / 10;
         HIGHER.transfer(FEE_RECIPIENT, fee);
 
-        _mint(msg.sender, id_, amount_, "");
-        emit Mint(id_, msg.sender, amount_, comment_);
+        _mint(msg.sender, id, amount, "");
+        emit Mint(id, msg.sender, amount, comment);
     }
 
     function withdraw() external override onlyOwner {
@@ -51,11 +56,15 @@ contract Higher1155 is IHigher1155, ERC1155, OwnableUpgradeable {
         emit Withdraw(balance);
     }
 
-    function uri(uint256 id_) public view override returns (string memory) {
-        return _uris[id_];
+    function contractURI() external view override returns (string memory) {
+        return _contractURI;
     }
 
-    function price(uint256 id_) external view override returns (uint256) {
-        return _prices[id_];
+    function uri(uint256 id) public view override returns (string memory) {
+        return _uris[id];
+    }
+
+    function mintConfig(uint256 id) external view override returns (MintConfig memory) {
+        return _mintConfigs[id];
     }
 }

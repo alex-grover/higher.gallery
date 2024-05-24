@@ -10,29 +10,29 @@ import {Higher1155Factory} from "src/Higher1155Factory.sol";
 contract Higher1155FactoryTest is Test {
     event Higher1155Deployed(address indexed creator, address higher1155);
 
-    function test_deploy(address creator_, string calldata uri_) external {
-        vm.assume(creator_ != address(0));
+    function test_deploy(address creator, string calldata contractURI) external {
+        vm.assume(creator != address(0));
 
         Higher1155 higher1155Implementation = new Higher1155();
         Higher1155Factory factory = new Higher1155Factory(address(higher1155Implementation));
 
         address expectedAddress = Clones.predictDeterministicAddress(
-            address(higher1155Implementation), keccak256(abi.encode(creator_)), address(factory)
+            address(higher1155Implementation), keccak256(abi.encode(creator)), address(factory)
         );
         vm.expectEmit(address(factory));
-        emit Higher1155Deployed(creator_, expectedAddress);
+        emit Higher1155Deployed(creator, expectedAddress);
 
-        vm.prank(creator_);
-        address higher1155 = factory.deploy(uri_);
+        vm.prank(creator);
+        address higher1155 = factory.deploy(contractURI);
 
         this.assertCloneCode(higher1155.code, address(higher1155Implementation));
-        assertEq(OwnableUpgradeable(higher1155).owner(), creator_);
-        assertEq(Higher1155(higher1155).contractURI(), uri_);
+        assertEq(OwnableUpgradeable(higher1155).owner(), creator);
+        assertEq(Higher1155(higher1155).contractURI(), contractURI);
     }
 
-    function assertCloneCode(bytes calldata code_, address implementation_) public pure {
-        assertEq(code_[0:10], hex"363d3d373d3d3d363d73");
-        assertEq(code_[10:30], bytes(abi.encodePacked(implementation_)));
-        assertEq(code_[30:], hex"5af43d82803e903d91602b57fd5bf3");
+    function assertCloneCode(bytes calldata code, address implementation) public pure {
+        assertEq(code[0:10], hex"363d3d373d3d3d363d73");
+        assertEq(code[10:30], bytes(abi.encodePacked(implementation)));
+        assertEq(code[30:], hex"5af43d82803e903d91602b57fd5bf3");
     }
 }

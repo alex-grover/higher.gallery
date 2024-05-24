@@ -9,13 +9,13 @@ contract Higher1155Factory {
 
     address internal _higher1155Implementation;
 
-    constructor(address higher1155Implementation_) {
-        _higher1155Implementation = higher1155Implementation_;
+    constructor(address higher1155Implementation) {
+        _higher1155Implementation = higher1155Implementation;
     }
 
-    function deploy(string calldata uri_) external returns (address) {
+    function deploy(string calldata contractURI) external returns (address) {
         address higher1155 = Clones.cloneDeterministic(_higher1155Implementation, keccak256(abi.encode(msg.sender)));
-        IHigher1155(higher1155).initialize(msg.sender, uri_);
+        IHigher1155(higher1155).initialize(msg.sender, contractURI);
         emit Higher1155Deployed(msg.sender, address(higher1155));
         return higher1155;
     }

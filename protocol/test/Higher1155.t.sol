@@ -6,156 +6,158 @@ import {OwnableUpgradeable} from "openzeppelin-contracts-upgradeable/contracts/a
 import {Initializable} from "openzeppelin-contracts-upgradeable/contracts/proxy/utils/Initializable.sol";
 import {ERC1155TokenReceiver} from "solmate/tokens/ERC1155.sol";
 import {ERC20} from "solmate/tokens/ERC20.sol";
+import {IHigher1155} from "src/IHigher1155.sol";
 import {Higher1155} from "src/Higher1155.sol";
 
 address constant HIGHER = 0x0578d8A44db98B23BF096A382e016e29a5Ce0ffe;
 
 contract Higher1155Test is Test {
-    event Create(uint256 id, string uri, uint256 price);
+    event Create(uint256 id);
     event Mint(uint256 indexed id, address minter, uint256 amount, string comment);
     event Withdraw(uint256 amount);
 
-    function test_initialize(address creator_, string calldata uri_) external {
-        vm.assume(creator_ != address(0));
+    function test_initialize(address creator, string calldata contractURI) external {
+        vm.assume(creator != address(0));
 
         Higher1155 higher1155 = new Higher1155();
 
-        higher1155.initialize(creator_, uri_);
+        higher1155.initialize(creator, contractURI);
 
-        assertEq(higher1155.owner(), creator_);
-        assertEq(higher1155.contractURI(), uri_);
+        assertEq(higher1155.owner(), creator);
+        assertEq(higher1155.contractURI(), contractURI);
     }
 
-    function test_cannotInitializeTwice(address creator_, string calldata uri_) external {
-        vm.assume(creator_ != address(0));
+    function test_cannotInitializeTwice(address creator, string calldata contractURI) external {
+        vm.assume(creator != address(0));
 
         Higher1155 higher1155 = new Higher1155();
-        higher1155.initialize(creator_, uri_);
+        higher1155.initialize(creator, contractURI);
 
         vm.expectRevert(Initializable.InvalidInitialization.selector);
-        higher1155.initialize(creator_, uri_);
+        higher1155.initialize(creator, contractURI);
     }
 
     function test_create(
-        address creator_,
-        string calldata contractURI_,
-        string calldata uri_,
-        uint256 price_,
-        string calldata secondUri_,
-        uint256 secondPrice_
+        address creator,
+        string calldata contractURI,
+        string calldata tokenURI,
+        IHigher1155.MintConfig calldata mintConfig,
+        string calldata secondUri,
+        IHigher1155.MintConfig calldata secondMintConfig
     ) external {
-        vm.assume(creator_ != address(0));
+        vm.assume(creator != address(0));
 
         Higher1155 higher1155 = new Higher1155();
-        higher1155.initialize(creator_, contractURI_);
+        higher1155.initialize(creator, contractURI);
 
         vm.expectEmit(address(higher1155));
-        emit Create(1, uri_, price_);
+        emit Create(1);
 
-        vm.prank(creator_);
-        uint256 firstId = higher1155.create(uri_, price_);
+        vm.prank(creator);
+        uint256 firstId = higher1155.create(tokenURI, mintConfig);
 
         assertEq(firstId, 1);
-        assertEq(higher1155.uri(firstId), uri_);
-        assertEq(higher1155.price(firstId), price_);
+        assertEq(higher1155.uri(firstId), tokenURI);
+        assertEq(higher1155.mintConfig(firstId).price, mintConfig.price);
 
         // Create a second token to ensure that the id increments properly
         vm.expectEmit(address(higher1155));
-        emit Create(2, secondUri_, secondPrice_);
+        emit Create(2);
 
-        vm.prank(creator_);
-        uint256 secondId = higher1155.create(secondUri_, secondPrice_);
+        vm.prank(creator);
+        uint256 secondId = higher1155.create(secondUri, secondMintConfig);
 
         assertEq(secondId, 2);
-        assertEq(higher1155.uri(secondId), secondUri_);
-        assertEq(higher1155.price(secondId), secondPrice_);
+        assertEq(higher1155.uri(secondId), secondUri);
+        assertEq(higher1155.mintConfig(secondId).price, secondMintConfig.price);
     }
 
     function test_cannotCreateAsNonOwner(
-        address creator_,
-        address nonCreator_,
-        string calldata contractURI_,
-        string calldata uri_,
-        uint256 price_
+        address creator,
+        address nonCreator,
+        string calldata contractURI,
+        string calldata tokenURI,
+        IHigher1155.MintConfig calldata mintConfig
     ) external {
-        vm.assume(creator_ != address(0));
-        vm.assume(creator_ != nonCreator_);
+        vm.assume(creator != address(0));
+        vm.assume(creator != nonCreator);
 
         Higher1155 higher1155 = new Higher1155();
-        higher1155.initialize(creator_, contractURI_);
+        higher1155.initialize(creator, contractURI);
 
-        vm.expectRevert(abi.encodeWithSelector(OwnableUpgradeable.OwnableUnauthorizedAccount.selector, nonCreator_));
-        vm.prank(nonCreator_);
-        higher1155.create(uri_, price_);
+        vm.expectRevert(abi.encodeWithSelector(OwnableUpgradeable.OwnableUnauthorizedAccount.selector, nonCreator));
+        vm.prank(nonCreator);
+        higher1155.create(tokenURI, mintConfig);
     }
 
     function test_mint(
-        address creator_,
-        string calldata contractURI_,
-        string calldata uri_,
-        uint256 price_,
-        address minter_,
-        uint256 amount_,
-        string calldata comment_
+        address creator,
+        string calldata contractURI,
+        string calldata tokenURI,
+        IHigher1155.MintConfig memory mintConfig,
+        address minter,
+        uint256 amount,
+        string calldata comment
     ) external {
-        vm.assume(creator_ != address(0));
-        vm.assume(minter_ > address(9));
-        price_ = bound(price_, 0, type(uint256).max / 10000);
-        amount_ = bound(amount_, 0, 10000);
+        vm.assume(creator != address(0));
+        vm.assume(minter > address(9));
+        mintConfig.price = bound(mintConfig.price, 0, 3.4028236692e38);
+        amount = bound(amount, 0, 3.4028236692e38);
 
         Higher1155 higher1155 = new Higher1155();
-        higher1155.initialize(creator_, contractURI_);
+        higher1155.initialize(creator, contractURI);
         MockHigher mockHigher = new MockHigher();
         vm.etch(HIGHER, address(mockHigher).code);
-        vm.etch(minter_, type(Minter).runtimeCode);
+        vm.etch(minter, type(Minter).runtimeCode);
 
-        vm.prank(creator_);
-        uint256 id = higher1155.create(uri_, price_);
-        MockHigher(HIGHER).mint(minter_, price_ * amount_);
-        vm.prank(minter_);
-        MockHigher(HIGHER).approve(address(higher1155), price_ * amount_);
+        vm.prank(creator);
+        uint256 id = higher1155.create(tokenURI, mintConfig);
+        MockHigher(HIGHER).mint(minter, mintConfig.price * amount);
+        vm.prank(minter);
+        MockHigher(HIGHER).approve(address(higher1155), mintConfig.price * amount);
 
         vm.expectEmit(address(higher1155));
-        emit Mint(id, minter_, amount_, comment_);
+        emit Mint(id, minter, amount, comment);
 
-        vm.prank(minter_);
-        higher1155.mint(id, amount_, comment_);
+        vm.prank(minter);
+        higher1155.mint(id, amount, comment);
 
-        assertEq(higher1155.balanceOf(minter_, id), amount_);
-        assertEq(MockHigher(HIGHER).balanceOf(minter_), 0);
-        assertEq(MockHigher(HIGHER).balanceOf(address(0)), price_ * amount_ / 10);
-        assertEq(MockHigher(HIGHER).balanceOf(address(higher1155)), price_ * amount_ - (price_ * amount_ / 10));
+        assertEq(higher1155.balanceOf(minter, id), amount);
+        assertEq(MockHigher(HIGHER).balanceOf(minter), 0);
+        assertEq(MockHigher(HIGHER).balanceOf(address(0)), mintConfig.price * amount / 10);
+        assertEq(
+            MockHigher(HIGHER).balanceOf(address(higher1155)),
+            mintConfig.price * amount - (mintConfig.price * amount / 10)
+        );
     }
 
-    function test_withdraw(address creator_, string calldata contractURI_, uint256 amount_) external {
-        vm.assume(creator_ != address(0));
+    function test_withdraw(address creator, string calldata contractURI, uint256 amount) external {
+        vm.assume(creator != address(0));
 
         Higher1155 higher1155 = new Higher1155();
-        higher1155.initialize(creator_, contractURI_);
+        higher1155.initialize(creator, contractURI);
         MockHigher mockHigher = new MockHigher();
         vm.etch(HIGHER, address(mockHigher).code);
-        MockHigher(HIGHER).mint(address(higher1155), amount_);
+        MockHigher(HIGHER).mint(address(higher1155), amount);
 
         vm.expectEmit(address(higher1155));
-        emit Withdraw(amount_);
+        emit Withdraw(amount);
 
-        vm.prank(creator_);
+        vm.prank(creator);
         higher1155.withdraw();
 
-        assertEq(MockHigher(HIGHER).balanceOf(creator_), amount_);
+        assertEq(MockHigher(HIGHER).balanceOf(creator), amount);
     }
 
-    function test_cannotWithdrawAsNonOwner(address creator_, address nonCreator_, string calldata contractURI_)
-        external
-    {
-        vm.assume(creator_ != address(0));
-        vm.assume(creator_ != nonCreator_);
+    function test_cannotWithdrawAsNonOwner(address creator, address nonCreator, string calldata contractURI) external {
+        vm.assume(creator != address(0));
+        vm.assume(creator != nonCreator);
 
         Higher1155 higher1155 = new Higher1155();
-        higher1155.initialize(creator_, contractURI_);
+        higher1155.initialize(creator, contractURI);
 
-        vm.expectRevert(abi.encodeWithSelector(OwnableUpgradeable.OwnableUnauthorizedAccount.selector, nonCreator_));
-        vm.prank(nonCreator_);
+        vm.expectRevert(abi.encodeWithSelector(OwnableUpgradeable.OwnableUnauthorizedAccount.selector, nonCreator));
+        vm.prank(nonCreator);
         higher1155.withdraw();
     }
 }
@@ -165,7 +167,7 @@ contract Minter is ERC1155TokenReceiver {}
 contract MockHigher is ERC20 {
     constructor() ERC20("MockHigher", "MH", 18) {}
 
-    function mint(address to_, uint256 amount_) external {
-        _mint(to_, amount_);
+    function mint(address to, uint256 amount) external {
+        _mint(to, amount);
     }
 }
