@@ -9,7 +9,7 @@ import {MockHigher} from "test/MockHigher.sol";
 
 contract HigherMinterTest is Test {
     function test_mint(address higher1155Factory, address higher1155, address account, uint256 cost) external {
-        vm.assume(higher1155Factory > address(9));
+        vm.assume(higher1155Factory > address(9) && higher1155Factory != 0x7109709ECfa91a80626fF3989D68f67F5b1DD12D);
 
         MockHigher mockHigher = new MockHigher();
         vm.etch(address(HigherConstants.HigherToken), address(mockHigher).code);
@@ -35,7 +35,7 @@ contract HigherMinterTest is Test {
         address account,
         uint256 cost
     ) external {
-        vm.assume(higher1155Factory > address(9));
+        vm.assume(higher1155Factory > address(9) && higher1155Factory != 0x7109709ECfa91a80626fF3989D68f67F5b1DD12D);
 
         MockHigher mockHigher = new MockHigher();
         vm.etch(address(HigherConstants.HigherToken), address(mockHigher).code);

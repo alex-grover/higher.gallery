@@ -4,11 +4,16 @@ pragma solidity ^0.8.13;
 interface IHigher1155 {
     struct MintConfig {
         uint256 price;
+        uint256 maxSupply;
+        uint256 endTimestamp;
     }
 
     event Create(uint256 id);
     event Mint(uint256 indexed id, address minter, uint256 amount, string comment);
     event Withdraw(uint256 amount);
+
+    error MintLimitReached();
+    error MintEnded();
 
     function initialize(address owner, address minter, string calldata contractURI) external;
 

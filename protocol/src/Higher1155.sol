@@ -19,6 +19,7 @@ contract Higher1155 is IHigher1155, ERC1155, OwnableUpgradeable {
     uint256 internal _id;
     mapping(uint256 => string) internal _uris;
     mapping(uint256 => MintConfig) internal _mintConfigs;
+    mapping(uint256 => uint256) internal _mintCounts;
 
     function initialize(address owner, address newMinter, string calldata newContractURI) external initializer {
         __Ownable_init(owner);
@@ -40,7 +41,14 @@ contract Higher1155 is IHigher1155, ERC1155, OwnableUpgradeable {
     }
 
     function mint(uint256 id, uint256 amount, string calldata comment) external override {
+        if (_mintConfigs[id].maxSupply != 0 && _mintCounts[id] + amount > _mintConfigs[id].maxSupply) {
+            revert MintLimitReached();
+        }
+        if (_mintConfigs[id].endTimestamp != 0 && block.timestamp > _mintConfigs[id].endTimestamp) {
+            revert MintEnded();
+        }
         IHigherMinter(_minter).mint(msg.sender, amount * _mintConfigs[id].price);
+        _mintCounts[id] += amount;
         _mint(msg.sender, id, amount, "");
         emit Mint(id, msg.sender, amount, comment);
     }
