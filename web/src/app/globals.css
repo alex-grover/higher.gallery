@@ -1,2 +1,8 @@
 @import "open-props/open-props.min.css";
 @import "open-props/normalize.min.css";
+
+main {
+  max-width: var(--size-xl);
+  padding: 0 var(--size-10);
+  margin: 0 auto;
+}
