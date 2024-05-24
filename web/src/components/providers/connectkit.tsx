@@ -19,7 +19,7 @@ const config = createConfig(
 
 const queryClient = new QueryClient()
 
-export const Web3Provider = ({ children }: PropsWithChildren) => {
+export function ConnectkitProvider({ children }: PropsWithChildren) {
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>

@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { PropsWithChildren } from 'react'
-import { Header } from '@/components/header/Header'
-import { Web3Provider } from '@/components/Web3Provider'
+import { Header } from '@/components/header'
+import { ConnectkitProvider } from '@/components/providers/connectkit'
 import './globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -16,10 +16,10 @@ export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Web3Provider>
+        <ConnectkitProvider>
           <Header />
           {children}
-        </Web3Provider>
+        </ConnectkitProvider>
       </body>
     </html>
   )
