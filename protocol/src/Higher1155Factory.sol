@@ -17,7 +17,7 @@ contract Higher1155Factory is IHigher1155Factory {
     }
 
     function deploy(string calldata contractURI) external override returns (address) {
-        address higher1155 = Clones.cloneDeterministic(_higher1155Implementation, keccak256(abi.encode(msg.sender)));
+        address higher1155 = Clones.clone(_higher1155Implementation);
         IHigher1155(higher1155).initialize(msg.sender, _minter, contractURI);
         _higher1155s[higher1155] = true;
         emit Higher1155Deployed(msg.sender, address(higher1155));

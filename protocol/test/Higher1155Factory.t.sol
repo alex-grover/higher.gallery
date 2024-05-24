@@ -17,11 +17,8 @@ contract Higher1155FactoryTest is Test {
         Higher1155 higher1155Implementation = new Higher1155();
         Higher1155Factory factory = new Higher1155Factory(address(higher1155Implementation));
 
-        address expectedAddress = Clones.predictDeterministicAddress(
-            address(higher1155Implementation), keccak256(abi.encode(creator)), address(factory)
-        );
-        vm.expectEmit(address(factory));
-        emit Higher1155Deployed(creator, expectedAddress);
+        vm.expectEmit(true, true, true, false, address(factory));
+        emit Higher1155Deployed(creator, address(0));
 
         vm.prank(creator);
         address higher1155 = factory.deploy(contractURI);
