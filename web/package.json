@@ -31,7 +31,6 @@
     "@types/react-dom": "^18",
     "eslint": "^8",
     "eslint-config-next": "14.2.3",
-    "postcss-custom-media": "^10.0.6",
     "typescript": "^5.4.5"
   }
 }

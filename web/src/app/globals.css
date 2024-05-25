@@ -1,8 +1,24 @@
 @import "open-props/open-props.min.css";
 @import "open-props/normalize.min.css";
 
+:root {
+  --padding-x: var(--size-2);
+}
+
+@media (min-width: 768px) {
+  :root {
+    --padding-x: var(--size-4);
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --padding-x: var(--size-6);
+  }
+}
+
 main {
   max-width: var(--size-xl);
-  padding: 0 var(--size-10);
+  padding: 0 var(--padding-x);
   margin: 0 auto;
 }

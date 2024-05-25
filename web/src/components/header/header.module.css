@@ -4,7 +4,7 @@
   align-items: center;
   justify-content: space-between;
   max-width: var(--size-xl);
-  padding: var(--size-2) var(--size-10);
+  padding: var(--size-2) var(--padding-x);
   margin: 0 auto;
 }
 

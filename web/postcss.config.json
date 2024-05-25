@@ -12,7 +12,6 @@
           "custom-properties": false
         }
       }
-    ],
-    "postcss-custom-media"
+    ]
   ]
 }
