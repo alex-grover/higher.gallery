@@ -6,6 +6,11 @@
   --padding-x: var(--size-2);
 }
 
+body {
+  display: flex;
+  flex-direction: column;
+}
+
 @media (min-width: 768px) {
   :root {
     --padding-x: var(--size-4);
@@ -20,6 +25,8 @@
 
 main {
   max-width: var(--size-xl);
-  padding: 0 var(--padding-x);
+  padding: 0 var(--padding-x) var(--padding-x);
   margin: 0 auto;
+  flex-grow: 1;
+  width: 100%;
 }
