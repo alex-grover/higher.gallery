@@ -65,6 +65,7 @@ ponder.on('Higher1155:Create', async ({ context, event }) => {
       price: mintConfig.price,
       maxSupply: mintConfig.maxSupply,
       endTimestamp: mintConfig.endTimestamp,
+      mintCount: 0n,
     },
   })
 })
@@ -72,13 +73,23 @@ ponder.on('Higher1155:Create', async ({ context, event }) => {
 ponder.on('Higher1155:Mint', async ({ context, event }) => {
   const { db } = context
 
-  await db.Mint.create({
-    id: `${event.block.number}-${event.transaction.transactionIndex}-${event.log.logIndex}`,
-    data: {
-      higher1155TokenId: `${event.log.address}-${event.args.id}`,
-      minterAddress: event.args.minter,
-      amount: event.args.amount,
-      comment: event.args.comment,
-    },
-  })
+  const higher1155TokenId = `${event.log.address}-${event.args.id}`
+
+  await Promise.all([
+    db.Mint.create({
+      id: `${event.block.number}-${event.transaction.transactionIndex}-${event.log.logIndex}`,
+      data: {
+        higher1155TokenId,
+        minterAddress: event.args.minter,
+        amount: event.args.amount,
+        comment: event.args.comment,
+      },
+    }),
+    db.Higher1155Token.update({
+      id: higher1155TokenId,
+      data: ({ current }) => ({
+        mintCount: current.mintCount + event.args.amount,
+      })
+    })
+  ])
 })

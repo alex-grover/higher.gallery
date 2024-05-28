@@ -18,6 +18,7 @@ export default createSchema((p) => ({
     price: p.bigint(),
     maxSupply: p.bigint(),
     endTimestamp: p.bigint(),
+    mintCount: p.bigint(),
   }),
   Mint: p.createTable({
     id: p.string(),
