@@ -63,8 +63,8 @@ ponder.on('Higher1155:Create', async ({ context, event }) => {
       description,
       image,
       price: mintConfig.price,
-      maxSupply: mintConfig.maxSupply,
-      endTimestamp: mintConfig.endTimestamp,
+      maxSupply: mintConfig.maxSupply || undefined,
+      endTimestamp: mintConfig.endTimestamp || undefined,
       mintCount: 0n,
     },
   })

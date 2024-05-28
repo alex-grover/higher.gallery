@@ -16,6 +16,7 @@ contract Higher1155Factory is IHigher1155Factory {
         _higher1155Implementation = higher1155Implementation;
     }
 
+    // TODO: consider creating token in one tx
     function deploy(string calldata contractURI) external override returns (address) {
         address higher1155 = Clones.clone(_higher1155Implementation);
         IHigher1155(higher1155).initialize(msg.sender, _minter, contractURI);
