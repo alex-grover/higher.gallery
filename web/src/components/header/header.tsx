@@ -11,10 +11,10 @@ export function Header() {
   return (
     <header className={styles.header}>
       <Link href="/" className={styles.brand}>
-        <h1>↑</h1>
+        <h1 className={styles.heading}>↑</h1>
       </Link>
       <nav className={styles.menu}>
-        {address && <Link href="/new">create</Link>}
+        {address && <Link href="/new" className={styles.create}>create</Link>}
         <ConnectKitButton/>
       </nav>
     </header>

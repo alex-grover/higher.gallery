@@ -2,6 +2,7 @@
 @import "open-props/normalize.min.css";
 
 :root {
+  --higher: #3C7E27;
   --padding-x: var(--size-2);
 }
 
