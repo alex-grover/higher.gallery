@@ -4,6 +4,8 @@
   overflow: hidden;
   position: relative;
   height: 320px; /* TODO: remove */
+  display: block;
+  color: var(--text-1);
 }
 
 .overlay {

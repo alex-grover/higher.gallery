@@ -7,7 +7,7 @@ import { Nft } from './nft'
 export default function HomePage() {
   return (
     <main>
-      <Masonry items={data} render={Nft} columnWidth={240} columnGutter={8} />
+      <Masonry items={data} render={Nft} columnWidth={240} columnGutter={8} tabIndex={-1} />
     </main>
   )
 }
