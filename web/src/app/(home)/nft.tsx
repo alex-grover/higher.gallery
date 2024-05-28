@@ -1,15 +1,16 @@
-'use client'
-
 import { RenderComponentProps } from 'masonic'
 import { data } from './data'
 import styles from './nft.module.css'
 
-export function Nft({ index, data: { id }, width }: RenderComponentProps<typeof data[number]>) {
+type NftProps = RenderComponentProps<typeof data[number]>
+
+export function Nft({ data: { id } }: NftProps) {
   return (
     <div className={styles.container}>
-      <div>Index: {index}</div>
-      <pre>ID: {id}</pre>
-      <div>Column width: {width}</div>
+      <div className={styles.overlay}>
+        <div className={styles.name}>TODO: name</div>
+        <div className={styles.artist}>TODO: artist</div>
+      </div>
     </div>
   )
 }
