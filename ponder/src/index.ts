@@ -82,7 +82,7 @@ ponder.on('Higher1155:Mint', async ({ context, event }) => {
         higher1155TokenId,
         minterAddress: event.args.minter,
         amount: event.args.amount,
-        comment: event.args.comment,
+        comment: event.args.comment || undefined,
       },
     }),
     db.Higher1155Token.update({

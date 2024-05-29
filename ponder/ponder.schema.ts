@@ -25,6 +25,6 @@ export default createSchema((p) => ({
     higher1155TokenId: p.string(),
     minterAddress: p.string(),
     amount: p.bigint(),
-    comment: p.string(),
+    comment: p.string().optional(),
   }),
 }))
