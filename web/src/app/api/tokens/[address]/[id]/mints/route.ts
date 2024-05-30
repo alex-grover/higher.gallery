@@ -1,10 +1,16 @@
+import { address as addressSchema } from '@/lib/zod/address'
 import { NextResponse } from 'next/server'
 import { Address } from 'viem'
 import { NextRouteContext } from '@/lib/types/next'
 import { BigIntString } from '@/lib/zod/bigint'
-import { tokenSchema } from '../schema'
+import { z } from 'zod'
 
 export const revalidate = 5
+
+const schema = z.object({
+  address: addressSchema,
+  id: z.string().pipe(z.coerce.bigint().positive())
+})
 
 export type TokenMintsResponse = {
   minterAddress: Address
@@ -13,7 +19,7 @@ export type TokenMintsResponse = {
 }[]
 
 export async function GET(_: Request, { params }: NextRouteContext) {
-  const parseResult = tokenSchema.safeParse(params)
+  const parseResult = schema.safeParse(params)
   if (!parseResult.success) return new Response(parseResult.error.message, { status: 400 })
   const { address, id } = parseResult.data
 

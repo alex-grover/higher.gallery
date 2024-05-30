@@ -1,6 +1,10 @@
 import styles from './page.module.css'
 
+export const revalidate = 86400 // One day in seconds
+
 export default function TokenPage() {
+  // TODO: fetch token data from Ponder
+
   return (
     <main className={styles.container}>
       <div className={styles.image}>TODO: image</div>
