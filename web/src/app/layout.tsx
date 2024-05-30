@@ -1,6 +1,6 @@
-import type { Metadata } from 'next'
+import { type Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import { PropsWithChildren } from 'react'
+import { type PropsWithChildren } from 'react'
 import { Header } from '@/components/header'
 import { ConnectkitProvider } from '@/components/providers/connectkit'
 import './globals.css'

@@ -1,8 +1,8 @@
 import { address as addressSchema } from '@/lib/zod/address'
 import { NextResponse } from 'next/server'
-import { Address } from 'viem'
-import { NextRouteContext } from '@/lib/types/next'
-import { BigIntString } from '@/lib/zod/bigint'
+import { type Address } from 'viem'
+import { type NextRouteContext } from '@/lib/types/next'
+import { type BigIntString } from '@/lib/zod/bigint'
 import { z } from 'zod'
 
 export const revalidate = 5

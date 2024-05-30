@@ -2,8 +2,8 @@
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ConnectKitProvider, getDefaultConfig } from 'connectkit'
-import { PropsWithChildren } from 'react'
-import { WagmiProvider, createConfig, http } from 'wagmi'
+import { type PropsWithChildren } from 'react'
+import { WagmiProvider, createConfig } from 'wagmi'
 import { chain, env } from '@/env'
 
 const config = createConfig(

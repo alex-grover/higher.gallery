@@ -1,4 +1,4 @@
-import { RenderComponentProps } from 'masonic'
+import { type RenderComponentProps } from 'masonic'
 import Link from 'next/link'
 import { data } from './data'
 import styles from './nft.module.css'
