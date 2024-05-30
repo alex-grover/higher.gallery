@@ -29,8 +29,9 @@
 
 .name {
   font-weight: var(--font-weight-6);
+  color: var(--gray-0);
 }
 
 .artist {
-  color: var(--text-2);
+  color: var(--gray-4);
 }

@@ -17,7 +17,11 @@
 .heading {
   font-size: var(--font-size-5);
   line-height: 1;
-  padding: var(--size-2);
+  width: var(--size-8);
+  height: var(--size-8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: var(--higher);
   border-radius: var(--radius-round);
   color: var(--gray-1);
@@ -43,7 +47,10 @@
 
 @media (min-width: 768px) {
   .heading {
+    --size-8-5: 3.5rem;
     font-size: var(--font-size-6);
+    height: var(--size-8-5);
+    width: var(--size-8-5);
   }
 
   .menu {
@@ -54,6 +61,8 @@
 @media (min-width: 1024px) {
   .heading {
     font-size: var(--font-size-7);
+    height: var(--size-9);
+    width: var(--size-9);
   }
 
   .menu {
