@@ -12,8 +12,6 @@ jobs:
     timeout-minutes: 15
     runs-on: ubuntu-latest
     env:
-      NEXT_PUBLIC_VERCEL_ENV: preview
-      NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID: walletconnect
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
       TURBO_TEAM: ${{ vars.TURBO_TEAM }}
     steps:
@@ -41,6 +39,11 @@ jobs:
         env:
           HUSKY: 0
       - run: pnpm run lint
+        env:
+          NEXT_PUBLIC_IPFS_GATEWAY_BASE_URL: http://localhost:3000
+          NEXT_PUBLIC_VERCEL_ENV: preview
+          NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID: walletconnect
+          PONDER_URL: http://localhost:3000
       - run: pnpm run prettier
       - run: pnpm run stylelint
       - run: pnpm run test
