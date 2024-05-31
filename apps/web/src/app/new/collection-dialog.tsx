@@ -1,9 +1,15 @@
 import { useRouter } from 'next/navigation'
-import { ChangeEvent, FormEvent, useCallback, useRef, useState } from 'react'
+import { FormEvent, useCallback, useRef, useState } from 'react'
 import { mutate } from 'swr'
 import { Address } from 'viem'
-import { env } from '@/env'
-import { useWriteIHigher1155FactoryDeploy } from '@/generated/wagmi'
+import { usePublicClient } from 'wagmi'
+import { chain } from '@/env'
+import {
+  iHigher1155FactoryAbi,
+  iHigher1155FactoryAddress,
+  useWriteIHigher1155FactoryDeploy,
+} from '@/generated/wagmi'
+import { uploadJSON, useUploadFile } from '@/lib/ipfs'
 
 type CollectionDialogProps = {
   address: Address
@@ -11,70 +17,17 @@ type CollectionDialogProps = {
 
 export function CollectionDialog({ address }: CollectionDialogProps) {
   const router = useRouter()
-  const ref = useRef<HTMLDialogElement | null>(null)
-  const [uploadingImage, setUploadingImage] = useState(false)
-  const [imagePreview, setImagePreview] = useState<string | null>(null)
-  const [image, setImage] = useState<string | null>(null)
-  const [imageError, setImageError] = useState<string | null>(null)
+  const client = usePublicClient()
 
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  const ref = useRef<HTMLDialogElement | null>(null)
   const handleOpen = useCallback(() => {
     if (!ref.current) return
     ref.current.showModal()
   }, [])
 
-  const handleFileChange = useCallback(
-    (event: ChangeEvent<HTMLInputElement>) => {
-      async function handle() {
-        if (!event.target.files?.length) return
-        const file = event.target.files.item(0)
-        if (!file?.size) return
-
-        if (!file.type.includes('image/')) {
-          setImageError('Invalid file type')
-          return
-        }
-
-        if (file.size > 1000000000) {
-          setImageError('Image must be less than 1Gb')
-          return
-        }
-
-        setUploadingImage(true)
-        setImageError('')
-
-        const data = new FormData()
-        data.set('file', file)
-        const response = await fetch(
-          'https://api.pinata.cloud/pinning/pinFileToIPFS',
-          {
-            method: 'POST',
-            headers: {
-              Authorization: `Bearer ${env.NEXT_PUBLIC_PINATA_JWT}`,
-            },
-            body: data,
-          },
-        )
-
-        setUploadingImage(false)
-
-        if (!response.ok) {
-          alert('Error uploading image to IPFS')
-          return
-        }
-
-        setImagePreview(URL.createObjectURL(file))
-
-        const { IpfsHash: hash } = (await response.json()) as {
-          IpfsHash: string
-        }
-
-        setImage(`ipfs://${hash}`)
-      }
-
-      void handle()
-    },
-    [],
-  )
+  const { upload, preview, uri: image, isUploading, error } = useUploadFile()
 
   const { writeContractAsync } = useWriteIHigher1155FactoryDeploy()
 
@@ -83,46 +36,64 @@ export function CollectionDialog({ address }: CollectionDialogProps) {
       event.preventDefault()
 
       async function handle() {
-        const data = new FormData(event.currentTarget)
-
-        const response = await fetch(
-          'https://api.pinata.cloud/pinning/pinJSONToIPFS',
-          {
-            method: 'POST',
-            headers: {
-              Authorization: `Bearer ${env.NEXT_PUBLIC_PINATA_JWT}`,
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              pinataContent: {
-                name: data.get('name'),
-                description: data.get('description'),
-                image,
-              },
-            }),
-          },
-        )
-
-        if (!response.ok) throw new Error('Error uploading metadata to IPFS')
-
-        const { IpfsHash: hash } = (await response.json()) as {
-          IpfsHash: string
+        if (!client) {
+          alert('Error getting client')
+          return
         }
 
-        const collectionAddress = await writeContractAsync({
-          args: [`ipfs://${hash}`],
+        const data = new FormData(event.currentTarget)
+        const name = data.get('name')
+        const description = data.get('description')
+
+        if (typeof name !== 'string' || typeof description !== 'string') {
+          alert('Invalid form data')
+          return
+        }
+
+        setIsSubmitting(true)
+
+        let uri
+        try {
+          uri = await uploadJSON({
+            name,
+            description,
+            image,
+          })
+        } catch (e) {
+          const error = e as Error
+          alert(error.message)
+          setIsSubmitting(false)
+          return
+        }
+
+        const { request, result } = await client.simulateContract({
+          address: iHigher1155FactoryAddress[chain.id],
+          abi: iHigher1155FactoryAbi,
+          functionName: 'deploy',
+          args: [uri],
         })
+
+        const hash = await writeContractAsync(request)
+
+        const transactionReceipt = await client.waitForTransactionReceipt({
+          hash,
+        })
+        if (transactionReceipt.status === 'reverted') {
+          alert('Transaction reverted')
+          setIsSubmitting(false)
+          return
+        }
 
         await mutate(`/api/users/${address}/collections`)
 
         router.push(
-          `/new?${new URLSearchParams({ collectionAddress }).toString()}`,
+          `/new?${new URLSearchParams({ collectionAddress: result }).toString()}`,
         )
       }
 
       void handle()
     },
-    [image, writeContractAsync, address, router],
+    [client, image, writeContractAsync, address, router],
   )
 
   return (
@@ -130,24 +101,19 @@ export function CollectionDialog({ address }: CollectionDialogProps) {
       <button onClick={handleOpen}>Create new</button>
       <dialog ref={ref}>
         <form onSubmit={handleSubmit}>
-          <label>
-            {imagePreview ? (
+          <label htmlFor="image">
+            {preview ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={imagePreview} alt="Image preview" />
+              <img src={preview} alt="Image preview" />
             ) : (
-              <div>{uploadingImage ? 'Uploading...' : 'Upload'}</div>
+              <div>{isUploading ? 'Uploading...' : 'Upload'}</div>
             )}
           </label>
-          <input
-            type="file"
-            id="image"
-            name="image"
-            onChange={handleFileChange}
-          />
-          {imageError && <div>{imageError}</div>}
+          <input type="file" id="image" name="image" onChange={upload} />
+          {error && <div>{error}</div>}
           <input name="name" placeholder="Name" autoFocus />
           <textarea name="description" placeholder="Description" />
-          <button>Create</button>
+          <button disabled={isSubmitting}>Create</button>
         </form>
       </dialog>
     </>

@@ -1,5 +1,6 @@
 import { defineConfig } from '@wagmi/cli'
 import { foundry, react } from '@wagmi/cli/plugins'
+import { baseSepolia } from 'viem/chains'
 import { base } from 'wagmi/chains'
 
 export default defineConfig({
@@ -12,9 +13,11 @@ export default defineConfig({
       deployments: {
         IHigher1155Factory: {
           [base.id]: '0x0000000000000000000000000000000000000000',
+          [baseSepolia.id]: '0x0000000000000000000000000000000000000000',
         },
         IHigherMinter: {
           [base.id]: '0x0000000000000000000000000000000000000000',
+          [baseSepolia.id]: '0x0000000000000000000000000000000000000000',
         },
       },
     }),
