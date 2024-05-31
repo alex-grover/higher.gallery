@@ -88,10 +88,8 @@ export function TokenForm({ address, collectionAddress }: TokenFormProps) {
 
         const hash = await writeContractAsync(request)
 
-        const transactionReceipt = await client.waitForTransactionReceipt({
-          hash,
-        })
-        if (transactionReceipt.status === 'reverted') {
+        const receipt = await client.waitForTransactionReceipt({ hash })
+        if (receipt.status === 'reverted') {
           alert('Transaction reverted')
           setIsSubmitting(false)
           return
