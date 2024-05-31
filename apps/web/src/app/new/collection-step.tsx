@@ -3,6 +3,7 @@ import useSWR from 'swr'
 import { Address } from 'viem'
 import { UserCollectionsListResponse } from '@/app/api/users/[address]/collections/route'
 import { CollectionDialog } from '@/app/new/collection-dialog'
+import { formatIpfsUri } from '@/lib/utils/ipfs'
 
 type CollectionStepProps = {
   address: Address
@@ -23,7 +24,11 @@ export function CollectionStep({ address }: CollectionStepProps) {
               <Link
                 href={`/new?${new URLSearchParams({ collectionAddress: collection.id }).toString()}`}
               >
-                <div>TODO: collection image</div>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={formatIpfsUri(collection.image, 48)}
+                  alt="Collection image"
+                />
                 <div>{collection.name}</div>
               </Link>
             </li>

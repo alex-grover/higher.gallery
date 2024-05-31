@@ -33,16 +33,13 @@ export async function GET(request: Request) {
     return new Response(parseResult.error.message, { status: 400 })
   const { cursor } = parseResult.data
 
-  const { higher1155Tokens: tokens } = await ponderClient.tokens({ cursor })
+  const { tokens } = await ponderClient.tokens({ cursor })
 
-  // TODO: return mint count, time/supply limits, order by currently minting first?
   return NextResponse.json<TokenListResponse>({
     tokens: tokens.items.map((token) => ({
       collection: {
-        id: address.parse(token.higher1155Collection.id),
-        creatorAddress: address.parse(
-          token.higher1155Collection.creatorAddress,
-        ),
+        id: address.parse(token.collection.id),
+        creatorAddress: address.parse(token.collection.creatorAddress),
       },
       tokenId: token.tokenId,
       name: token.name,

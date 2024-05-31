@@ -1,5 +1,5 @@
 query collection($id: String!) {
-  higher1155Collection(id: $id) {
+  collection(id: $id) {
     creatorAddress
     name
     image

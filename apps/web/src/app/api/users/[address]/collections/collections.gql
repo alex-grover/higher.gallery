@@ -1,5 +1,5 @@
 query collections($address: String!) {
-  higher1155Collections(
+  collections(
     where: { creatorAddress: $address }
     orderBy: "timestamp"
     orderDirection: "desc"

@@ -23,16 +23,16 @@ export async function GET(_: Request, { params }: NextRouteContext) {
   if (!parseResult.success)
     return new Response(parseResult.error.message, { status: 400 })
 
-  const { higher1155Collection } = await ponderClient.collection({
+  const { collection } = await ponderClient.collection({
     id: parseResult.data.address,
   })
 
-  if (!higher1155Collection) return new Response('Not found', { status: 404 })
+  if (!collection) return new Response('Not found', { status: 404 })
 
   return NextResponse.json<CollectionDetailResponse>({
     id: parseResult.data.address,
-    creatorAddress: address.parse(higher1155Collection.creatorAddress),
-    name: higher1155Collection.name,
-    image: higher1155Collection.image,
+    creatorAddress: address.parse(collection.creatorAddress),
+    name: collection.name,
+    image: collection.image,
   })
 }

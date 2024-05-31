@@ -35,13 +35,13 @@ export function TokenForm({ address, collectionAddress }: TokenFormProps) {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div>TODO: asset</div>
+      <input type="file" name="image" />
       <div>
-        <input autoFocus placeholder="Name" />
-        <textarea placeholder="Description" />
-        <input placeholder="Price" />
-        <input placeholder="Supply limit" />
-        <input placeholder="Time limit" />
+        <input autoFocus name="name" placeholder="Name" />
+        <textarea name="description" placeholder="Description" />
+        <input name="price" placeholder="Price" />
+        <input name="maxSupply" placeholder="Supply limit" />
+        <input name="endTimestamp" placeholder="Time limit" />
       </div>
       <button>Create</button>
     </form>

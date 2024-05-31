@@ -23,7 +23,7 @@ ponder.on(
     )
     const { name, description, image } = (await response.json()) as Metadata
 
-    await db.Higher1155Collection.create({
+    await db.Collection.create({
       id: event.args.higher1155,
       data: {
         timestamp: event.block.timestamp,
@@ -62,10 +62,10 @@ ponder.on('Higher1155:Create', async ({ context, event }) => {
   )
   const { name, description, image } = (await response.json()) as Metadata
 
-  await db.Higher1155Token.create({
+  await db.Token.create({
     id: `${event.log.address}-${event.args.id.toString()}`,
     data: {
-      higher1155CollectionId: event.log.address,
+      collectionId: event.log.address,
       tokenId: event.args.id,
       timestamp: event.block.timestamp,
       name,
@@ -82,21 +82,21 @@ ponder.on('Higher1155:Create', async ({ context, event }) => {
 ponder.on('Higher1155:Mint', async ({ context, event }) => {
   const { db } = context
 
-  const higher1155TokenId = `${event.log.address}-${event.args.id.toString()}`
+  const tokenId = `${event.log.address}-${event.args.id.toString()}`
 
   await Promise.all([
     db.Mint.create({
       id: `${event.block.number.toString()}-${event.transaction.transactionIndex.toString()}-${event.log.logIndex.toString()}`,
       data: {
-        higher1155TokenId,
+        tokenId,
         timestamp: event.block.timestamp,
         minterAddress: event.args.minter,
         amount: event.args.amount,
         comment: event.args.comment || undefined,
       },
     }),
-    db.Higher1155Token.update({
-      id: higher1155TokenId,
+    db.Token.update({
+      id: tokenId,
       data: ({ current }) => ({
         mintCount: current.mintCount + event.args.amount,
       }),

@@ -3,6 +3,7 @@ import { formatEther } from 'viem'
 import { z } from 'zod'
 import { ponderClient } from '@/lib/ponder'
 import { NextPageContext } from '@/lib/types/next'
+import { formatIpfsUri } from '@/lib/utils/ipfs'
 import { address as addressSchema } from '@/lib/zod/address'
 import styles from './page.module.css'
 
@@ -18,7 +19,7 @@ export default async function TokenPage({ params }: NextPageContext) {
   if (!parseResult.success) notFound()
   const { address, id } = parseResult.data
 
-  const { higher1155Token: token } = await ponderClient.token({
+  const { token } = await ponderClient.token({
     token: `${address}-${id.toString()}`,
   })
 
@@ -26,15 +27,21 @@ export default async function TokenPage({ params }: NextPageContext) {
 
   return (
     <main className={styles.container}>
-      <div className={styles.image}>TODO: image</div>
+      <div className={styles.image}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={formatIpfsUri(token.image, 1000)} alt="Token image" />
+      </div>
       <div className={styles.details}>
         <div className={styles.metadata}>
           <div className={styles.name}>{token.name}</div>
-          <div className={styles.artist}>
-            {token.higher1155Collection.creatorAddress}
-          </div>
+          <div className={styles.artist}>{token.collection.creatorAddress}</div>
           <div className={styles.collection}>
-            {token.higher1155Collection.name} TODO: collection image
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={formatIpfsUri(token.collection.image, 1000)}
+              alt="Collection image"
+            />
+            <div>{token.collection.name}</div>
           </div>
         </div>
         <button className={styles.button}>

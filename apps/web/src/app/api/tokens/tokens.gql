@@ -1,11 +1,7 @@
 query tokens($cursor: String) {
-  higher1155Tokens(
-    after: $cursor
-    orderBy: "timestamp"
-    orderDirection: "desc"
-  ) {
+  tokens(after: $cursor, orderBy: "timestamp", orderDirection: "desc") {
     items {
-      higher1155Collection {
+      collection {
         id
         creatorAddress
       }

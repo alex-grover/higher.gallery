@@ -23,9 +23,9 @@ export function CollectionDialog() {
       <button onClick={handleOpen}>Create new</button>
       <dialog ref={ref}>
         <form onSubmit={handleSubmit}>
-          <input type="file" />
-          <input autoFocus placeholder="Name" />
-          <textarea placeholder="Description" />
+          <input type="file" name="image" />
+          <input name="name" placeholder="Name" autoFocus />
+          <textarea name="description" placeholder="Description" />
           <button>Create</button>
         </form>
       </dialog>

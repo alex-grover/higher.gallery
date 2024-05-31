@@ -22,9 +22,7 @@ export async function GET(_: Request, { params }: NextRouteContext) {
   if (!parseResult.success)
     return new Response(parseResult.error.message, { status: 400 })
 
-  const { higher1155Collections: collections } = await ponderClient.collections(
-    parseResult.data,
-  )
+  const { collections } = await ponderClient.collections(parseResult.data)
 
   return NextResponse.json<UserCollectionsListResponse>(
     collections.items.map((collection) => ({

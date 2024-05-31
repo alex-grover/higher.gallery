@@ -1,6 +1,6 @@
 query mints($token: String!, $cursor: String) {
   mints(
-    where: { higher1155TokenId: $token }
+    where: { tokenId: $token }
     after: $cursor
     orderBy: "timestamp"
     orderDirection: "desc"

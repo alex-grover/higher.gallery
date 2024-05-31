@@ -1,6 +1,6 @@
 query token($token: String!) {
-  higher1155Token(id: $token) {
-    higher1155Collection {
+  token(id: $token) {
+    collection {
       creatorAddress
       name
       description
