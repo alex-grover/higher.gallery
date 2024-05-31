@@ -5,7 +5,9 @@
       "dependsOn": ["^codegen"],
       "outputs": ["generated/*", "src/generated/ponder.ts"]
     },
-    "lint": {},
+    "lint": {
+      "dependsOn": ["codegen"]
+    },
     "prettier": {},
     "stylelint": {},
     "test": {},
