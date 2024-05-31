@@ -26,6 +26,7 @@ ponder.on(
     await db.Higher1155Collection.create({
       id: event.args.higher1155,
       data: {
+        timestamp: event.block.timestamp,
         creatorAddress: event.args.creator,
         name,
         description,

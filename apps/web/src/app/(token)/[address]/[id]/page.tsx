@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation'
 import { formatEther } from 'viem'
 import { z } from 'zod'
 import { ponderClient } from '@/lib/ponder'
-import { NextRouteContext } from '@/lib/types/next'
+import { NextPageContext } from '@/lib/types/next'
 import { address as addressSchema } from '@/lib/zod/address'
 import styles from './page.module.css'
 
@@ -13,7 +13,7 @@ const schema = z.object({
   id: z.string().pipe(z.coerce.bigint().positive()),
 })
 
-export default async function TokenPage({ params }: NextRouteContext) {
+export default async function TokenPage({ params }: NextPageContext) {
   const parseResult = schema.safeParse(params)
   if (!parseResult.success) notFound()
   const { address, id } = parseResult.data

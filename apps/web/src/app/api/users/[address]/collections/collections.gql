@@ -1,0 +1,14 @@
+query collections($address: String!) {
+  higher1155Collections(
+    where: { creatorAddress: $address }
+    orderBy: "timestamp"
+    orderDirection: "desc"
+    limit: 1000
+  ) {
+    items {
+      id
+      name
+      image
+    }
+  }
+}

@@ -3,6 +3,7 @@ import { createSchema } from '@ponder/core'
 export default createSchema((p) => ({
   Higher1155Collection: p.createTable({
     id: p.string(),
+    timestamp: p.bigint(),
     creatorAddress: p.string(),
     name: p.string(),
     description: p.string(),

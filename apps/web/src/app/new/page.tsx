@@ -1,13 +1,35 @@
+'use client'
+
+import { useRouter, useSearchParams } from 'next/navigation'
+import { useAccount } from 'wagmi'
+import { CollectionStep } from '@/app/new/collection-step'
+import { TokenForm } from '@/app/new/token-form'
+import { address } from '@/lib/zod/address'
+
 export default function CreatePage() {
+  const account = useAccount()
+  const router = useRouter()
+  const searchParams = useSearchParams()
+
+  if (account.status === 'connecting' || account.status === 'reconnecting')
+    return null
+  if (account.status === 'disconnected') {
+    router.replace('/')
+    return null
+  }
+
+  const parseResult = address.safeParse(searchParams.get('collectionAddress'))
+
   return (
     <main>
-      <div>TODO: asset</div>
-      <div>
-        <div>TODO: collection</div>
-        <div>TODO: name, description</div>
-        <div>TODO: price</div>
-        <div>TODO: time, supply limit</div>
-      </div>
+      {parseResult.success ? (
+        <TokenForm
+          address={account.address}
+          collectionAddress={parseResult.data}
+        />
+      ) : (
+        <CollectionStep address={account.address} />
+      )}
     </main>
   )
 }
