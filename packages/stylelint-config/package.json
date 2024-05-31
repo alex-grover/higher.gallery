@@ -1,0 +1,17 @@
+{
+  "name": "stylelint-config",
+  "scripts": {
+    "prettier": "prettier --check ."
+  },
+  "peerDependencies": {
+    "stylelint": "*",
+    "stylelint-config-css-modules": "*",
+    "stylelint-config-recess-order": "*",
+    "stylelint-config-standard": "*"
+  },
+  "devDependencies": {
+    "prettier-config": "workspace:^",
+    "prettier": "3.2.5"
+  },
+  "prettier": "prettier-config"
+}

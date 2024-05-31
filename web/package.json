@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "prettier": "prettier --check .",
+    "stylelint": "stylelint **/*.css",
     "typecheck": "tsc"
   },
   "dependencies": {
@@ -41,6 +42,11 @@
     "ponder": "workspace:^",
     "prettier": "3.2.5",
     "prettier-config": "workspace:^",
+    "stylelint": "^16.6.1",
+    "stylelint-config": "workspace:^",
+    "stylelint-config-css-modules": "^4.4.0",
+    "stylelint-config-recess-order": "^5.0.1",
+    "stylelint-config-standard": "^36.0.0",
     "typescript": "^5.4.5",
     "vercel": "^34.2.4"
   },
@@ -50,5 +56,8 @@
       "higher"
     ]
   },
-  "prettier": "prettier-config"
+  "prettier": "prettier-config",
+  "stylelint": {
+    "extends": "stylelint-config"
+  }
 }

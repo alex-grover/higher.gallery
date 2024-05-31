@@ -1,36 +1,33 @@
 .container {
+  position: relative;
+  display: block;
+  height: 320px; /* TODO: remove */
+  overflow: hidden;
+  color: var(--text-1);
   background: var(--surface-2);
   border-radius: var(--radius-2);
-  overflow: hidden;
-  position: relative;
-  height: 320px; /* TODO: remove */
-  display: block;
-  color: var(--text-1);
 }
 
 .overlay {
-  opacity: 0;
-  transition: opacity 0.2s;
-  background-image: linear-gradient(
-    to top,
-    rgba(0, 0, 0, 45%),
-    rgba(0, 0, 0, 40%) 20%,
-    rgba(0, 0, 0, 25%) 40%,
-    rgba(0, 0, 0, 0)
-  );
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  padding: var(--size-4);
+  inset: 0;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
+  padding: var(--size-4);
+  background-image: linear-gradient(
+    to top,
+    rgb(0 0 0 / 45%),
+    rgb(0 0 0 / 40%) 20%,
+    rgb(0 0 0 / 25%) 40%,
+    rgb(0 0 0 / 0%)
+  );
+  opacity: 0;
+  transition: opacity 0.2s;
 }
 
 .overlay:hover {
-  opacity: 100%;
+  opacity: 1;
 }
 
 .name {

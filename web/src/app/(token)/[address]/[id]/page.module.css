@@ -5,22 +5,22 @@
 }
 
 .image {
+  flex-shrink: 0;
   width: 100%;
   height: 400px;
-  flex-shrink: 0;
 }
 
 .details {
-  flex-grow: 1;
   display: flex;
   flex-direction: column;
+  flex-grow: 1;
   gap: var(--size-2);
 }
 
 .metadata {
+  padding: var(--size-2);
   background: var(--surface-2);
   border-radius: var(--radius-2);
-  padding: var(--size-2);
 }
 
 .name {
@@ -37,7 +37,7 @@
   border-radius: var(--radius-2);
 }
 
-@media (min-width: 768px) {
+@media (width >= 768px) {
   .container {
     flex-direction: row;
   }

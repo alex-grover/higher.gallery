@@ -1,5 +1,5 @@
-@import 'open-props/open-props.min.css';
-@import 'open-props/normalize.min.css';
+@import url('open-props/open-props.min.css');
+@import url('open-props/normalize.min.css');
 
 :root {
   --higher: #3c7e27;
@@ -11,22 +11,22 @@ body {
   flex-direction: column;
 }
 
-@media (min-width: 768px) {
+@media (width >= 768px) {
   :root {
     --padding-x: var(--size-4);
   }
 }
 
-@media (min-width: 1024px) {
+@media (width >= 1024px) {
   :root {
     --padding-x: var(--size-6);
   }
 }
 
 main {
+  flex-grow: 1;
+  width: 100%;
   max-width: var(--size-xl);
   padding: 0 var(--padding-x) var(--padding-x);
   margin: 0 auto;
-  flex-grow: 1;
-  width: 100%;
 }
