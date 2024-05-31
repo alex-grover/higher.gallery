@@ -32,6 +32,7 @@
     "eslint": "^8",
     "eslint-config-next": "14.2.3",
     "ponder": "workspace:^",
-    "typescript": "^5.4.5"
+    "typescript": "^5.4.5",
+    "vercel": "^34.2.4"
   }
 }
