@@ -19,6 +19,7 @@ export type TokenListResponse = {
     }
     tokenId: BigIntString
     name: string
+    image: string
   }[]
   cursor: string | null
 }
@@ -45,6 +46,7 @@ export async function GET(request: Request) {
       },
       tokenId: token.tokenId,
       name: token.name,
+      image: token.image,
     })),
     cursor: tokens.pageInfo.endCursor ?? null,
   })

@@ -1,26 +1,23 @@
-import { Tokens } from '@/app/(home)/tokens'
-import { ponderClient } from '@/lib/ponder'
-import { address } from '@/lib/zod/address'
+'use client'
 
-export const revalidate = 10
+import { Masonry } from 'masonic'
+import useSWR from 'swr'
+import { Token } from '@/app/(home)/token'
+import { TokenListResponse } from '@/app/api/tokens/route'
 
-export default async function HomePage() {
-  const { higher1155Tokens } = await ponderClient.tokens()
+export default function HomePage() {
+  const { data } = useSWR<TokenListResponse>('/api/tokens')
 
-  const tokens = higher1155Tokens.items.map((token) => ({
-    collection: {
-      id: address.parse(token.higher1155Collection.id),
-      creatorAddress: address.parse(token.higher1155Collection.creatorAddress),
-    },
-    tokenId: token.tokenId,
-    name: token.name,
-  }))
+  if (!data) return null
 
   return (
     <main>
-      <Tokens
-        tokens={tokens}
-        cursor={higher1155Tokens.pageInfo.endCursor ?? null}
+      <Masonry
+        items={data.tokens}
+        render={Token}
+        columnWidth={240}
+        columnGutter={8}
+        tabIndex={-1}
       />
     </main>
   )

@@ -6,7 +6,7 @@ import { useAccount } from 'wagmi'
 import styles from './header.module.css'
 
 export function Header() {
-  const { address } = useAccount()
+  const { status } = useAccount()
 
   return (
     <header className={styles.header}>
@@ -14,7 +14,7 @@ export function Header() {
         <h1 className={styles.heading}>↑</h1>
       </Link>
       <nav className={styles.menu}>
-        {address && (
+        {status === 'connected' && (
           <Link href="/new" className={styles.create}>
             create
           </Link>

@@ -1,7 +1,6 @@
 .container {
   position: relative;
   display: block;
-  height: 320px; /* TODO: remove */
   overflow: hidden;
   color: var(--text-1);
   background: var(--surface-2);
@@ -36,10 +35,12 @@
 }
 
 .name {
+  font-size: var(--font-size-2);
   font-weight: var(--font-weight-6);
   color: var(--gray-0);
 }
 
 .artist {
+  font-size: var(--font-size-1);
   color: var(--gray-4);
 }

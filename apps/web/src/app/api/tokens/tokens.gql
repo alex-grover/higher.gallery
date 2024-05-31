@@ -11,6 +11,7 @@ query tokens($cursor: String) {
       }
       tokenId
       name
+      image
     }
     pageInfo {
       endCursor
