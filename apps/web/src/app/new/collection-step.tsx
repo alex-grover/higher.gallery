@@ -16,7 +16,7 @@ export function CollectionStep({ address }: CollectionStepProps) {
 
   return (
     <div>
-      <CollectionDialog />
+      <CollectionDialog address={address} />
       {data && data.length > 0 && (
         <ul>
           {data.map((collection) => (
