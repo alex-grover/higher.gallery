@@ -11,7 +11,7 @@ contract DeployScript is Script {
         vm.startBroadcast(deployerPrivateKey);
 
         Higher1155 implementation = new Higher1155();
-        Higher1155Factory factory = new Higher1155Factory(address(implementation));
+        new Higher1155Factory(address(implementation));
 
         vm.stopBroadcast();
     }

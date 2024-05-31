@@ -2,7 +2,7 @@
   "name": "contracts",
   "private": true,
   "scripts": {
-    "build": "forge build",
+    "wagmi": "forge build",
     "test": "forge test"
   }
 }
