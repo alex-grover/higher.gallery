@@ -2,6 +2,7 @@ import Link from 'next/link'
 import useSWR from 'swr'
 import { Address } from 'viem'
 import { UserCollectionsListResponse } from '@/app/api/users/[address]/collections/route'
+import { CollectionDialog } from '@/app/new/collection-dialog'
 
 type CollectionStepProps = {
   address: Address
@@ -14,8 +15,7 @@ export function CollectionStep({ address }: CollectionStepProps) {
 
   return (
     <div>
-      {/* TODO: create form */}
-      <button>Create new</button>
+      <CollectionDialog />
       {data && data.length > 0 && (
         <ul>
           {data.map((collection) => (
