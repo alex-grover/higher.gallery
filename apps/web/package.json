@@ -4,7 +4,8 @@
   "type": "module",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "turbo run web-build",
+    "web-build": "next build",
     "start": "next start",
     "lint": "next lint",
     "prettier": "prettier --check .",

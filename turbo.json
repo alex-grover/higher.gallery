@@ -1,11 +1,18 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "pipeline": {
-    "codegen": {
-      "dependsOn": ["^codegen"],
-      "outputs": ["generated/*", "src/generated/ponder.ts"]
+    "web-build": {
+      "dependsOn": ["codegen"]
     },
-    "lint": {
+    "ponder#codegen": {
+      "outputs": ["generated/schema.graphql"]
+    },
+    "web#codegen": {
+      "dependsOn": ["ponder#codegen"],
+      "outputs": ["src/generated/ponder.ts"]
+    },
+    "lint": {},
+    "web#lint": {
       "dependsOn": ["codegen"]
     },
     "prettier": {},
