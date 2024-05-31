@@ -1,4 +1,5 @@
 import { Analytics } from '@vercel/analytics/react'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 import { type Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { type PropsWithChildren } from 'react'
@@ -25,6 +26,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
           </ConnectkitProvider>
         </SWRProvider>
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   )
