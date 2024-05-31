@@ -1,10 +1,8 @@
 'use client'
 
 import { FormEvent, useCallback, useEffect, useMemo, useState } from 'react'
-import useSWR from 'swr'
 import { formatEther } from 'viem'
 import { useAccount, usePublicClient } from 'wagmi'
-import { ListTokenMintsResponse } from '@/app/api/tokens/[address]/[id]/mints/route'
 import { chain } from '@/env'
 import { TokenQuery } from '@/generated/ponder'
 import {
@@ -15,6 +13,7 @@ import {
   useWriteHigher1155Mint,
 } from '@/generated/wagmi'
 import { UINT256_MAX } from '@/lib/constants'
+import { useMints } from '@/lib/hooks/mints'
 import { address as addressSchema } from '@/lib/zod/address'
 import styles from './mint.module.css'
 
@@ -41,10 +40,7 @@ export function Mint({ token }: MintProps) {
     },
   })
 
-  const { data } = useSWR<ListTokenMintsResponse>(
-    `/api/tokens/${token.collection.id}/${token.tokenId}/mints`,
-    { refreshInterval: 10000 },
-  )
+  const mints = useMints(token)
 
   const mintEndTime = useMemo(
     () => token.endTimestamp && new Date(Number(token.endTimestamp) * 1000),
@@ -134,7 +130,7 @@ export function Mint({ token }: MintProps) {
           balance === undefined ||
           balance < BigInt(token.price) ||
           (!!token.maxSupply &&
-            (!data || BigInt(data.count) >= BigInt(token.maxSupply))) ||
+            (!mints || BigInt(mints.count) >= BigInt(token.maxSupply))) ||
           mintEnded ||
           isSubmitting
         }
