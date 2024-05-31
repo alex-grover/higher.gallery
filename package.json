@@ -7,6 +7,7 @@
     "stylelint": "turbo run stylelint --cache-dir=.turbo",
     "test": "turbo run test --cache-dir=.turbo",
     "typecheck": "turbo run typecheck --cache-dir=.turbo",
+    "codegen": "turbo run codegen --cache-dir=.turbo",
     "wagmi": "turbo run wagmi --cache-dir=.turbo",
     "prepare": "husky"
   },

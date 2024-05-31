@@ -1,7 +1,14 @@
 import { NextResponse } from 'next/server'
 import { Address } from 'viem'
+import { z } from 'zod'
+import { ponderClient } from '@/lib/ponder'
+import { address } from '@/lib/zod/address'
 
 export const revalidate = 10
+
+const schema = z.object({
+  cursor: z.string().optional(),
+})
 
 export type TokenListResponse = {
   tokens: {
@@ -13,15 +20,27 @@ export type TokenListResponse = {
   cursor: string | null
 }
 
-export function GET(request: Request) {
+export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const cursor = searchParams.get('cursor')
+  const parseResult = schema.safeParse(
+    Object.fromEntries(searchParams.entries()),
+  )
+  if (!parseResult.success)
+    return new Response(parseResult.error.message, { status: 400 })
+  const { cursor } = parseResult.data
 
-  // TODO: fetch data from Ponder
+  const { higher1155Tokens: tokens } = await ponderClient.tokens({ cursor })
 
+  // TODO: return mint count, time/supply limits, order by currently minting first?
   return NextResponse.json<TokenListResponse>({
-    tokens: [],
-    cursor: null,
+    tokens: tokens.items.map((token) => ({
+      collection: {
+        creatorAddress: address.parse(
+          token.higher1155Collection.creatorAddress,
+        ),
+      },
+      name: token.name,
+    })),
+    cursor: tokens.pageInfo.endCursor ?? null,
   })
 }

@@ -66,6 +66,7 @@ ponder.on('Higher1155:Create', async ({ context, event }) => {
     data: {
       higher1155CollectionId: event.log.address,
       tokenId: event.args.id,
+      timestamp: event.block.timestamp,
       name,
       description,
       image,
@@ -87,6 +88,7 @@ ponder.on('Higher1155:Mint', async ({ context, event }) => {
       id: `${event.block.number.toString()}-${event.transaction.transactionIndex.toString()}-${event.log.logIndex.toString()}`,
       data: {
         higher1155TokenId,
+        timestamp: event.block.timestamp,
         minterAddress: event.args.minter,
         amount: event.args.amount,
         comment: event.args.comment || undefined,

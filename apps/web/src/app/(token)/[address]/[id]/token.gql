@@ -1,0 +1,17 @@
+query token($token: String!) {
+  higher1155Token(id: $token) {
+    higher1155Collection {
+      creatorAddress
+      name
+      description
+      image
+    }
+    timestamp
+    name
+    description
+    image
+    price
+    maxSupply
+    endTimestamp
+  }
+}

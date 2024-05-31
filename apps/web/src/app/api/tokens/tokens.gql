@@ -1,0 +1,19 @@
+query tokens($cursor: String) {
+  higher1155Tokens(
+    after: $cursor
+    orderBy: "timestamp"
+    orderDirection: "desc"
+  ) {
+    items {
+      higher1155Collection {
+        id
+        creatorAddress
+      }
+      tokenId
+      name
+    }
+    pageInfo {
+      endCursor
+    }
+  }
+}

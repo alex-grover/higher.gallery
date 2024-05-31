@@ -10,7 +10,9 @@ export default createSchema((p) => ({
   }),
   Higher1155Token: p.createTable({
     id: p.string(),
-    higher1155CollectionId: p.string(),
+    higher1155CollectionId: p.string().references('Higher1155Collection.id'),
+    higher1155Collection: p.one('higher1155CollectionId'),
+    timestamp: p.bigint(),
     tokenId: p.bigint(),
     name: p.string(),
     description: p.string(),
@@ -22,7 +24,9 @@ export default createSchema((p) => ({
   }),
   Mint: p.createTable({
     id: p.string(),
-    higher1155TokenId: p.string(),
+    timestamp: p.bigint(),
+    higher1155TokenId: p.string().references('Higher1155Token.id'),
+    higher1155Token: p.one('higher1155TokenId'),
     minterAddress: p.string(),
     amount: p.bigint(),
     comment: p.string().optional(),

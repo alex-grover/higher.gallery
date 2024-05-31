@@ -1,0 +1,18 @@
+query mints($token: String!, $cursor: String) {
+  mints(
+    where: { higher1155TokenId: $token }
+    after: $cursor
+    orderBy: "timestamp"
+    orderDirection: "desc"
+  ) {
+    items {
+      timestamp
+      minterAddress
+      amount
+      comment
+    }
+    pageInfo {
+      endCursor
+    }
+  }
+}
