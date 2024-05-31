@@ -1,8 +1,8 @@
-@import "open-props/open-props.min.css";
-@import "open-props/normalize.min.css";
+@import 'open-props/open-props.min.css';
+@import 'open-props/normalize.min.css';
 
 :root {
-  --higher: #3C7E27;
+  --higher: #3c7e27;
   --padding-x: var(--size-2);
 }
 

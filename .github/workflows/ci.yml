@@ -33,11 +33,12 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'pnpm'
+          cache: "pnpm"
       - uses: foundry-rs/foundry-toolchain@v1
         with:
           version: nightly
       - run: pnpm install
-      - run: pnpm lint
-      - run: pnpm test
-      - run: pnpm typecheck
+      - run: pnpm run lint
+      - run: pnpm run prettier
+      - run: pnpm run test
+      - run: pnpm run typecheck

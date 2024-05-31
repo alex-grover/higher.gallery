@@ -28,7 +28,8 @@
   font-weight: var(--font-weight-6);
 }
 
-.artist, .collection {
+.artist,
+.collection {
   color: var(--text-2);
 }
 

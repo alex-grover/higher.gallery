@@ -10,8 +10,10 @@ export const env = createEnv({
   },
   experimental__runtimeEnv: {
     NEXT_PUBLIC_VERCEL_ENV: process.env.NEXT_PUBLIC_VERCEL_ENV,
-    NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID,
-  }
+    NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID:
+      process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID,
+  },
 })
 
-export const chain = env.NEXT_PUBLIC_VERCEL_ENV === 'production' ? base : baseSepolia
+export const chain =
+  env.NEXT_PUBLIC_VERCEL_ENV === 'production' ? base : baseSepolia

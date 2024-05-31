@@ -14,7 +14,11 @@ export function Header() {
         <h1 className={styles.heading}>↑</h1>
       </Link>
       <nav className={styles.menu}>
-        {address && <Link href="/new" className={styles.create}>create</Link>}
+        {address && (
+          <Link href="/new" className={styles.create}>
+            create
+          </Link>
+        )}
         <ConnectKitButton showAvatar={false} />
       </nav>
     </header>

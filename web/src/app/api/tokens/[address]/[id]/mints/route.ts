@@ -9,7 +9,7 @@ export const revalidate = 5
 
 const schema = z.object({
   address: addressSchema,
-  id: z.string().pipe(z.coerce.bigint().positive())
+  id: z.string().pipe(z.coerce.bigint().positive()),
 })
 
 export type TokenMintsResponse = {
@@ -20,7 +20,8 @@ export type TokenMintsResponse = {
 
 export async function GET(_: Request, { params }: NextRouteContext) {
   const parseResult = schema.safeParse(params)
-  if (!parseResult.success) return new Response(parseResult.error.message, { status: 400 })
+  if (!parseResult.success)
+    return new Response(parseResult.error.message, { status: 400 })
   const { address, id } = parseResult.data
 
   // TODO: fetch data from Ponder

@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { data } from './data'
 import styles from './nft.module.css'
 
-type NftProps = RenderComponentProps<typeof data[number]>
+type NftProps = RenderComponentProps<(typeof data)[number]>
 
 export function Nft({ data: { address, id } }: NftProps) {
   return (

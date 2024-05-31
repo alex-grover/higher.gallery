@@ -1,5 +1,5 @@
 packages:
-  - 'packages/*'
-  - 'ponder'
-  - 'protocol'
-  - 'web'
+  - "packages/*"
+  - "ponder"
+  - "protocol"
+  - "web"

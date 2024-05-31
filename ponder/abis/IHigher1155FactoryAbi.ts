@@ -2,73 +2,73 @@ import { type Abi } from 'abitype'
 
 export const IHigher1155FactoryAbi = [
   {
-    "type": "function",
-    "name": "deploy",
-    "inputs": [
+    type: 'function',
+    name: 'deploy',
+    inputs: [
       {
-        "name": "contractURI",
-        "type": "string",
-        "internalType": "string"
-      }
+        name: 'contractURI',
+        type: 'string',
+        internalType: 'string',
+      },
     ],
-    "outputs": [
+    outputs: [
       {
-        "name": "",
-        "type": "address",
-        "internalType": "address"
-      }
+        name: '',
+        type: 'address',
+        internalType: 'address',
+      },
     ],
-    "stateMutability": "nonpayable"
+    stateMutability: 'nonpayable',
   },
   {
-    "type": "function",
-    "name": "isHigher1155",
-    "inputs": [
+    type: 'function',
+    name: 'isHigher1155',
+    inputs: [
       {
-        "name": "higher1155",
-        "type": "address",
-        "internalType": "address"
-      }
+        name: 'higher1155',
+        type: 'address',
+        internalType: 'address',
+      },
     ],
-    "outputs": [
+    outputs: [
       {
-        "name": "",
-        "type": "bool",
-        "internalType": "bool"
-      }
+        name: '',
+        type: 'bool',
+        internalType: 'bool',
+      },
     ],
-    "stateMutability": "view"
+    stateMutability: 'view',
   },
   {
-    "type": "function",
-    "name": "minter",
-    "inputs": [],
-    "outputs": [
+    type: 'function',
+    name: 'minter',
+    inputs: [],
+    outputs: [
       {
-        "name": "",
-        "type": "address",
-        "internalType": "address"
-      }
+        name: '',
+        type: 'address',
+        internalType: 'address',
+      },
     ],
-    "stateMutability": "view"
+    stateMutability: 'view',
   },
   {
-    "type": "event",
-    "name": "Higher1155Deployed",
-    "inputs": [
+    type: 'event',
+    name: 'Higher1155Deployed',
+    inputs: [
       {
-        "name": "creator",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
+        name: 'creator',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
       },
       {
-        "name": "higher1155",
-        "type": "address",
-        "indexed": false,
-        "internalType": "address"
-      }
+        name: 'higher1155',
+        type: 'address',
+        indexed: false,
+        internalType: 'address',
+      },
     ],
-    "anonymous": false
-  }
+    anonymous: false,
+  },
 ] as const satisfies Abi

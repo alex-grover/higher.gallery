@@ -7,28 +7,33 @@ type Metadata = {
   image: string
 }
 
-ponder.on('IHigher1155Factory:Higher1155Deployed', async ({ context, event }) => {
-  const { client, contracts, db } = context
+ponder.on(
+  'IHigher1155Factory:Higher1155Deployed',
+  async ({ context, event }) => {
+    const { client, contracts, db } = context
 
-  const contractURI = await client.readContract({
-    address: event.args.higher1155,
-    abi: contracts.Higher1155.abi,
-    functionName: 'contractURI',
-  })
+    const contractURI = await client.readContract({
+      address: event.args.higher1155,
+      abi: contracts.Higher1155.abi,
+      functionName: 'contractURI',
+    })
 
-  const response = await fetch(contractURI.replace('ipfs://', env.IPFS_GATEWAY_BASE_URL))
-  const { name, description, image } = (await response.json()) as Metadata
+    const response = await fetch(
+      contractURI.replace('ipfs://', env.IPFS_GATEWAY_BASE_URL),
+    )
+    const { name, description, image } = (await response.json()) as Metadata
 
-  await db.Higher1155Collection.create({
-    id: event.args.higher1155,
-    data: {
-      creatorAddress: event.args.creator,
-      name,
-      description,
-      image,
-    },
-  })
-})
+    await db.Higher1155Collection.create({
+      id: event.args.higher1155,
+      data: {
+        creatorAddress: event.args.creator,
+        name,
+        description,
+        image,
+      },
+    })
+  },
+)
 
 ponder.on('Higher1155:Create', async ({ context, event }) => {
   const { client, contracts, db } = context
@@ -51,7 +56,9 @@ ponder.on('Higher1155:Create', async ({ context, event }) => {
     allowFailure: false,
   })
 
-  const response = await fetch(uri.replace('ipfs://', env.IPFS_GATEWAY_BASE_URL))
+  const response = await fetch(
+    uri.replace('ipfs://', env.IPFS_GATEWAY_BASE_URL),
+  )
   const { name, description, image } = (await response.json()) as Metadata
 
   await db.Higher1155Token.create({
@@ -89,7 +96,7 @@ ponder.on('Higher1155:Mint', async ({ context, event }) => {
       id: higher1155TokenId,
       data: ({ current }) => ({
         mintCount: current.mintCount + event.args.amount,
-      })
-    })
+      }),
+    }),
   ])
 })

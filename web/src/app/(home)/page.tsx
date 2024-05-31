@@ -12,7 +12,15 @@ export default function HomePage() {
 
   return (
     <main>
-      {isMounted && <Masonry items={data} render={Nft} columnWidth={240} columnGutter={8} tabIndex={-1} />}
+      {isMounted && (
+        <Masonry
+          items={data}
+          render={Nft}
+          columnWidth={240}
+          columnGutter={8}
+          tabIndex={-1}
+        />
+      )}
     </main>
   )
 }
