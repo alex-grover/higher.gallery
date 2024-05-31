@@ -1,5 +1,4 @@
 packages:
+  - "apps/*"
   - "packages/*"
-  - "ponder"
-  - "protocol"
-  - "web"
+  - "contracts"
