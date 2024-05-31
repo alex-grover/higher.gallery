@@ -7,7 +7,7 @@ type NftProps = RenderComponentProps<(typeof data)[number]>
 
 export function Nft({ data: { address, id } }: NftProps) {
   return (
-    <Link href={`/${address}/${id}`} className={styles.container}>
+    <Link href={`/${address}/${id.toString()}`} className={styles.container}>
       <div className={styles.overlay}>
         <div className={styles.name}>TODO: name</div>
         <div className={styles.artist}>TODO: artist</div>

@@ -1,0 +1,19 @@
+{
+  "name": "eslint-config-higher",
+  "scripts": {
+    "prettier": "prettier --check ."
+  },
+  "peerDependencies": {
+    "@typescript-eslint/eslint-plugin": "*",
+    "@typescript-eslint/parser": "*",
+    "eslint": "*",
+    "eslint-import-resolver-typescript": "*",
+    "eslint-plugin-css-modules": "*",
+    "eslint-plugin-import": "*"
+  },
+  "devDependencies": {
+    "prettier": "3.2.5",
+    "prettier-config": "workspace:^"
+  },
+  "prettier": "prettier-config"
+}

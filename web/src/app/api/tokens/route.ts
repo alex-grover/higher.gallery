@@ -13,8 +13,9 @@ export type TokenListResponse = {
   cursor: string | null
 }
 
-export async function GET(request: Request) {
+export function GET(request: Request) {
   const { searchParams } = new URL(request.url)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const cursor = searchParams.get('cursor')
 
   // TODO: fetch data from Ponder

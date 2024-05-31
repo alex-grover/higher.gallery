@@ -30,13 +30,25 @@
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
-    "eslint": "^8",
+    "@typescript-eslint/eslint-plugin": "^7.11.0",
+    "@typescript-eslint/parser": "^7.11.0",
+    "eslint": "^8.57.0",
+    "eslint-config-higher": "workspace:^",
     "eslint-config-next": "14.2.3",
+    "eslint-import-resolver-typescript": "^3.6.1",
+    "eslint-plugin-css-modules": "^2.12.0",
+    "eslint-plugin-import": "^2.29.1",
     "ponder": "workspace:^",
     "prettier": "3.2.5",
     "prettier-config": "workspace:^",
     "typescript": "^5.4.5",
     "vercel": "^34.2.4"
+  },
+  "eslintConfig": {
+    "extends": [
+      "next/core-web-vitals",
+      "higher"
+    ]
   },
   "prettier": "prettier-config"
 }

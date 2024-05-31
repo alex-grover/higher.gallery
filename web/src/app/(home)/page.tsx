@@ -8,7 +8,9 @@ import { Nft } from './nft'
 export default function HomePage() {
   const [isMounted, setIsMounted] = useState(false)
 
-  useEffect(() => setIsMounted(true), [])
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
 
   return (
     <main>

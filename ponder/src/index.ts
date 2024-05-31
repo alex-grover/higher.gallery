@@ -62,7 +62,7 @@ ponder.on('Higher1155:Create', async ({ context, event }) => {
   const { name, description, image } = (await response.json()) as Metadata
 
   await db.Higher1155Token.create({
-    id: `${event.log.address}-${event.args.id}`,
+    id: `${event.log.address}-${event.args.id.toString()}`,
     data: {
       higher1155CollectionId: event.log.address,
       tokenId: event.args.id,
@@ -80,11 +80,11 @@ ponder.on('Higher1155:Create', async ({ context, event }) => {
 ponder.on('Higher1155:Mint', async ({ context, event }) => {
   const { db } = context
 
-  const higher1155TokenId = `${event.log.address}-${event.args.id}`
+  const higher1155TokenId = `${event.log.address}-${event.args.id.toString()}`
 
   await Promise.all([
     db.Mint.create({
-      id: `${event.block.number}-${event.transaction.transactionIndex}-${event.log.logIndex}`,
+      id: `${event.block.number.toString()}-${event.transaction.transactionIndex.toString()}-${event.log.logIndex.toString()}`,
       data: {
         higher1155TokenId,
         minterAddress: event.args.minter,
