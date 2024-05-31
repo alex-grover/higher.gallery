@@ -1,0 +1,14 @@
+{
+  "name": "prettier-config",
+  "private": true,
+  "scripts": {
+    "prettier": "prettier --check ."
+  },
+  "devDependencies": {
+    "prettier": "3.2.5"
+  },
+  "peerDependencies": {
+    "prettier": "*"
+  },
+  "prettier": "./index.json"
+}

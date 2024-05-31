@@ -3,6 +3,7 @@
   "license": "MIT",
   "scripts": {
     "lint": "turbo run lint --cache-dir=.turbo",
+    "prettier": "turbo run prettier --cache-dir=.turbo",
     "test": "turbo run test --cache-dir=.turbo",
     "typecheck": "turbo run typecheck --cache-dir=.turbo"
   },
