@@ -1,7 +1,7 @@
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import useSWR from 'swr'
-import { TokenMintsResponse } from '@/app/api/tokens/[address]/[id]/mints/route'
+import { ListTokenMintsResponse } from '@/app/api/tokens/[address]/[id]/mints/route'
 import { TokenQuery } from '@/generated/ponder'
 
 // eslint-disable-next-line import/no-named-as-default-member
@@ -12,7 +12,7 @@ type MintsProps = {
 }
 
 export function Mints({ token }: MintsProps) {
-  const { data } = useSWR<TokenMintsResponse>(
+  const { data } = useSWR<ListTokenMintsResponse>(
     `/api.tokens/${token.collection.id}/${token.tokenId}`,
     { refreshInterval: 10000 },
   )

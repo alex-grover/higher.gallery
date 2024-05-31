@@ -11,7 +11,7 @@ const schema = z.object({
   cursor: z.string().optional(),
 })
 
-export type TokenListResponse = {
+export type ListTokensResponse = {
   tokens: {
     collection: {
       id: Address
@@ -35,7 +35,7 @@ export async function GET(request: Request) {
 
   const { tokens } = await ponderClient.tokens({ cursor })
 
-  return NextResponse.json<TokenListResponse>({
+  return NextResponse.json<ListTokensResponse>({
     tokens: tokens.items.map((token) => ({
       collection: {
         id: address.parse(token.collection.id),

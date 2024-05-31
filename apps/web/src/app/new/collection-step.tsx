@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import useSWR from 'swr'
 import { Address } from 'viem'
-import { UserCollectionsListResponse } from '@/app/api/users/[address]/collections/route'
+import { ListUserCollectionsResponse } from '@/app/api/users/[address]/collections/route'
 import { formatIpfsUri } from '@/lib/utils/ipfs'
 import { CollectionDialog } from './collection-dialog'
 
@@ -10,7 +10,7 @@ type CollectionStepProps = {
 }
 
 export function CollectionStep({ address }: CollectionStepProps) {
-  const { data } = useSWR<UserCollectionsListResponse>(
+  const { data } = useSWR<ListUserCollectionsResponse>(
     `/api/users/${address}/collections`,
   )
 

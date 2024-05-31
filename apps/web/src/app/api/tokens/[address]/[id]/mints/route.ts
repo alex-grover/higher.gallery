@@ -14,7 +14,7 @@ const schema = z.object({
   cursor: z.string().optional(),
 })
 
-export type TokenMintsResponse = {
+export type ListTokenMintsResponse = {
   count: BigIntString
   mints: {
     id: string
@@ -43,7 +43,7 @@ export async function GET(request: Request, { params }: NextRouteContext) {
 
   if (!token) return new Response('Not found', { status: 404 })
 
-  return NextResponse.json<TokenMintsResponse>({
+  return NextResponse.json<ListTokenMintsResponse>({
     count: token.mintCount,
     mints: mints.items.map((mint) => ({
       id: mint.id,

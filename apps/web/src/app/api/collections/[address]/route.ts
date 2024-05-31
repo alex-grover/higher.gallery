@@ -11,7 +11,7 @@ const schema = z.object({
   address,
 })
 
-export type CollectionDetailResponse = {
+export type GetCollectionResponse = {
   id: Address
   creatorAddress: Address
   name: string
@@ -29,7 +29,7 @@ export async function GET(_: Request, { params }: NextRouteContext) {
 
   if (!collection) return new Response('Not found', { status: 404 })
 
-  return NextResponse.json<CollectionDetailResponse>({
+  return NextResponse.json<GetCollectionResponse>({
     id: parseResult.data.address,
     creatorAddress: address.parse(collection.creatorAddress),
     name: collection.name,

@@ -2,11 +2,11 @@
 
 import { Masonry } from 'masonic'
 import useSWR from 'swr'
-import { TokenListResponse } from '@/app/api/tokens/route'
+import { ListTokensResponse } from '@/app/api/tokens/route'
 import { Token } from './token'
 
 export default function HomePage() {
-  const { data } = useSWR<TokenListResponse>('/api/tokens')
+  const { data } = useSWR<ListTokensResponse>('/api/tokens')
 
   if (!data) return null
 

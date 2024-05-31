@@ -2,7 +2,7 @@ import { useRouter } from 'next/navigation'
 import { FormEvent, useCallback } from 'react'
 import useSWRImmutable from 'swr/immutable'
 import { Address } from 'viem'
-import { CollectionDetailResponse } from '@/app/api/collections/[address]/route'
+import { GetCollectionResponse } from '@/app/api/collections/[address]/route'
 
 type TokenFormProps = {
   address: Address
@@ -11,7 +11,7 @@ type TokenFormProps = {
 
 export function TokenForm({ address, collectionAddress }: TokenFormProps) {
   const router = useRouter()
-  const { data, isLoading } = useSWRImmutable<CollectionDetailResponse>(
+  const { data, isLoading } = useSWRImmutable<GetCollectionResponse>(
     `/api/collections/${collectionAddress}`,
     { shouldRetryOnError: false },
   )

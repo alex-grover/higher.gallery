@@ -11,7 +11,7 @@ const schema = z.object({
   address,
 })
 
-export type UserCollectionsListResponse = {
+export type ListUserCollectionsResponse = {
   id: Address
   name: string
   image: string
@@ -24,7 +24,7 @@ export async function GET(_: Request, { params }: NextRouteContext) {
 
   const { collections } = await ponderClient.collections(parseResult.data)
 
-  return NextResponse.json<UserCollectionsListResponse>(
+  return NextResponse.json<ListUserCollectionsResponse>(
     collections.items.map((collection) => ({
       id: address.parse(collection.id),
       name: collection.name,

@@ -1,11 +1,11 @@
 import { type RenderComponentProps } from 'masonic'
 import Link from 'next/link'
-import { TokenListResponse } from '@/app/api/tokens/route'
+import { ListTokensResponse } from '@/app/api/tokens/route'
 import { truncateEthAddress } from '@/lib/utils/address'
 import { formatIpfsUri } from '@/lib/utils/ipfs'
 import styles from './token.module.css'
 
-type TokenProps = RenderComponentProps<TokenListResponse['tokens'][number]>
+type TokenProps = RenderComponentProps<ListTokensResponse['tokens'][number]>
 
 export function Token({ data: token }: TokenProps) {
   return (

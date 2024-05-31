@@ -5,7 +5,7 @@ import relativeTime from 'dayjs/plugin/relativeTime'
 import { useEffect, useMemo, useState } from 'react'
 import useSWR from 'swr'
 import { formatEther } from 'viem'
-import { TokenMintsResponse } from '@/app/api/tokens/[address]/[id]/mints/route'
+import { ListTokenMintsResponse } from '@/app/api/tokens/[address]/[id]/mints/route'
 import { TokenQuery } from '@/generated/ponder'
 import styles from './mint.module.css'
 
@@ -37,7 +37,7 @@ export function Mint({ token }: MintConfigProps) {
     }
   }, [to])
 
-  const { data } = useSWR<TokenMintsResponse>(
+  const { data } = useSWR<ListTokenMintsResponse>(
     `/api.tokens/${token.collection.id}/${token.tokenId}`,
     { refreshInterval: 10000 },
   )
