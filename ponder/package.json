@@ -40,7 +40,17 @@
     "extends": [
       "ponder",
       "higher"
-    ]
+    ],
+    "rules": {
+      "import/no-unresolved": [
+        "error",
+        {
+          "ignore": [
+            "@/generated"
+          ]
+        }
+      ]
+    }
   },
   "prettier": "prettier-config"
 }
