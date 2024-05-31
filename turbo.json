@@ -1,0 +1,11 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "pipeline": {
+    "codegen": {
+      "dependsOn": ["^codegen"],
+      "outputs": ["generated/*"]
+    },
+    "lint": {},
+    "typecheck": {}
+  }
+}

@@ -7,13 +7,14 @@
     "start": "ponder start",
     "codegen": "ponder codegen",
     "serve": "ponder serve",
-    "lint": "eslint .",
+    "lint": "eslint **/*.ts",
     "typecheck": "tsc"
   },
   "dependencies": {
     "@ponder/core": "^0.4.30",
     "@t3-oss/env-core": "^0.10.1",
     "abitype": "^0.10.2",
+    "dotenv": "^16.4.5",
     "viem": "^1.19.9",
     "zod": "^3.23.8"
   },
