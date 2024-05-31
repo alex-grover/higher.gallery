@@ -6,6 +6,11 @@
   color: var(--text-1);
   background: var(--surface-2);
   border-radius: var(--radius-2);
+  box-shadow: var(--shadow-1);
+}
+
+.container:hover {
+  box-shadow: var(--shadow-3);
 }
 
 .overlay {
