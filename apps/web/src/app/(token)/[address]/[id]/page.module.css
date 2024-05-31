@@ -33,10 +33,6 @@
   color: var(--text-2);
 }
 
-.button {
-  border-radius: var(--radius-2);
-}
-
 @media (width >= 768px) {
   .container {
     flex-direction: row;

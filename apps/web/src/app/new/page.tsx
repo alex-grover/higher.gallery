@@ -3,9 +3,9 @@
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Suspense } from 'react'
 import { useAccount } from 'wagmi'
-import { CollectionStep } from '@/app/new/collection-step'
-import { TokenForm } from '@/app/new/token-form'
 import { address } from '@/lib/zod/address'
+import { CollectionStep } from './collection-step'
+import { TokenForm } from './token-form'
 
 export default function CreatePage() {
   return (

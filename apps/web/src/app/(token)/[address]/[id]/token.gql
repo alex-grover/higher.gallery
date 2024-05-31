@@ -1,11 +1,13 @@
 query token($token: String!) {
   token(id: $token) {
     collection {
+      id
       creatorAddress
       name
       description
       image
     }
+    tokenId
     timestamp
     name
     description

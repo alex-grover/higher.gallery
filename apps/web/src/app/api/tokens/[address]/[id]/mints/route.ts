@@ -15,7 +15,9 @@ const schema = z.object({
 })
 
 export type TokenMintsResponse = {
+  count: BigIntString
   mints: {
+    id: string
     minterAddress: Address
     timestamp: BigIntString
     amount: BigIntString
@@ -34,13 +36,17 @@ export async function GET(request: Request, { params }: NextRouteContext) {
     return new Response(parseResult.error.message, { status: 400 })
   const { address, id, cursor } = parseResult.data
 
-  const { mints } = await ponderClient.mints({
+  const { token, mints } = await ponderClient.mints({
     token: `${address}-${id.toString()}`,
     cursor,
   })
 
+  if (!token) return new Response('Not found', { status: 404 })
+
   return NextResponse.json<TokenMintsResponse>({
+    count: token.mintCount,
     mints: mints.items.map((mint) => ({
+      id: mint.id,
       minterAddress: addressSchema.parse(mint.minterAddress),
       timestamp: mint.timestamp,
       amount: mint.amount,

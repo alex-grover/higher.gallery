@@ -1,4 +1,7 @@
 query mints($token: String!, $cursor: String) {
+  token(id: $token) {
+    mintCount
+  }
   mints(
     where: { tokenId: $token }
     after: $cursor
@@ -6,6 +9,7 @@ query mints($token: String!, $cursor: String) {
     orderDirection: "desc"
   ) {
     items {
+      id
       timestamp
       minterAddress
       amount

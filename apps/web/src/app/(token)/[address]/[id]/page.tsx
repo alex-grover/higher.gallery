@@ -1,10 +1,11 @@
 import { notFound } from 'next/navigation'
-import { formatEther } from 'viem'
 import { z } from 'zod'
 import { ponderClient } from '@/lib/ponder'
 import { NextPageContext } from '@/lib/types/next'
 import { formatIpfsUri } from '@/lib/utils/ipfs'
 import { address as addressSchema } from '@/lib/zod/address'
+import { Mint } from './mint'
+import { Mints } from './mints'
 import styles from './page.module.css'
 
 export const revalidate = 86400 // One day in seconds
@@ -44,11 +45,8 @@ export default async function TokenPage({ params }: NextPageContext) {
             <div>{token.collection.name}</div>
           </div>
         </div>
-        <button className={styles.button}>
-          Mint for {formatEther(BigInt(token.price))} $↑
-        </button>
-        <div>TODO: time remaining, mint count, supply limit</div>
-        <div>TODO: comment feed</div>
+        <Mint token={token} />
+        <Mints token={token} />
       </div>
     </main>
   )

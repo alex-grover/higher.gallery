@@ -2,8 +2,8 @@ import Link from 'next/link'
 import useSWR from 'swr'
 import { Address } from 'viem'
 import { UserCollectionsListResponse } from '@/app/api/users/[address]/collections/route'
-import { CollectionDialog } from '@/app/new/collection-dialog'
 import { formatIpfsUri } from '@/lib/utils/ipfs'
+import { CollectionDialog } from './collection-dialog'
 
 type CollectionStepProps = {
   address: Address
