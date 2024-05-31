@@ -7,6 +7,7 @@
     },
     "lint": {},
     "prettier": {},
+    "stylelint": {},
     "test": {},
     "typecheck": {}
   }
