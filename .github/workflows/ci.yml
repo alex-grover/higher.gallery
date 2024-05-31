@@ -38,6 +38,8 @@ jobs:
         with:
           version: nightly
       - run: pnpm install
+        env:
+          HUSKY: 0
       - run: pnpm run lint
       - run: pnpm run prettier
       - run: pnpm run stylelint
