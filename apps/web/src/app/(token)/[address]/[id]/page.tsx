@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation'
 import { z } from 'zod'
+import { Stats } from '@/app/(token)/[address]/[id]/stats'
 import { ponderClient } from '@/lib/ponder'
 import { NextPageContext } from '@/lib/types/next'
 import { formatIpfsUri } from '@/lib/utils/ipfs'
@@ -46,6 +47,7 @@ export default async function TokenPage({ params }: NextPageContext) {
           </div>
         </div>
         <Mint token={token} />
+        <Stats token={token} />
         <Mints token={token} />
       </div>
     </main>

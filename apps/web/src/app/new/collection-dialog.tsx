@@ -5,9 +5,9 @@ import { Address } from 'viem'
 import { usePublicClient } from 'wagmi'
 import { chain } from '@/env'
 import {
-  iHigher1155FactoryAbi,
-  iHigher1155FactoryAddress,
-  useWriteIHigher1155FactoryDeploy,
+  higher1155FactoryAbi,
+  higher1155FactoryAddress,
+  useWriteHigher1155FactoryDeploy,
 } from '@/generated/wagmi'
 import { uploadJSON, useUploadFile } from '@/lib/ipfs'
 
@@ -29,7 +29,7 @@ export function CollectionDialog({ address }: CollectionDialogProps) {
 
   const { upload, preview, uri: image, isUploading, error } = useUploadFile()
 
-  const { writeContractAsync } = useWriteIHigher1155FactoryDeploy()
+  const { writeContractAsync } = useWriteHigher1155FactoryDeploy()
 
   const handleSubmit = useCallback(
     (event: FormEvent<HTMLFormElement>) => {
@@ -67,15 +67,19 @@ export function CollectionDialog({ address }: CollectionDialogProps) {
         }
 
         const { request, result } = await client.simulateContract({
-          address: iHigher1155FactoryAddress[chain.id],
-          abi: iHigher1155FactoryAbi,
+          account: address,
+          address: higher1155FactoryAddress[chain.id],
+          abi: higher1155FactoryAbi,
           functionName: 'deploy',
           args: [uri],
         })
 
         const hash = await writeContractAsync(request)
 
-        const receipt = await client.waitForTransactionReceipt({ hash })
+        const receipt = await client.waitForTransactionReceipt({
+          hash,
+          confirmations: 5,
+        })
         if (receipt.status === 'reverted') {
           alert('Transaction reverted')
           setIsSubmitting(false)

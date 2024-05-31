@@ -1,3 +1,5 @@
+'use client'
+
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import useSWR from 'swr'
@@ -13,7 +15,7 @@ type MintsProps = {
 
 export function Mints({ token }: MintsProps) {
   const { data } = useSWR<ListTokenMintsResponse>(
-    `/api.tokens/${token.collection.id}/${token.tokenId}`,
+    `/api/tokens/${token.collection.id}/${token.tokenId}/mints`,
     { refreshInterval: 10000 },
   )
 

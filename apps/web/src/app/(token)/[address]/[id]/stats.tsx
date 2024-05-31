@@ -15,28 +15,28 @@ type StatsProps = {
 }
 
 export function Stats({ token }: StatsProps) {
-  const to = useMemo(
+  const mintEndTime = useMemo(
     () => token.endTimestamp && new Date(Number(token.endTimestamp) * 1000),
     [token.endTimestamp],
   )
   const [timeRemaining, setTimeRemaining] = useState(
-    to && dayjs(to).fromNow(true),
+    mintEndTime && dayjs(mintEndTime).fromNow(true),
   )
 
   useEffect(() => {
-    if (!to) return
+    if (!mintEndTime) return
 
     const interval = setInterval(() => {
-      setTimeRemaining(dayjs(to).fromNow(true))
+      setTimeRemaining(dayjs(mintEndTime).fromNow(true))
     }, 1000)
 
     return () => {
       clearInterval(interval)
     }
-  }, [to])
+  }, [mintEndTime])
 
   const { data } = useSWR<ListTokenMintsResponse>(
-    `/api.tokens/${token.collection.id}/${token.tokenId}`,
+    `/api/tokens/${token.collection.id}/${token.tokenId}/mints`,
     { refreshInterval: 10000 },
   )
 

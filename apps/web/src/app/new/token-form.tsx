@@ -5,7 +5,7 @@ import useSWRImmutable from 'swr/immutable'
 import { Address } from 'viem'
 import { usePublicClient } from 'wagmi'
 import { GetCollectionResponse } from '@/app/api/collections/[address]/route'
-import { iHigher1155Abi, useWriteIHigher1155Create } from '@/generated/wagmi'
+import { higher1155Abi, useWriteHigher1155Create } from '@/generated/wagmi'
 import { uploadJSON, useUploadFile } from '@/lib/ipfs'
 
 type TokenFormProps = {
@@ -26,7 +26,7 @@ export function TokenForm({ address, collectionAddress }: TokenFormProps) {
 
   const { upload, preview, uri: image, isUploading, error } = useUploadFile()
 
-  const { writeContractAsync } = useWriteIHigher1155Create()
+  const { writeContractAsync } = useWriteHigher1155Create()
 
   const handleSubmit = useCallback(
     (event: FormEvent<HTMLFormElement>) => {
@@ -73,8 +73,9 @@ export function TokenForm({ address, collectionAddress }: TokenFormProps) {
         }
 
         const { request, result } = await client.simulateContract({
+          account: address,
           address: collectionAddress,
-          abi: iHigher1155Abi,
+          abi: higher1155Abi,
           functionName: 'create',
           args: [
             uri,
@@ -88,7 +89,10 @@ export function TokenForm({ address, collectionAddress }: TokenFormProps) {
 
         const hash = await writeContractAsync(request)
 
-        const receipt = await client.waitForTransactionReceipt({ hash })
+        const receipt = await client.waitForTransactionReceipt({
+          hash,
+          confirmations: 5,
+        })
         if (receipt.status === 'reverted') {
           alert('Transaction reverted')
           setIsSubmitting(false)
@@ -102,7 +106,7 @@ export function TokenForm({ address, collectionAddress }: TokenFormProps) {
 
       void handle()
     },
-    [client, image, writeContractAsync, collectionAddress, router],
+    [client, image, writeContractAsync, address, collectionAddress, router],
   )
 
   if (isLoading) return null

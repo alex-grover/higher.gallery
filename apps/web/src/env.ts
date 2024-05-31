@@ -1,6 +1,5 @@
 import { createEnv } from '@t3-oss/env-nextjs'
-import { baseSepolia } from 'viem/chains'
-import { base } from 'wagmi/chains'
+import { base, baseSepolia } from 'wagmi/chains'
 import { z } from 'zod'
 
 export const env = createEnv({

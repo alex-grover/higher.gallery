@@ -1,7 +1,6 @@
 import { defineConfig } from '@wagmi/cli'
 import { foundry, react } from '@wagmi/cli/plugins'
-import { baseSepolia } from 'viem/chains'
-import { base } from 'wagmi/chains'
+import { base, baseSepolia } from 'wagmi/chains'
 
 export default defineConfig({
   out: 'src/generated/wagmi.ts',
@@ -9,13 +8,17 @@ export default defineConfig({
     react(),
     foundry({
       project: '../../contracts',
-      include: ['IHigher1155*'],
+      include: ['Higher*', 'ERC20*'],
       deployments: {
-        IHigher1155Factory: {
+        ERC20: {
+          [base.id]: '0x0578d8A44db98B23BF096A382e016e29a5Ce0ffe',
+          [baseSepolia.id]: '0x0000000000000000000000000000000000000000',
+        },
+        Higher1155Factory: {
           [base.id]: '0x0000000000000000000000000000000000000000',
           [baseSepolia.id]: '0x0000000000000000000000000000000000000000',
         },
-        IHigherMinter: {
+        HigherMinter: {
           [base.id]: '0x0000000000000000000000000000000000000000',
           [baseSepolia.id]: '0x0000000000000000000000000000000000000000',
         },
