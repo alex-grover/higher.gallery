@@ -1,4 +1,5 @@
 import { useRouter } from 'next/navigation'
+import { FormEvent, useCallback } from 'react'
 import useSWRImmutable from 'swr/immutable'
 import { Address } from 'viem'
 import { CollectionDetailResponse } from '@/app/api/collections/[address]/route'
@@ -15,6 +16,16 @@ export function TokenForm({ address, collectionAddress }: TokenFormProps) {
     { shouldRetryOnError: false },
   )
 
+  const handleSubmit = useCallback((event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+
+    // TODO: implement
+    // Upload metadata to IPFS
+    // Submit create token tx
+    // Revalidate token list
+    // Push to token page
+  }, [])
+
   if (isLoading) return null
 
   if (!data || data.creatorAddress !== address) {
@@ -23,13 +34,16 @@ export function TokenForm({ address, collectionAddress }: TokenFormProps) {
   }
 
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <div>TODO: asset</div>
       <div>
-        <div>TODO: name, description</div>
-        <div>TODO: price</div>
-        <div>TODO: time, supply limit</div>
+        <input autoFocus placeholder="Name" />
+        <textarea placeholder="Description" />
+        <input placeholder="Price" />
+        <input placeholder="Supply limit" />
+        <input placeholder="Time limit" />
       </div>
+      <button>Create</button>
     </form>
   )
 }
