@@ -13,8 +13,8 @@ const address = {
 }[chain.id]
 
 const startBlock = {
-  [base.id]: 0,
-  [baseSepolia.id]: 0,
+  [base.id]: 15172306,
+  [baseSepolia.id]: 10682853,
 }[chain.id]
 
 export default createConfig({

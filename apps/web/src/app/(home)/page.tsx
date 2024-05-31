@@ -1,28 +1,27 @@
-'use client'
+import { Tokens } from '@/app/(home)/tokens'
+import { ponderClient } from '@/lib/ponder'
+import { address } from '@/lib/zod/address'
 
-import { Masonry } from 'masonic'
-import { useEffect, useState } from 'react'
-import { data } from './data'
-import { Nft } from './nft'
+export const revalidate = 10
 
-export default function HomePage() {
-  const [isMounted, setIsMounted] = useState(false)
+export default async function HomePage() {
+  const { higher1155Tokens } = await ponderClient.tokens()
 
-  useEffect(() => {
-    setIsMounted(true)
-  }, [])
+  const tokens = higher1155Tokens.items.map((token) => ({
+    collection: {
+      id: address.parse(token.higher1155Collection.id),
+      creatorAddress: address.parse(token.higher1155Collection.creatorAddress),
+    },
+    tokenId: token.tokenId,
+    name: token.name,
+  }))
 
   return (
     <main>
-      {isMounted && (
-        <Masonry
-          items={data}
-          render={Nft}
-          columnWidth={240}
-          columnGutter={8}
-          tabIndex={-1}
-        />
-      )}
+      <Tokens
+        tokens={tokens}
+        cursor={higher1155Tokens.pageInfo.endCursor ?? null}
+      />
     </main>
   )
 }
