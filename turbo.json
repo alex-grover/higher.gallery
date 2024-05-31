@@ -1,6 +1,9 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "pipeline": {
+    "build": {
+      "outputs": ["out"]
+    },
     "codegen": {
       "dependsOn": ["^codegen"],
       "outputs": ["generated/*"]
@@ -9,6 +12,10 @@
     "prettier": {},
     "stylelint": {},
     "test": {},
-    "typecheck": {}
+    "typecheck": {},
+    "web#wagmi": {
+      "dependsOn": ["contracts#build"],
+      "outputs": ["src/generated/wagmi.ts"]
+    }
   }
 }

@@ -1,7 +1,8 @@
 {
-  "name": "protocol",
+  "name": "contracts",
   "private": true,
   "scripts": {
+    "build": "forge build",
     "test": "forge test"
   }
 }

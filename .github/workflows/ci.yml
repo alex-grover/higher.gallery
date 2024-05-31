@@ -45,3 +45,5 @@ jobs:
       - run: pnpm run stylelint
       - run: pnpm run test
       - run: pnpm run typecheck
+      - run: pnpm run wagmi
+      - run: test -z "$(git status --porcelain)"
