@@ -3,7 +3,7 @@
   "pipeline": {
     "codegen": {
       "dependsOn": ["^codegen"],
-      "outputs": ["generated/*"]
+      "outputs": ["generated/*", "src/generated/ponder.ts"]
     },
     "lint": {},
     "prettier": {},
