@@ -1,0 +1,7 @@
+{
+  "name": "protocol",
+  "private": true,
+  "scripts": {
+    "test": "forge test"
+  }
+}

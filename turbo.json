@@ -6,6 +6,7 @@
       "outputs": ["generated/*"]
     },
     "lint": {},
+    "test": {},
     "typecheck": {}
   }
 }
