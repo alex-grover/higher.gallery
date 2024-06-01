@@ -1,7 +1,7 @@
 import { PlusIcon } from '@radix-ui/react-icons'
 import { CloseIcon } from 'next/dist/client/components/react-dev-overlay/internal/icons/CloseIcon'
 import { useRouter } from 'next/navigation'
-import { FormEvent, useCallback, useRef, useState } from 'react'
+import { FormEvent, useCallback, useEffect, useRef, useState } from 'react'
 import { mutate } from 'swr'
 import { Address } from 'viem'
 import { usePublicClient } from 'wagmi'
@@ -26,13 +26,25 @@ export function CreateCollectionDialog({ address }: CollectionDialogProps) {
 
   const ref = useRef<HTMLDialogElement | null>(null)
   const handleOpen = useCallback(() => {
-    if (!ref.current) return
-    ref.current.showModal()
+    ref.current?.showModal()
   }, [])
   const handleClose = useCallback(() => {
-    if (!ref.current) return
-    ref.current.close()
+    ref.current?.close()
   }, [])
+
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      if (!ref.current?.open || e.key !== 'Escape') return
+
+      e.preventDefault()
+      handleClose()
+    }
+
+    document.addEventListener('keydown', handleKeyDown)
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [handleClose])
 
   const { upload, preview, uri: image, isUploading, error } = useUploadFile()
 
