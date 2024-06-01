@@ -36,11 +36,11 @@ export function MintSection({ token }: MintButtonProps) {
     () => token.endTimestamp && new Date(Number(token.endTimestamp) * 1000),
     [token.endTimestamp],
   )
-  const [timeRemaining, setTimeRemaining] = useState(
-    mintEndTime && dayjs(mintEndTime).fromNow(true),
-  )
   const [mintEnded, setMintEnded] = useState(
-    !!mintEndTime && mintEndTime >= new Date(),
+    !!mintEndTime && mintEndTime < new Date(),
+  )
+  const [timeRemaining, setTimeRemaining] = useState(
+    mintEndTime && !mintEnded && dayjs(mintEndTime).fromNow(true),
   )
 
   useEffect(() => {
