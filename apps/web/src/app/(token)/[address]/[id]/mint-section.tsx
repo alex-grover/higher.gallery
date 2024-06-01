@@ -1,6 +1,7 @@
 'use client'
 
 import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
 import { FormEvent, useCallback, useEffect, useMemo, useState } from 'react'
 import { formatEther } from 'viem'
 import { useAccount, usePublicClient } from 'wagmi'
@@ -17,6 +18,9 @@ import { UINT256_MAX } from '@/lib/constants'
 import { useMints } from '@/lib/hooks/mints'
 import { address as addressSchema } from '@/lib/zod/address'
 import styles from './mint-section.module.css'
+
+// eslint-disable-next-line import/no-named-as-default-member
+dayjs.extend(relativeTime)
 
 type MintButtonProps = {
   token: NonNullable<TokenQuery['token']>
