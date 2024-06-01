@@ -18,10 +18,20 @@
   padding: var(--size-4);
 }
 
-.heading {
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   margin-bottom: var(--size-4);
+}
+
+.heading {
   font-size: var(--font-size-4);
   font-weight: var(--font-weight-4);
+}
+
+.close {
+  background: unset;
 }
 
 .form {

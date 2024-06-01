@@ -1,4 +1,5 @@
 import { PlusIcon } from '@radix-ui/react-icons'
+import { CloseIcon } from 'next/dist/client/components/react-dev-overlay/internal/icons/CloseIcon'
 import { useRouter } from 'next/navigation'
 import { FormEvent, useCallback, useRef, useState } from 'react'
 import { mutate } from 'swr'
@@ -27,6 +28,10 @@ export function CreateCollectionDialog({ address }: CollectionDialogProps) {
   const handleOpen = useCallback(() => {
     if (!ref.current) return
     ref.current.showModal()
+  }, [])
+  const handleClose = useCallback(() => {
+    if (!ref.current) return
+    ref.current.close()
   }, [])
 
   const { upload, preview, uri: image, isUploading, error } = useUploadFile()
@@ -107,7 +112,12 @@ export function CreateCollectionDialog({ address }: CollectionDialogProps) {
         <span>New collection</span>
       </button>
       <dialog ref={ref} className={styles.dialog}>
-        <h2 className={styles.heading}>New collection</h2>
+        <div className={styles.header}>
+          <h2 className={styles.heading}>New collection</h2>
+          <button onClick={handleClose} className={styles.close}>
+            <CloseIcon />
+          </button>
+        </div>
         <form onSubmit={handleSubmit} className={styles.form}>
           <div className={styles.content}>
             <label htmlFor="image" className={styles.upload}>
