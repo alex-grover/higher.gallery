@@ -8,12 +8,15 @@ import { GetCollectionResponse } from '@/app/api/collections/[address]/route'
 import { higher1155Abi, useWriteHigher1155Create } from '@/generated/wagmi'
 import { uploadJSON, useUploadFile } from '@/lib/ipfs'
 
-type TokenFormProps = {
+type CreateTokenFormProps = {
   address: Address
   collectionAddress: Address
 }
 
-export function TokenForm({ address, collectionAddress }: TokenFormProps) {
+export function CreateTokenForm({
+  address,
+  collectionAddress,
+}: CreateTokenFormProps) {
   const router = useRouter()
   const client = usePublicClient()
 

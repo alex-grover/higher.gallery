@@ -8,11 +8,11 @@ import { useMints } from '@/lib/hooks/mints'
 // eslint-disable-next-line import/no-named-as-default-member
 dayjs.extend(relativeTime)
 
-type MintsProps = {
+type ActivityProps = {
   token: NonNullable<TokenQuery['token']>
 }
 
-export function Mints({ token }: MintsProps) {
+export function Activity({ token }: ActivityProps) {
   const mints = useMints(token)
 
   return (

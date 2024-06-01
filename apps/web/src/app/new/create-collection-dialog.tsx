@@ -1,3 +1,4 @@
+import { PlusIcon } from '@radix-ui/react-icons'
 import { useRouter } from 'next/navigation'
 import { FormEvent, useCallback, useRef, useState } from 'react'
 import { mutate } from 'swr'
@@ -10,12 +11,13 @@ import {
   useWriteHigher1155FactoryDeploy,
 } from '@/generated/wagmi'
 import { uploadJSON, useUploadFile } from '@/lib/ipfs'
+import styles from './create-collection-dialog.module.css'
 
 type CollectionDialogProps = {
   address: Address
 }
 
-export function CollectionDialog({ address }: CollectionDialogProps) {
+export function CreateCollectionDialog({ address }: CollectionDialogProps) {
   const router = useRouter()
   const client = usePublicClient()
 
@@ -100,7 +102,10 @@ export function CollectionDialog({ address }: CollectionDialogProps) {
 
   return (
     <>
-      <button onClick={handleOpen}>Create new</button>
+      <button onClick={handleOpen} className={styles.button}>
+        <PlusIcon />
+        <span>New collection</span>
+      </button>
       <dialog ref={ref}>
         <form onSubmit={handleSubmit}>
           <label htmlFor="image">

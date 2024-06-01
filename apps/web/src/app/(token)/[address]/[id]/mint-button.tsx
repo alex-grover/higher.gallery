@@ -15,13 +15,13 @@ import {
 import { UINT256_MAX } from '@/lib/constants'
 import { useMints } from '@/lib/hooks/mints'
 import { address as addressSchema } from '@/lib/zod/address'
-import styles from './mint.module.css'
+import styles from './mint-button.module.css'
 
-type MintProps = {
+type MintButtonProps = {
   token: NonNullable<TokenQuery['token']>
 }
 
-export function Mint({ token }: MintProps) {
+export function MintButton({ token }: MintButtonProps) {
   const client = usePublicClient()
   const account = useAccount()
 

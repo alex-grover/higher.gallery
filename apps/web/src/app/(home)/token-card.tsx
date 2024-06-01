@@ -3,11 +3,11 @@ import Link from 'next/link'
 import { ListTokensResponse } from '@/app/api/tokens/route'
 import { truncateEthAddress } from '@/lib/utils/address'
 import { formatIpfsUri } from '@/lib/utils/ipfs'
-import styles from './token.module.css'
+import styles from './token-card.module.css'
 
 type TokenProps = RenderComponentProps<ListTokensResponse['tokens'][number]>
 
-export function Token({ data: token }: TokenProps) {
+export function TokenCard({ data: token }: TokenProps) {
   return (
     <Link
       href={`/${token.collection.id}/${token.tokenId.toString()}`}
@@ -16,7 +16,7 @@ export function Token({ data: token }: TokenProps) {
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={formatIpfsUri(token.image, 480)}
-        alt="Token image"
+        alt="TokenCard image"
         loading="lazy"
       />
       <div className={styles.overlay}>

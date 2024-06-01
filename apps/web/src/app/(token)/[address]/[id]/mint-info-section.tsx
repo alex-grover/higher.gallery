@@ -9,11 +9,11 @@ import { useMints } from '@/lib/hooks/mints'
 // eslint-disable-next-line import/no-named-as-default-member
 dayjs.extend(relativeTime)
 
-type StatsProps = {
+type MintInfoSectionProps = {
   token: NonNullable<TokenQuery['token']>
 }
 
-export function Stats({ token }: StatsProps) {
+export function MintInfoSection({ token }: MintInfoSectionProps) {
   const mintEndTime = useMemo(
     () => token.endTimestamp && new Date(Number(token.endTimestamp) * 1000),
     [token.endTimestamp],

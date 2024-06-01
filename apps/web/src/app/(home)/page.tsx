@@ -3,7 +3,7 @@
 import { Masonry } from 'masonic'
 import useSWR from 'swr'
 import { ListTokensResponse } from '@/app/api/tokens/route'
-import { Token } from './token'
+import { TokenCard } from './token-card'
 
 export default function HomePage() {
   const { data } = useSWR<ListTokensResponse>('/api/tokens')
@@ -14,7 +14,7 @@ export default function HomePage() {
     <main>
       <Masonry
         items={data.tokens}
-        render={Token}
+        render={TokenCard}
         columnWidth={240}
         columnGutter={8}
         tabIndex={-1}

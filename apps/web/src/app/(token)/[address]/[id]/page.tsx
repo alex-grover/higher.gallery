@@ -1,12 +1,12 @@
 import { notFound } from 'next/navigation'
 import { z } from 'zod'
-import { Stats } from '@/app/(token)/[address]/[id]/stats'
 import { ponderClient } from '@/lib/ponder'
 import { NextPageContext } from '@/lib/types/next'
 import { formatIpfsUri } from '@/lib/utils/ipfs'
 import { address as addressSchema } from '@/lib/zod/address'
-import { Mint } from './mint'
-import { Mints } from './mints'
+import { Activity } from './activity'
+import { MintButton } from './mint-button'
+import { MintInfoSection } from './mint-info-section'
 import styles from './page.module.css'
 
 export const revalidate = 86400 // One day in seconds
@@ -31,7 +31,7 @@ export default async function TokenPage({ params }: NextPageContext) {
     <main className={styles.container}>
       <div className={styles.image}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={formatIpfsUri(token.image, 1000)} alt="Token image" />
+        <img src={formatIpfsUri(token.image, 1000)} alt="TokenCard image" />
       </div>
       <div className={styles.details}>
         <div className={styles.metadata}>
@@ -46,9 +46,9 @@ export default async function TokenPage({ params }: NextPageContext) {
             <div>{token.collection.name}</div>
           </div>
         </div>
-        <Mint token={token} />
-        <Stats token={token} />
-        <Mints token={token} />
+        <MintButton token={token} />
+        <MintInfoSection token={token} />
+        <Activity token={token} />
       </div>
     </main>
   )

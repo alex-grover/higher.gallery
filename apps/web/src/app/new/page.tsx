@@ -5,7 +5,7 @@ import { Suspense } from 'react'
 import { useAccount } from 'wagmi'
 import { address } from '@/lib/zod/address'
 import { CollectionStep } from './collection-step'
-import { TokenForm } from './token-form'
+import { CreateTokenForm } from './create-token-form'
 
 export default function CreatePage() {
   return (
@@ -32,7 +32,7 @@ function CreatePageContents() {
   return (
     <main>
       {parseResult.success ? (
-        <TokenForm
+        <CreateTokenForm
           address={account.address}
           collectionAddress={parseResult.data}
         />
