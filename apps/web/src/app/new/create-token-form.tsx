@@ -87,8 +87,9 @@ export function CreateTokenForm({
               price: parseEther(price),
               maxSupply: BigInt(maxSupply),
               endTimestamp:
+                BigInt(mintDuration) &&
                 BigInt(Math.floor(new Date().valueOf() / 1000)) +
-                BigInt(mintDuration) * 24n * 60n * 60n,
+                  BigInt(mintDuration) * 24n * 60n * 60n,
             },
           ],
         })
