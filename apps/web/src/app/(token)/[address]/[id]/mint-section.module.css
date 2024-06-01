@@ -1,0 +1,18 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-2);
+}
+
+.button {
+  width: 100%;
+  padding: var(--size-2);
+  background: var(--surface-3);
+  border-radius: var(--radius-2);
+}
+
+.info {
+  font-size: var(--font-size-1);
+  color: var(--text-2);
+  text-align: center;
+}

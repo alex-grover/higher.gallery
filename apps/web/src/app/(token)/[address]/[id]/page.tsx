@@ -2,11 +2,11 @@ import { notFound } from 'next/navigation'
 import { z } from 'zod'
 import { ponderClient } from '@/lib/ponder'
 import { NextPageContext } from '@/lib/types/next'
+import { truncateEthAddress } from '@/lib/utils/address'
 import { formatIpfsUri } from '@/lib/utils/ipfs'
 import { address as addressSchema } from '@/lib/zod/address'
 import { Activity } from './activity'
-import { MintButton } from './mint-button'
-import { MintInfoSection } from './mint-info-section'
+import { MintSection } from './mint-section'
 import styles from './page.module.css'
 
 export const revalidate = 86400 // One day in seconds
@@ -29,25 +29,33 @@ export default async function TokenPage({ params }: NextPageContext) {
 
   return (
     <main className={styles.container}>
-      <div className={styles.image}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={formatIpfsUri(token.image, 1000)} alt="TokenCard image" />
-      </div>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={formatIpfsUri(token.image, 1000)}
+        alt="TokenCard image"
+        className={styles.image}
+      />
       <div className={styles.details}>
         <div className={styles.metadata}>
           <div className={styles.name}>{token.name}</div>
-          <div className={styles.artist}>{token.collection.creatorAddress}</div>
           <div className={styles.collection}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={formatIpfsUri(token.collection.image, 1000)}
               alt="Collection image"
+              className={styles.thumbnail}
             />
-            <div>{token.collection.name}</div>
+            <div className={styles.ids}>
+              <div className={styles.artist}>
+                {truncateEthAddress(
+                  addressSchema.parse(token.collection.creatorAddress),
+                )}
+              </div>
+              <div className={styles.collection}>{token.collection.name}</div>
+            </div>
           </div>
         </div>
-        <MintButton token={token} />
-        <MintInfoSection token={token} />
+        <MintSection token={token} />
         <Activity token={token} />
       </div>
     </main>

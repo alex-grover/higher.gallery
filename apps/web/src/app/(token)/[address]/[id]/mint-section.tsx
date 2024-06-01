@@ -1,5 +1,6 @@
 'use client'
 
+import dayjs from 'dayjs'
 import { FormEvent, useCallback, useEffect, useMemo, useState } from 'react'
 import { formatEther } from 'viem'
 import { useAccount, usePublicClient } from 'wagmi'
@@ -15,17 +16,43 @@ import {
 import { UINT256_MAX } from '@/lib/constants'
 import { useMints } from '@/lib/hooks/mints'
 import { address as addressSchema } from '@/lib/zod/address'
-import styles from './mint-button.module.css'
+import styles from './mint-section.module.css'
 
 type MintButtonProps = {
   token: NonNullable<TokenQuery['token']>
 }
 
-export function MintButton({ token }: MintButtonProps) {
+export function MintSection({ token }: MintButtonProps) {
   const client = usePublicClient()
   const account = useAccount()
 
   const [isSubmitting, setIsSubmitting] = useState(false)
+
+  const mintEndTime = useMemo(
+    () => token.endTimestamp && new Date(Number(token.endTimestamp) * 1000),
+    [token.endTimestamp],
+  )
+  const [timeRemaining, setTimeRemaining] = useState(
+    mintEndTime && dayjs(mintEndTime).fromNow(true),
+  )
+  const [mintEnded, setMintEnded] = useState(
+    !!mintEndTime && mintEndTime >= new Date(),
+  )
+
+  useEffect(() => {
+    if (!mintEndTime) return
+
+    const interval = setInterval(() => {
+      setTimeRemaining(dayjs(mintEndTime).fromNow(true))
+      setMintEnded(mintEndTime >= new Date())
+    }, 1000)
+
+    return () => {
+      clearInterval(interval)
+    }
+  }, [mintEndTime])
+
+  const mints = useMints(token)
 
   const { data: balance } = useReadErc20BalanceOf({
     args: [account.address ?? '0x'],
@@ -39,28 +66,6 @@ export function MintButton({ token }: MintButtonProps) {
       enabled: account.status === 'connected',
     },
   })
-
-  const mints = useMints(token)
-
-  const mintEndTime = useMemo(
-    () => token.endTimestamp && new Date(Number(token.endTimestamp) * 1000),
-    [token.endTimestamp],
-  )
-  const [mintEnded, setMintEnded] = useState(
-    !!mintEndTime && mintEndTime >= new Date(),
-  )
-
-  useEffect(() => {
-    if (!mintEndTime) return
-
-    const interval = setInterval(() => {
-      setMintEnded(mintEndTime >= new Date())
-    }, 1000)
-
-    return () => {
-      clearInterval(interval)
-    }
-  }, [mintEndTime])
 
   const { writeContractAsync: approve } = useWriteErc20Approve()
 
@@ -122,21 +127,35 @@ export function MintButton({ token }: MintButtonProps) {
   )
 
   return (
-    <form onSubmit={handleSubmit}>
-      <button
-        className={styles.button}
-        disabled={
-          account.status !== 'connected' ||
-          balance === undefined ||
-          balance < BigInt(token.price) ||
-          (!!token.maxSupply &&
-            (!mints || BigInt(mints.count) >= BigInt(token.maxSupply))) ||
-          mintEnded ||
-          isSubmitting
-        }
-      >
-        Mint for {formatEther(BigInt(token.price))} $↑
-      </button>
-    </form>
+    <div className={styles.container}>
+      <form onSubmit={handleSubmit}>
+        <button
+          className={styles.button}
+          disabled={
+            account.status !== 'connected' ||
+            balance === undefined ||
+            balance < BigInt(token.price) ||
+            (!!token.maxSupply &&
+              (!mints || BigInt(mints.count) >= BigInt(token.maxSupply))) ||
+            mintEnded ||
+            isSubmitting
+          }
+        >
+          Mint for {formatEther(BigInt(token.price))} $HIGHER
+        </button>
+      </form>
+      <div className={styles.info}>
+        {timeRemaining && (
+          <>
+            <span>{timeRemaining} remaining</span>
+            <span> &bull; </span>
+          </>
+        )}
+        <span>
+          {mints?.count}
+          {token.maxSupply && ` / ${token.maxSupply}`} minted
+        </span>
+      </div>
+    </div>
   )
 }

@@ -2,7 +2,7 @@ import { useRouter } from 'next/navigation'
 import { FormEvent, useCallback, useState } from 'react'
 import { mutate } from 'swr'
 import useSWRImmutable from 'swr/immutable'
-import { Address } from 'viem'
+import { Address, parseEther } from 'viem'
 import { usePublicClient } from 'wagmi'
 import { GetCollectionResponse } from '@/app/api/collections/[address]/route'
 import { higher1155Abi, useWriteHigher1155Create } from '@/generated/wagmi'
@@ -84,7 +84,7 @@ export function CreateTokenForm({
           args: [
             uri,
             {
-              price: BigInt(price),
+              price: parseEther(price),
               maxSupply: BigInt(maxSupply),
               endTimestamp:
                 BigInt(Math.floor(new Date().valueOf() / 1000)) +
