@@ -9,7 +9,7 @@ const chain = env.ENV === 'production' ? base : baseSepolia
 
 const address = {
   [base.id]: '0x0000000000000000000000000000000000000000' as const,
-  [baseSepolia.id]: '0x0000000000000000000000000000000000000000' as const,
+  [baseSepolia.id]: '0x05DfF58D334aF8B9a47B65184Bd878658af2b05c' as const,
 }[chain.id]
 
 const startBlock = {

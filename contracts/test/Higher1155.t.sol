@@ -142,7 +142,7 @@ contract Higher1155Test is Test {
 
         assertEq(higher1155.balanceOf(account, id), amount);
         assertEq(HigherConstants.HigherToken.balanceOf(account), 0);
-        assertEq(HigherConstants.HigherToken.balanceOf(address(0)), mintConfig.price * amount / 10);
+        assertEq(HigherConstants.HigherToken.balanceOf(HigherConstants.FeeRecipient), mintConfig.price * amount / 10);
         assertEq(
             HigherConstants.HigherToken.balanceOf(address(higher1155)),
             mintConfig.price * amount - (mintConfig.price * amount / 10)
@@ -196,7 +196,7 @@ contract Higher1155Test is Test {
 
         assertEq(higher1155.balanceOf(account, id), amount);
         assertEq(HigherConstants.HigherToken.balanceOf(account), 0);
-        assertEq(HigherConstants.HigherToken.balanceOf(address(0)), mintConfig.price * amount / 10);
+        assertEq(HigherConstants.HigherToken.balanceOf(HigherConstants.FeeRecipient), mintConfig.price * amount / 10);
         assertEq(
             HigherConstants.HigherToken.balanceOf(address(higher1155)),
             mintConfig.price * amount - (mintConfig.price * amount / 10)
@@ -251,7 +251,7 @@ contract Higher1155Test is Test {
 
         assertEq(higher1155.balanceOf(account, id), amount);
         assertEq(HigherConstants.HigherToken.balanceOf(account), 0);
-        assertEq(HigherConstants.HigherToken.balanceOf(address(0)), mintConfig.price * amount / 10);
+        assertEq(HigherConstants.HigherToken.balanceOf(HigherConstants.FeeRecipient), mintConfig.price * amount / 10);
         assertEq(
             HigherConstants.HigherToken.balanceOf(address(higher1155)),
             mintConfig.price * amount - (mintConfig.price * amount / 10)

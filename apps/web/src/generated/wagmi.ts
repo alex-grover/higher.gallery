@@ -11,7 +11,7 @@ import {
 
 /**
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x0578d8A44db98B23BF096A382e016e29a5Ce0ffe)
- * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x92F6e588F74bBbc07565dEC525C98599cfe02726)
  */
 export const erc20Abi = [
   {
@@ -163,16 +163,16 @@ export const erc20Abi = [
 
 /**
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x0578d8A44db98B23BF096A382e016e29a5Ce0ffe)
- * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x92F6e588F74bBbc07565dEC525C98599cfe02726)
  */
 export const erc20Address = {
   8453: '0x0578d8A44db98B23BF096A382e016e29a5Ce0ffe',
-  84532: '0x0000000000000000000000000000000000000000',
+  84532: '0x92F6e588F74bBbc07565dEC525C98599cfe02726',
 } as const
 
 /**
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x0578d8A44db98B23BF096A382e016e29a5Ce0ffe)
- * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x92F6e588F74bBbc07565dEC525C98599cfe02726)
  */
 export const erc20Config = { address: erc20Address, abi: erc20Abi } as const
 
@@ -543,7 +543,7 @@ export const higher1155Abi = [
 
 /**
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x0000000000000000000000000000000000000000)
- * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x05DfF58D334aF8B9a47B65184Bd878658af2b05c)
  */
 export const higher1155FactoryAbi = [
   {
@@ -602,16 +602,16 @@ export const higher1155FactoryAbi = [
 
 /**
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x0000000000000000000000000000000000000000)
- * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x05DfF58D334aF8B9a47B65184Bd878658af2b05c)
  */
 export const higher1155FactoryAddress = {
   8453: '0x0000000000000000000000000000000000000000',
-  84532: '0x0000000000000000000000000000000000000000',
+  84532: '0x05DfF58D334aF8B9a47B65184Bd878658af2b05c',
 } as const
 
 /**
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x0000000000000000000000000000000000000000)
- * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x05DfF58D334aF8B9a47B65184Bd878658af2b05c)
  */
 export const higher1155FactoryConfig = {
   address: higher1155FactoryAddress,
@@ -624,7 +624,7 @@ export const higher1155FactoryConfig = {
 
 /**
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x0000000000000000000000000000000000000000)
- * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x3c129065b7768a24a838c3e8400e118453f30dcb)
  */
 export const higherMinterAbi = [
   {
@@ -648,16 +648,16 @@ export const higherMinterAbi = [
 
 /**
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x0000000000000000000000000000000000000000)
- * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x3c129065b7768a24a838c3e8400e118453f30dcb)
  */
 export const higherMinterAddress = {
   8453: '0x0000000000000000000000000000000000000000',
-  84532: '0x0000000000000000000000000000000000000000',
+  84532: '0x3C129065B7768a24a838C3E8400E118453F30dCB',
 } as const
 
 /**
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x0000000000000000000000000000000000000000)
- * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x3c129065b7768a24a838c3e8400e118453f30dcb)
  */
 export const higherMinterConfig = {
   address: higherMinterAddress,
@@ -672,7 +672,7 @@ export const higherMinterConfig = {
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link erc20Abi}__
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x0578d8A44db98B23BF096A382e016e29a5Ce0ffe)
- * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x92F6e588F74bBbc07565dEC525C98599cfe02726)
  */
 export const useReadErc20 = /*#__PURE__*/ createUseReadContract({
   abi: erc20Abi,
@@ -683,7 +683,7 @@ export const useReadErc20 = /*#__PURE__*/ createUseReadContract({
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link erc20Abi}__ and `functionName` set to `"DOMAIN_SEPARATOR"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x0578d8A44db98B23BF096A382e016e29a5Ce0ffe)
- * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x92F6e588F74bBbc07565dEC525C98599cfe02726)
  */
 export const useReadErc20DomainSeparator = /*#__PURE__*/ createUseReadContract({
   abi: erc20Abi,
@@ -695,7 +695,7 @@ export const useReadErc20DomainSeparator = /*#__PURE__*/ createUseReadContract({
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link erc20Abi}__ and `functionName` set to `"allowance"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x0578d8A44db98B23BF096A382e016e29a5Ce0ffe)
- * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x92F6e588F74bBbc07565dEC525C98599cfe02726)
  */
 export const useReadErc20Allowance = /*#__PURE__*/ createUseReadContract({
   abi: erc20Abi,
@@ -707,7 +707,7 @@ export const useReadErc20Allowance = /*#__PURE__*/ createUseReadContract({
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link erc20Abi}__ and `functionName` set to `"balanceOf"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x0578d8A44db98B23BF096A382e016e29a5Ce0ffe)
- * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x92F6e588F74bBbc07565dEC525C98599cfe02726)
  */
 export const useReadErc20BalanceOf = /*#__PURE__*/ createUseReadContract({
   abi: erc20Abi,
@@ -719,7 +719,7 @@ export const useReadErc20BalanceOf = /*#__PURE__*/ createUseReadContract({
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link erc20Abi}__ and `functionName` set to `"decimals"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x0578d8A44db98B23BF096A382e016e29a5Ce0ffe)
- * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x92F6e588F74bBbc07565dEC525C98599cfe02726)
  */
 export const useReadErc20Decimals = /*#__PURE__*/ createUseReadContract({
   abi: erc20Abi,
@@ -731,7 +731,7 @@ export const useReadErc20Decimals = /*#__PURE__*/ createUseReadContract({
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link erc20Abi}__ and `functionName` set to `"name"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x0578d8A44db98B23BF096A382e016e29a5Ce0ffe)
- * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x92F6e588F74bBbc07565dEC525C98599cfe02726)
  */
 export const useReadErc20Name = /*#__PURE__*/ createUseReadContract({
   abi: erc20Abi,
@@ -743,7 +743,7 @@ export const useReadErc20Name = /*#__PURE__*/ createUseReadContract({
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link erc20Abi}__ and `functionName` set to `"nonces"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x0578d8A44db98B23BF096A382e016e29a5Ce0ffe)
- * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x92F6e588F74bBbc07565dEC525C98599cfe02726)
  */
 export const useReadErc20Nonces = /*#__PURE__*/ createUseReadContract({
   abi: erc20Abi,
@@ -755,7 +755,7 @@ export const useReadErc20Nonces = /*#__PURE__*/ createUseReadContract({
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link erc20Abi}__ and `functionName` set to `"symbol"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x0578d8A44db98B23BF096A382e016e29a5Ce0ffe)
- * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x92F6e588F74bBbc07565dEC525C98599cfe02726)
  */
 export const useReadErc20Symbol = /*#__PURE__*/ createUseReadContract({
   abi: erc20Abi,
@@ -767,7 +767,7 @@ export const useReadErc20Symbol = /*#__PURE__*/ createUseReadContract({
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link erc20Abi}__ and `functionName` set to `"totalSupply"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x0578d8A44db98B23BF096A382e016e29a5Ce0ffe)
- * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x92F6e588F74bBbc07565dEC525C98599cfe02726)
  */
 export const useReadErc20TotalSupply = /*#__PURE__*/ createUseReadContract({
   abi: erc20Abi,
@@ -779,7 +779,7 @@ export const useReadErc20TotalSupply = /*#__PURE__*/ createUseReadContract({
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link erc20Abi}__
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x0578d8A44db98B23BF096A382e016e29a5Ce0ffe)
- * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x92F6e588F74bBbc07565dEC525C98599cfe02726)
  */
 export const useWriteErc20 = /*#__PURE__*/ createUseWriteContract({
   abi: erc20Abi,
@@ -790,7 +790,7 @@ export const useWriteErc20 = /*#__PURE__*/ createUseWriteContract({
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link erc20Abi}__ and `functionName` set to `"approve"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x0578d8A44db98B23BF096A382e016e29a5Ce0ffe)
- * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x92F6e588F74bBbc07565dEC525C98599cfe02726)
  */
 export const useWriteErc20Approve = /*#__PURE__*/ createUseWriteContract({
   abi: erc20Abi,
@@ -802,7 +802,7 @@ export const useWriteErc20Approve = /*#__PURE__*/ createUseWriteContract({
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link erc20Abi}__ and `functionName` set to `"permit"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x0578d8A44db98B23BF096A382e016e29a5Ce0ffe)
- * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x92F6e588F74bBbc07565dEC525C98599cfe02726)
  */
 export const useWriteErc20Permit = /*#__PURE__*/ createUseWriteContract({
   abi: erc20Abi,
@@ -814,7 +814,7 @@ export const useWriteErc20Permit = /*#__PURE__*/ createUseWriteContract({
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link erc20Abi}__ and `functionName` set to `"transfer"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x0578d8A44db98B23BF096A382e016e29a5Ce0ffe)
- * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x92F6e588F74bBbc07565dEC525C98599cfe02726)
  */
 export const useWriteErc20Transfer = /*#__PURE__*/ createUseWriteContract({
   abi: erc20Abi,
@@ -826,7 +826,7 @@ export const useWriteErc20Transfer = /*#__PURE__*/ createUseWriteContract({
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link erc20Abi}__ and `functionName` set to `"transferFrom"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x0578d8A44db98B23BF096A382e016e29a5Ce0ffe)
- * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x92F6e588F74bBbc07565dEC525C98599cfe02726)
  */
 export const useWriteErc20TransferFrom = /*#__PURE__*/ createUseWriteContract({
   abi: erc20Abi,
@@ -838,7 +838,7 @@ export const useWriteErc20TransferFrom = /*#__PURE__*/ createUseWriteContract({
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link erc20Abi}__
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x0578d8A44db98B23BF096A382e016e29a5Ce0ffe)
- * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x92F6e588F74bBbc07565dEC525C98599cfe02726)
  */
 export const useSimulateErc20 = /*#__PURE__*/ createUseSimulateContract({
   abi: erc20Abi,
@@ -849,7 +849,7 @@ export const useSimulateErc20 = /*#__PURE__*/ createUseSimulateContract({
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link erc20Abi}__ and `functionName` set to `"approve"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x0578d8A44db98B23BF096A382e016e29a5Ce0ffe)
- * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x92F6e588F74bBbc07565dEC525C98599cfe02726)
  */
 export const useSimulateErc20Approve = /*#__PURE__*/ createUseSimulateContract({
   abi: erc20Abi,
@@ -861,7 +861,7 @@ export const useSimulateErc20Approve = /*#__PURE__*/ createUseSimulateContract({
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link erc20Abi}__ and `functionName` set to `"permit"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x0578d8A44db98B23BF096A382e016e29a5Ce0ffe)
- * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x92F6e588F74bBbc07565dEC525C98599cfe02726)
  */
 export const useSimulateErc20Permit = /*#__PURE__*/ createUseSimulateContract({
   abi: erc20Abi,
@@ -873,7 +873,7 @@ export const useSimulateErc20Permit = /*#__PURE__*/ createUseSimulateContract({
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link erc20Abi}__ and `functionName` set to `"transfer"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x0578d8A44db98B23BF096A382e016e29a5Ce0ffe)
- * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x92F6e588F74bBbc07565dEC525C98599cfe02726)
  */
 export const useSimulateErc20Transfer = /*#__PURE__*/ createUseSimulateContract(
   { abi: erc20Abi, address: erc20Address, functionName: 'transfer' },
@@ -883,7 +883,7 @@ export const useSimulateErc20Transfer = /*#__PURE__*/ createUseSimulateContract(
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link erc20Abi}__ and `functionName` set to `"transferFrom"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x0578d8A44db98B23BF096A382e016e29a5Ce0ffe)
- * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x92F6e588F74bBbc07565dEC525C98599cfe02726)
  */
 export const useSimulateErc20TransferFrom =
   /*#__PURE__*/ createUseSimulateContract({
@@ -896,7 +896,7 @@ export const useSimulateErc20TransferFrom =
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link erc20Abi}__
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x0578d8A44db98B23BF096A382e016e29a5Ce0ffe)
- * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x92F6e588F74bBbc07565dEC525C98599cfe02726)
  */
 export const useWatchErc20Event = /*#__PURE__*/ createUseWatchContractEvent({
   abi: erc20Abi,
@@ -907,7 +907,7 @@ export const useWatchErc20Event = /*#__PURE__*/ createUseWatchContractEvent({
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link erc20Abi}__ and `eventName` set to `"Approval"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x0578d8A44db98B23BF096A382e016e29a5Ce0ffe)
- * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x92F6e588F74bBbc07565dEC525C98599cfe02726)
  */
 export const useWatchErc20ApprovalEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -920,7 +920,7 @@ export const useWatchErc20ApprovalEvent =
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link erc20Abi}__ and `eventName` set to `"Transfer"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x0578d8A44db98B23BF096A382e016e29a5Ce0ffe)
- * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x92F6e588F74bBbc07565dEC525C98599cfe02726)
  */
 export const useWatchErc20TransferEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -1274,7 +1274,7 @@ export const useWatchHigher1155WithdrawEvent =
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link higher1155FactoryAbi}__
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x0000000000000000000000000000000000000000)
- * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x05DfF58D334aF8B9a47B65184Bd878658af2b05c)
  */
 export const useReadHigher1155Factory = /*#__PURE__*/ createUseReadContract({
   abi: higher1155FactoryAbi,
@@ -1285,7 +1285,7 @@ export const useReadHigher1155Factory = /*#__PURE__*/ createUseReadContract({
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link higher1155FactoryAbi}__ and `functionName` set to `"isHigher1155"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x0000000000000000000000000000000000000000)
- * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x05DfF58D334aF8B9a47B65184Bd878658af2b05c)
  */
 export const useReadHigher1155FactoryIsHigher1155 =
   /*#__PURE__*/ createUseReadContract({
@@ -1298,7 +1298,7 @@ export const useReadHigher1155FactoryIsHigher1155 =
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link higher1155FactoryAbi}__ and `functionName` set to `"minter"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x0000000000000000000000000000000000000000)
- * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x05DfF58D334aF8B9a47B65184Bd878658af2b05c)
  */
 export const useReadHigher1155FactoryMinter =
   /*#__PURE__*/ createUseReadContract({
@@ -1311,7 +1311,7 @@ export const useReadHigher1155FactoryMinter =
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link higher1155FactoryAbi}__
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x0000000000000000000000000000000000000000)
- * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x05DfF58D334aF8B9a47B65184Bd878658af2b05c)
  */
 export const useWriteHigher1155Factory = /*#__PURE__*/ createUseWriteContract({
   abi: higher1155FactoryAbi,
@@ -1322,7 +1322,7 @@ export const useWriteHigher1155Factory = /*#__PURE__*/ createUseWriteContract({
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link higher1155FactoryAbi}__ and `functionName` set to `"deploy"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x0000000000000000000000000000000000000000)
- * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x05DfF58D334aF8B9a47B65184Bd878658af2b05c)
  */
 export const useWriteHigher1155FactoryDeploy =
   /*#__PURE__*/ createUseWriteContract({
@@ -1335,7 +1335,7 @@ export const useWriteHigher1155FactoryDeploy =
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link higher1155FactoryAbi}__
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x0000000000000000000000000000000000000000)
- * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x05DfF58D334aF8B9a47B65184Bd878658af2b05c)
  */
 export const useSimulateHigher1155Factory =
   /*#__PURE__*/ createUseSimulateContract({
@@ -1347,7 +1347,7 @@ export const useSimulateHigher1155Factory =
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link higher1155FactoryAbi}__ and `functionName` set to `"deploy"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x0000000000000000000000000000000000000000)
- * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x05DfF58D334aF8B9a47B65184Bd878658af2b05c)
  */
 export const useSimulateHigher1155FactoryDeploy =
   /*#__PURE__*/ createUseSimulateContract({
@@ -1360,7 +1360,7 @@ export const useSimulateHigher1155FactoryDeploy =
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link higher1155FactoryAbi}__
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x0000000000000000000000000000000000000000)
- * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x05DfF58D334aF8B9a47B65184Bd878658af2b05c)
  */
 export const useWatchHigher1155FactoryEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -1372,7 +1372,7 @@ export const useWatchHigher1155FactoryEvent =
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link higher1155FactoryAbi}__ and `eventName` set to `"Higher1155Deployed"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x0000000000000000000000000000000000000000)
- * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x05DfF58D334aF8B9a47B65184Bd878658af2b05c)
  */
 export const useWatchHigher1155FactoryHigher1155DeployedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -1385,7 +1385,7 @@ export const useWatchHigher1155FactoryHigher1155DeployedEvent =
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link higherMinterAbi}__
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x0000000000000000000000000000000000000000)
- * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x3c129065b7768a24a838c3e8400e118453f30dcb)
  */
 export const useWriteHigherMinter = /*#__PURE__*/ createUseWriteContract({
   abi: higherMinterAbi,
@@ -1396,7 +1396,7 @@ export const useWriteHigherMinter = /*#__PURE__*/ createUseWriteContract({
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link higherMinterAbi}__ and `functionName` set to `"mint"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x0000000000000000000000000000000000000000)
- * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x3c129065b7768a24a838c3e8400e118453f30dcb)
  */
 export const useWriteHigherMinterMint = /*#__PURE__*/ createUseWriteContract({
   abi: higherMinterAbi,
@@ -1408,7 +1408,7 @@ export const useWriteHigherMinterMint = /*#__PURE__*/ createUseWriteContract({
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link higherMinterAbi}__
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x0000000000000000000000000000000000000000)
- * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x3c129065b7768a24a838c3e8400e118453f30dcb)
  */
 export const useSimulateHigherMinter = /*#__PURE__*/ createUseSimulateContract({
   abi: higherMinterAbi,
@@ -1419,7 +1419,7 @@ export const useSimulateHigherMinter = /*#__PURE__*/ createUseSimulateContract({
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link higherMinterAbi}__ and `functionName` set to `"mint"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x0000000000000000000000000000000000000000)
- * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x3c129065b7768a24a838c3e8400e118453f30dcb)
  */
 export const useSimulateHigherMinterMint =
   /*#__PURE__*/ createUseSimulateContract({
