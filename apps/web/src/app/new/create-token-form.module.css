@@ -59,6 +59,16 @@
   gap: var(--size-2);
 }
 
+.button {
+  padding: var(--size-2);
+  background: var(--surface-3);
+  border-radius: var(--radius-2);
+}
+
+.button:hover {
+  background: var(--surface-4);
+}
+
 @media (width >= 768px) {
   .form {
     grid-template-rows: auto;

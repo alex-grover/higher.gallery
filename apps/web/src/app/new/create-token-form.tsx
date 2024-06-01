@@ -138,7 +138,7 @@ export function CreateTokenForm({
               // eslint-disable-next-line @next/next/no-img-element
               <img src={preview} alt="Image preview" />
             ) : isUploading ? (
-              <div></div>
+              <div>uploading...</div>
             ) : (
               <div>upload ↑</div>
             )}
@@ -186,7 +186,9 @@ export function CreateTokenForm({
               />
             </label>
           </div>
-          <button disabled={isSubmitting}>Create</button>
+          <button disabled={isSubmitting} className={styles.button}>
+            Create
+          </button>
         </div>
       </form>
     </>

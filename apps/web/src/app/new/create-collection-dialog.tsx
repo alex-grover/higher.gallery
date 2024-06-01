@@ -102,25 +102,45 @@ export function CreateCollectionDialog({ address }: CollectionDialogProps) {
 
   return (
     <>
-      <button onClick={handleOpen} className={styles.button}>
+      <button onClick={handleOpen} className={styles.trigger}>
         <PlusIcon />
         <span>New collection</span>
       </button>
-      <dialog ref={ref}>
-        <form onSubmit={handleSubmit}>
-          <label htmlFor="image">
-            {preview ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={preview} alt="Image preview" />
-            ) : (
-              <div>{isUploading ? 'Uploading...' : 'Upload'}</div>
-            )}
-          </label>
-          <input type="file" id="image" name="image" onChange={upload} />
-          {error && <div>{error}</div>}
-          <input name="name" placeholder="Name" autoFocus />
-          <textarea name="description" placeholder="Description" />
-          <button disabled={isSubmitting}>Create</button>
+      <dialog ref={ref} className={styles.dialog}>
+        <h2 className={styles.heading}>New collection</h2>
+        <form onSubmit={handleSubmit} className={styles.form}>
+          <div className={styles.content}>
+            <label htmlFor="image" className={styles.upload}>
+              {preview ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={preview} alt="Image preview" />
+              ) : isUploading ? (
+                <div>uploading...</div>
+              ) : (
+                <div>upload ↑</div>
+              )}
+              <input
+                type="file"
+                id="image"
+                name="image"
+                onChange={upload}
+                className={styles.file}
+              />
+              {error && <div>{error}</div>}
+            </label>
+            <div className={styles.inputs}>
+              <input name="name" placeholder="Name" autoFocus />
+              <textarea
+                name="description"
+                placeholder="Description"
+                rows={4}
+                className={styles.textarea}
+              />
+            </div>
+          </div>
+          <button disabled={isSubmitting} className={styles.submit}>
+            Create
+          </button>
         </form>
       </dialog>
     </>
