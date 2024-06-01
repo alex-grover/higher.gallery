@@ -32,7 +32,7 @@ export default async function TokenPage({ params }: NextPageContext) {
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={formatIpfsUri(token.image, 1000)}
-        alt="TokenCard image"
+        alt="Token image"
         className={styles.image}
       />
       <div className={styles.details}>

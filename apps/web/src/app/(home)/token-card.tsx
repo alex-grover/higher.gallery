@@ -16,7 +16,7 @@ export function TokenCard({ data: token }: TokenProps) {
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={formatIpfsUri(token.image, 480)}
-        alt="TokenCard image"
+        alt="Token image"
         loading="lazy"
       />
       <div className={styles.overlay}>
