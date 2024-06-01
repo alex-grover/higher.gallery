@@ -47,8 +47,8 @@ export function MintSection({ token }: MintButtonProps) {
     if (!mintEndTime) return
 
     const interval = setInterval(() => {
-      setTimeRemaining(dayjs(mintEndTime).fromNow(true))
-      setMintEnded(mintEndTime >= new Date())
+      setTimeRemaining(!mintEnded && dayjs(mintEndTime).fromNow(true))
+      setMintEnded(mintEndTime < new Date())
     }, 1000)
 
     return () => {
@@ -149,15 +149,16 @@ export function MintSection({ token }: MintButtonProps) {
         </button>
       </form>
       <div className={styles.info}>
-        {timeRemaining && (
+        {(!!timeRemaining || mintEnded) && (
           <>
-            <span>{timeRemaining} remaining</span>
+            {timeRemaining && <span>{timeRemaining} remaining</span>}
+            {mintEnded && <span>Mint ended</span>}
             <span> &bull; </span>
           </>
         )}
         <span>
           {mints?.count}
-          {token.maxSupply && ` / ${token.maxSupply}`} minted
+          {token.maxSupply && !mintEnded && ` / ${token.maxSupply}`} minted
         </span>
       </div>
     </div>
