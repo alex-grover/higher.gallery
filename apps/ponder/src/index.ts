@@ -39,23 +39,20 @@ ponder.on(
 ponder.on('Higher1155:Create', async ({ context, event }) => {
   const { client, contracts, db } = context
 
-  const [uri, mintConfig] = await client.multicall({
-    contracts: [
-      {
-        address: event.log.address,
-        abi: contracts.Higher1155.abi,
-        functionName: 'uri',
-        args: [event.args.id],
-      },
-      {
-        address: event.log.address,
-        abi: contracts.Higher1155.abi,
-        functionName: 'mintConfig',
-        args: [event.args.id],
-      },
-    ],
-    allowFailure: false,
-  })
+  const [uri, mintConfig] = await Promise.all([
+    client.readContract({
+      address: event.log.address,
+      abi: contracts.Higher1155.abi,
+      functionName: 'uri',
+      args: [event.args.id],
+    }),
+    client.readContract({
+      address: event.log.address,
+      abi: contracts.Higher1155.abi,
+      functionName: 'mintConfig',
+      args: [event.args.id],
+    }),
+  ])
 
   const response = await fetch(
     uri.replace('ipfs://', env.IPFS_GATEWAY_BASE_URL),

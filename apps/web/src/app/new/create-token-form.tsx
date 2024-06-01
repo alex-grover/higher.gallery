@@ -126,13 +126,7 @@ export function CreateTokenForm({
     <>
       <h1 className={styles.heading}>Create</h1>
       <form onSubmit={handleSubmit} className={styles.form}>
-        <div
-          style={{
-            width: '100%',
-            display: 'flex',
-            justifyContent: 'space-between',
-          }}
-        >
+        <div>
           <label htmlFor="image" className={styles.upload}>
             {preview ? (
               // eslint-disable-next-line @next/next/no-img-element
