@@ -7,6 +7,7 @@ import { usePublicClient } from 'wagmi'
 import { GetCollectionResponse } from '@/app/api/collections/[address]/route'
 import { higher1155Abi, useWriteHigher1155Create } from '@/generated/wagmi'
 import { uploadJSON, useUploadFile } from '@/lib/ipfs'
+import styles from './create-token-form.module.css'
 
 type CreateTokenFormProps = {
   address: Address
@@ -46,14 +47,14 @@ export function CreateTokenForm({
         const description = data.get('description')
         const price = data.get('price')
         const maxSupply = data.get('maxSupply')
-        const endTimestamp = data.get('endTimestamp')
+        const mintDuration = data.get('mintDuration')
 
         if (
           typeof name !== 'string' ||
           typeof description !== 'string' ||
           typeof price !== 'string' ||
           typeof maxSupply !== 'string' ||
-          typeof endTimestamp !== 'string'
+          typeof mintDuration !== 'string'
         ) {
           alert('Invalid form data')
           return
@@ -85,7 +86,9 @@ export function CreateTokenForm({
             {
               price: BigInt(price),
               maxSupply: BigInt(maxSupply),
-              endTimestamp: BigInt(endTimestamp),
+              endTimestamp:
+                BigInt(Math.floor(new Date().valueOf() / 1000)) +
+                BigInt(mintDuration) * 24n * 60n * 60n,
             },
           ],
         })
@@ -120,25 +123,72 @@ export function CreateTokenForm({
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label htmlFor="image">
-        {preview ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={preview} alt="Image preview" />
-        ) : (
-          <div>{isUploading ? 'Uploading...' : 'Upload'}</div>
-        )}
-      </label>
-      <input type="file" id="image" name="image" onChange={upload} />
-      {error && <div>{error}</div>}
-      <div>
-        <input autoFocus name="name" placeholder="Name" />
-        <textarea name="description" placeholder="Description" />
-        <input name="price" placeholder="Price" />
-        <input name="maxSupply" placeholder="Supply limit" />
-        <input name="endTimestamp" placeholder="Time limit" />
-      </div>
-      <button disabled={isSubmitting}>Create</button>
-    </form>
+    <>
+      <h1 className={styles.heading}>Create</h1>
+      <form onSubmit={handleSubmit} className={styles.form}>
+        <div
+          style={{
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'space-between',
+          }}
+        >
+          <label htmlFor="image" className={styles.upload}>
+            {preview ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={preview} alt="Image preview" />
+            ) : isUploading ? (
+              <div></div>
+            ) : (
+              <div>upload ↑</div>
+            )}
+          </label>
+          <input
+            type="file"
+            id="image"
+            name="image"
+            onChange={upload}
+            className={styles.file}
+          />
+          {error && <div className={styles.error}>{error}</div>}
+        </div>
+        <div className={styles.inputs}>
+          <div className={styles.section}>
+            <h2 className={styles.subheading}>Details</h2>
+            <input id="name" name="name" placeholder="Name" autoFocus />
+            <textarea
+              name="description"
+              placeholder="Description"
+              rows={6}
+              className={styles.textarea}
+            />
+          </div>
+          <div className={styles.section}>
+            <h2 className={styles.subheading}>Mint settings</h2>
+            <label htmlFor="price" className={styles.label}>
+              <span>Price (in $HIGHER)</span>
+              <input id="price" name="price" placeholder="50" />
+            </label>
+            <label htmlFor="maxSupply" className={styles.label}>
+              <span>Edition size</span>
+              <input
+                id="maxSupply"
+                name="maxSupply"
+                placeholder="Leave empty for unlimited"
+              />
+            </label>
+            <label htmlFor="mintDuration" className={styles.label}>
+              <span>Mint duration (in days)</span>
+              <input
+                id="mintDuration"
+                name="mintDuration"
+                placeholder="Leave empty for untimed"
+              />
+            </label>
+          </div>
+          <button disabled={isSubmitting}>Create</button>
+        </div>
+      </form>
+    </>
   )
 }
