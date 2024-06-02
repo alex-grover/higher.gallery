@@ -97,7 +97,7 @@ export function MintSection({ token }: MintButtonProps) {
 
           const approveReceipt = await client.waitForTransactionReceipt({
             hash: approveHash,
-            confirmations: 5,
+            confirmations: 3,
           })
 
           if (approveReceipt.status === 'reverted') {
@@ -113,7 +113,7 @@ export function MintSection({ token }: MintButtonProps) {
 
         const receipt = await client.waitForTransactionReceipt({
           hash,
-          confirmations: 5,
+          confirmations: 3,
         })
         setIsSubmitting(false)
 

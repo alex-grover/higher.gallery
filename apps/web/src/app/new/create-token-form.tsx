@@ -98,7 +98,7 @@ export function CreateTokenForm({
 
         const receipt = await client.waitForTransactionReceipt({
           hash,
-          confirmations: 5,
+          confirmations: 3,
         })
         if (receipt.status === 'reverted') {
           alert('Transaction reverted')
