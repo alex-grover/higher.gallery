@@ -358,13 +358,6 @@ export const higher1155Abi = [
     stateMutability: 'view',
   },
   {
-    type: 'function',
-    inputs: [],
-    name: 'withdraw',
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
     type: 'event',
     anonymous: false,
     inputs: [
@@ -508,19 +501,6 @@ export const higher1155Abi = [
     ],
     name: 'URI',
   },
-  {
-    type: 'event',
-    anonymous: false,
-    inputs: [
-      {
-        name: 'amount',
-        internalType: 'uint256',
-        type: 'uint256',
-        indexed: false,
-      },
-    ],
-    name: 'Withdraw',
-  },
   { type: 'error', inputs: [], name: 'InvalidInitialization' },
   { type: 'error', inputs: [], name: 'MintEnded' },
   { type: 'error', inputs: [], name: 'MintLimitReached' },
@@ -638,11 +618,31 @@ export const higherMinterAbi = [
     type: 'function',
     inputs: [
       { name: 'account', internalType: 'address', type: 'address' },
+      { name: 'creator', internalType: 'address', type: 'address' },
       { name: 'cost', internalType: 'uint256', type: 'uint256' },
     ],
     name: 'mint',
     outputs: [],
     stateMutability: 'nonpayable',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'creator',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'earnings',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'Mint',
   },
 ] as const
 
@@ -1088,14 +1088,6 @@ export const useWriteHigher1155TransferOwnership =
   })
 
 /**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link higher1155Abi}__ and `functionName` set to `"withdraw"`
- */
-export const useWriteHigher1155Withdraw = /*#__PURE__*/ createUseWriteContract({
-  abi: higher1155Abi,
-  functionName: 'withdraw',
-})
-
-/**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link higher1155Abi}__
  */
 export const useSimulateHigher1155 = /*#__PURE__*/ createUseSimulateContract({
@@ -1175,15 +1167,6 @@ export const useSimulateHigher1155TransferOwnership =
   })
 
 /**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link higher1155Abi}__ and `functionName` set to `"withdraw"`
- */
-export const useSimulateHigher1155Withdraw =
-  /*#__PURE__*/ createUseSimulateContract({
-    abi: higher1155Abi,
-    functionName: 'withdraw',
-  })
-
-/**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link higher1155Abi}__
  */
 export const useWatchHigher1155Event =
@@ -1259,15 +1242,6 @@ export const useWatchHigher1155UriEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: higher1155Abi,
     eventName: 'URI',
-  })
-
-/**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link higher1155Abi}__ and `eventName` set to `"Withdraw"`
- */
-export const useWatchHigher1155WithdrawEvent =
-  /*#__PURE__*/ createUseWatchContractEvent({
-    abi: higher1155Abi,
-    eventName: 'Withdraw',
   })
 
 /**
@@ -1426,4 +1400,29 @@ export const useSimulateHigherMinterMint =
     abi: higherMinterAbi,
     address: higherMinterAddress,
     functionName: 'mint',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link higherMinterAbi}__
+ *
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x3c129065b7768a24a838c3e8400e118453f30dcb)
+ */
+export const useWatchHigherMinterEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: higherMinterAbi,
+    address: higherMinterAddress,
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link higherMinterAbi}__ and `eventName` set to `"Mint"`
+ *
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x3c129065b7768a24a838c3e8400e118453f30dcb)
+ */
+export const useWatchHigherMinterMintEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: higherMinterAbi,
+    address: higherMinterAddress,
+    eventName: 'Mint',
   })
