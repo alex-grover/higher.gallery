@@ -10,7 +10,6 @@ interface IHigher1155 {
 
     event Create(uint256 id);
     event Mint(uint256 indexed id, address minter, uint256 amount, string comment);
-    event Withdraw(uint256 amount);
 
     error MintLimitReached();
     error MintEnded();
@@ -20,8 +19,6 @@ interface IHigher1155 {
     function create(string calldata tokenURI, MintConfig calldata config) external returns (uint256);
 
     function mint(uint256 id, uint256 amount, string calldata comment) external;
-
-    function withdraw() external;
 
     function contractURI() external view returns (string memory);
 

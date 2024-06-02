@@ -16,7 +16,6 @@ import {MockHigher} from "test/MockHigher.sol";
 contract Higher1155Test is Test {
     event Create(uint256 id);
     event Mint(uint256 indexed id, address minter, uint256 amount, string comment);
-    event Withdraw(uint256 amount);
 
     function test_initialize(address creator, address minter, string calldata contractURI) external {
         vm.assume(creator != address(0));
@@ -95,24 +94,28 @@ contract Higher1155Test is Test {
         higher1155.create(tokenURI, mintConfig);
     }
 
+    struct MintParams {
+        address account;
+        uint256 amount;
+        string comment;
+    }
+
     function test_mint(
         address creator,
         string calldata contractURI,
         string calldata tokenURI,
         IHigher1155.MintConfig memory mintConfig,
-        address account,
-        uint256 amount,
-        string calldata comment
+        MintParams memory mintParams
     ) external {
         vm.assume(creator != address(0));
         vm.assume(
-            account > address(9) && account != 0x7109709ECfa91a80626fF3989D68f67F5b1DD12D && account != CONSOLE
-                && account != address(HigherConstants.HigherToken)
+            mintParams.account > address(9) && mintParams.account != 0x7109709ECfa91a80626fF3989D68f67F5b1DD12D
+                && mintParams.account != CONSOLE && mintParams.account != address(HigherConstants.HigherToken)
         );
 
         mintConfig.price = bound(mintConfig.price, 0, 3.4028236692e38);
-        amount = bound(amount, 0, 3.4028236692e38);
-        mintConfig.maxSupply = bound(mintConfig.maxSupply, amount, type(uint256).max);
+        mintParams.amount = bound(mintParams.amount, 0, 3.4028236692e38);
+        mintConfig.maxSupply = bound(mintConfig.maxSupply, mintParams.amount, type(uint256).max);
         vm.warp(mintConfig.endTimestamp);
 
         Higher1155 higher1155 = new Higher1155();
@@ -126,26 +129,29 @@ contract Higher1155Test is Test {
         higher1155.initialize(creator, minter, contractURI);
         MockHigher mockHigher = new MockHigher();
         vm.etch(address(HigherConstants.HigherToken), address(mockHigher).code);
-        vm.etch(account, type(MockERC1155TokenReceiver).runtimeCode);
+        vm.etch(mintParams.account, type(MockERC1155TokenReceiver).runtimeCode);
 
         vm.prank(creator);
         uint256 id = higher1155.create(tokenURI, mintConfig);
-        MockHigher(address(HigherConstants.HigherToken)).mint(account, mintConfig.price * amount);
-        vm.prank(account);
-        HigherConstants.HigherToken.approve(address(minter), mintConfig.price * amount);
+        MockHigher(address(HigherConstants.HigherToken)).mint(mintParams.account, mintConfig.price * mintParams.amount);
+        vm.prank(mintParams.account);
+        HigherConstants.HigherToken.approve(minter, mintConfig.price * mintParams.amount);
 
         vm.expectEmit(address(higher1155));
-        emit Mint(id, account, amount, comment);
+        emit Mint(id, mintParams.account, mintParams.amount, mintParams.comment);
 
-        vm.prank(account);
-        higher1155.mint(id, amount, comment);
+        vm.prank(mintParams.account);
+        higher1155.mint(id, mintParams.amount, mintParams.comment);
 
-        assertEq(higher1155.balanceOf(account, id), amount);
-        assertEq(HigherConstants.HigherToken.balanceOf(account), 0);
-        assertEq(HigherConstants.HigherToken.balanceOf(HigherConstants.FeeRecipient), mintConfig.price * amount / 10);
+        assertEq(higher1155.balanceOf(mintParams.account, id), mintParams.amount);
+        assertEq(HigherConstants.HigherToken.balanceOf(mintParams.account), 0);
         assertEq(
-            HigherConstants.HigherToken.balanceOf(address(higher1155)),
-            mintConfig.price * amount - (mintConfig.price * amount / 10)
+            HigherConstants.HigherToken.balanceOf(HigherConstants.FeeRecipient),
+            mintConfig.price * mintParams.amount / 10
+        );
+        assertEq(
+            HigherConstants.HigherToken.balanceOf(creator),
+            mintConfig.price * mintParams.amount - (mintConfig.price * mintParams.amount / 10)
         );
     }
 
@@ -154,18 +160,16 @@ contract Higher1155Test is Test {
         string calldata contractURI,
         string calldata tokenURI,
         IHigher1155.MintConfig memory mintConfig,
-        address account,
-        uint256 amount,
-        string calldata comment
+        MintParams memory mintParams
     ) external {
         vm.assume(creator != address(0));
         vm.assume(
-            account > address(9) && account != 0x7109709ECfa91a80626fF3989D68f67F5b1DD12D && account != CONSOLE
-                && account != address(HigherConstants.HigherToken)
+            mintParams.account > address(9) && mintParams.account != 0x7109709ECfa91a80626fF3989D68f67F5b1DD12D
+                && mintParams.account != CONSOLE && mintParams.account != address(HigherConstants.HigherToken)
         );
 
         mintConfig.price = bound(mintConfig.price, 0, 3.4028236692e38);
-        amount = bound(amount, 0, 3.4028236692e38);
+        mintParams.amount = bound(mintParams.amount, 0, 3.4028236692e38);
         mintConfig.maxSupply = 0;
         vm.warp(mintConfig.endTimestamp);
 
@@ -180,26 +184,29 @@ contract Higher1155Test is Test {
         higher1155.initialize(creator, minter, contractURI);
         MockHigher mockHigher = new MockHigher();
         vm.etch(address(HigherConstants.HigherToken), address(mockHigher).code);
-        vm.etch(account, type(MockERC1155TokenReceiver).runtimeCode);
+        vm.etch(mintParams.account, type(MockERC1155TokenReceiver).runtimeCode);
 
         vm.prank(creator);
         uint256 id = higher1155.create(tokenURI, mintConfig);
-        MockHigher(address(HigherConstants.HigherToken)).mint(account, mintConfig.price * amount);
-        vm.prank(account);
-        HigherConstants.HigherToken.approve(address(minter), mintConfig.price * amount);
+        MockHigher(address(HigherConstants.HigherToken)).mint(mintParams.account, mintConfig.price * mintParams.amount);
+        vm.prank(mintParams.account);
+        HigherConstants.HigherToken.approve(minter, mintConfig.price * mintParams.amount);
 
         vm.expectEmit(address(higher1155));
-        emit Mint(id, account, amount, comment);
+        emit Mint(id, mintParams.account, mintParams.amount, mintParams.comment);
 
-        vm.prank(account);
-        higher1155.mint(id, amount, comment);
+        vm.prank(mintParams.account);
+        higher1155.mint(id, mintParams.amount, mintParams.comment);
 
-        assertEq(higher1155.balanceOf(account, id), amount);
-        assertEq(HigherConstants.HigherToken.balanceOf(account), 0);
-        assertEq(HigherConstants.HigherToken.balanceOf(HigherConstants.FeeRecipient), mintConfig.price * amount / 10);
+        assertEq(higher1155.balanceOf(mintParams.account, id), mintParams.amount);
+        assertEq(HigherConstants.HigherToken.balanceOf(mintParams.account), 0);
         assertEq(
-            HigherConstants.HigherToken.balanceOf(address(higher1155)),
-            mintConfig.price * amount - (mintConfig.price * amount / 10)
+            HigherConstants.HigherToken.balanceOf(HigherConstants.FeeRecipient),
+            mintConfig.price * mintParams.amount / 10
+        );
+        assertEq(
+            HigherConstants.HigherToken.balanceOf(creator),
+            mintConfig.price * mintParams.amount - (mintConfig.price * mintParams.amount / 10)
         );
     }
 
@@ -208,19 +215,18 @@ contract Higher1155Test is Test {
         string calldata contractURI,
         string calldata tokenURI,
         IHigher1155.MintConfig memory mintConfig,
-        address account,
-        uint256 amount,
+        MintParams memory mintParams,
         uint256 timestamp
     ) external {
         vm.assume(creator != address(0));
         vm.assume(
-            account > address(9) && account != 0x7109709ECfa91a80626fF3989D68f67F5b1DD12D && account != CONSOLE
-                && account != address(HigherConstants.HigherToken)
+            mintParams.account > address(9) && mintParams.account != 0x7109709ECfa91a80626fF3989D68f67F5b1DD12D
+                && mintParams.account != CONSOLE && mintParams.account != address(HigherConstants.HigherToken)
         );
 
         mintConfig.price = bound(mintConfig.price, 0, 3.4028236692e38);
-        amount = bound(amount, 0, 3.4028236692e38);
-        mintConfig.maxSupply = bound(mintConfig.maxSupply, amount, type(uint256).max);
+        mintParams.amount = bound(mintParams.amount, 0, 3.4028236692e38);
+        mintConfig.maxSupply = bound(mintConfig.maxSupply, mintParams.amount, type(uint256).max);
         mintConfig.endTimestamp = 0;
         vm.warp(timestamp);
 
@@ -235,26 +241,29 @@ contract Higher1155Test is Test {
         higher1155.initialize(creator, minter, contractURI);
         MockHigher mockHigher = new MockHigher();
         vm.etch(address(HigherConstants.HigherToken), address(mockHigher).code);
-        vm.etch(account, type(MockERC1155TokenReceiver).runtimeCode);
+        vm.etch(mintParams.account, type(MockERC1155TokenReceiver).runtimeCode);
 
         vm.prank(creator);
         uint256 id = higher1155.create(tokenURI, mintConfig);
-        MockHigher(address(HigherConstants.HigherToken)).mint(account, mintConfig.price * amount);
-        vm.prank(account);
-        HigherConstants.HigherToken.approve(address(minter), mintConfig.price * amount);
+        MockHigher(address(HigherConstants.HigherToken)).mint(mintParams.account, mintConfig.price * mintParams.amount);
+        vm.prank(mintParams.account);
+        HigherConstants.HigherToken.approve(minter, mintConfig.price * mintParams.amount);
 
         vm.expectEmit(address(higher1155));
-        emit Mint(id, account, amount, "");
+        emit Mint(id, mintParams.account, mintParams.amount, mintParams.comment);
 
-        vm.prank(account);
-        higher1155.mint(id, amount, "");
+        vm.prank(mintParams.account);
+        higher1155.mint(id, mintParams.amount, mintParams.comment);
 
-        assertEq(higher1155.balanceOf(account, id), amount);
-        assertEq(HigherConstants.HigherToken.balanceOf(account), 0);
-        assertEq(HigherConstants.HigherToken.balanceOf(HigherConstants.FeeRecipient), mintConfig.price * amount / 10);
+        assertEq(higher1155.balanceOf(mintParams.account, id), mintParams.amount);
+        assertEq(HigherConstants.HigherToken.balanceOf(mintParams.account), 0);
         assertEq(
-            HigherConstants.HigherToken.balanceOf(address(higher1155)),
-            mintConfig.price * amount - (mintConfig.price * amount / 10)
+            HigherConstants.HigherToken.balanceOf(HigherConstants.FeeRecipient),
+            mintConfig.price * mintParams.amount / 10
+        );
+        assertEq(
+            HigherConstants.HigherToken.balanceOf(creator),
+            mintConfig.price * mintParams.amount - (mintConfig.price * mintParams.amount / 10)
         );
     }
 
@@ -307,41 +316,6 @@ contract Higher1155Test is Test {
 
         vm.expectRevert(IHigher1155.MintEnded.selector);
         higher1155.mint(id, amount, comment);
-    }
-
-    function test_withdraw(address creator, address minter, string calldata contractURI, uint256 amount) external {
-        vm.assume(creator != address(0));
-
-        Higher1155 higher1155 = new Higher1155();
-        higher1155.initialize(creator, minter, contractURI);
-        MockHigher mockHigher = new MockHigher();
-        vm.etch(address(HigherConstants.HigherToken), address(mockHigher).code);
-        MockHigher(address(HigherConstants.HigherToken)).mint(address(higher1155), amount);
-
-        vm.expectEmit(address(higher1155));
-        emit Withdraw(amount);
-
-        vm.prank(creator);
-        higher1155.withdraw();
-
-        assertEq(HigherConstants.HigherToken.balanceOf(creator), amount);
-    }
-
-    function test_cannotWithdrawAsNonOwner(
-        address creator,
-        address nonCreator,
-        address minter,
-        string calldata contractURI
-    ) external {
-        vm.assume(creator != address(0));
-        vm.assume(creator != nonCreator);
-
-        Higher1155 higher1155 = new Higher1155();
-        higher1155.initialize(creator, minter, contractURI);
-
-        vm.expectRevert(abi.encodeWithSelector(OwnableUpgradeable.OwnableUnauthorizedAccount.selector, nonCreator));
-        vm.prank(nonCreator);
-        higher1155.withdraw();
     }
 }
 

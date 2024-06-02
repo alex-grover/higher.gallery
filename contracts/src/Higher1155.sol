@@ -47,16 +47,10 @@ contract Higher1155 is IHigher1155, ERC1155, OwnableUpgradeable {
         if (_mintConfigs[id].endTimestamp != 0 && block.timestamp > _mintConfigs[id].endTimestamp) {
             revert MintEnded();
         }
-        IHigherMinter(_minter).mint(msg.sender, amount * _mintConfigs[id].price);
+        IHigherMinter(_minter).mint(msg.sender, owner(), amount * _mintConfigs[id].price);
         _mintCounts[id] += amount;
         _mint(msg.sender, id, amount, "");
         emit Mint(id, msg.sender, amount, comment);
-    }
-
-    function withdraw() external override onlyOwner {
-        uint256 balance = HigherConstants.HigherToken.balanceOf(address(this));
-        HigherConstants.HigherToken.transfer(owner(), balance);
-        emit Withdraw(balance);
     }
 
     function contractURI() external view override returns (string memory) {

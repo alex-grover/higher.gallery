@@ -8,7 +8,11 @@ import {HigherMinter} from "src/HigherMinter.sol";
 import {MockHigher} from "test/MockHigher.sol";
 
 contract HigherMinterTest is Test {
-    function test_mint(address higher1155Factory, address higher1155, address account, uint256 cost) external {
+    event Mint(address creator, uint256 earnings);
+
+    function test_mint(address higher1155Factory, address higher1155, address account, address creator, uint256 cost)
+        external
+    {
         vm.assume(higher1155Factory > address(9) && higher1155Factory != 0x7109709ECfa91a80626fF3989D68f67F5b1DD12D);
 
         MockHigher mockHigher = new MockHigher();
@@ -25,14 +29,18 @@ contract HigherMinterTest is Test {
         vm.prank(account);
         HigherConstants.HigherToken.approve(address(minter), cost);
 
+        vm.expectEmit(address(minter));
+        emit Mint(creator, cost - cost / 10);
+
         vm.prank(higher1155);
-        minter.mint(account, cost);
+        minter.mint(account, creator, cost);
     }
 
     function test_cannotMintAsNonHigher1155(
         address higher1155Factory,
         address higher1155,
         address account,
+        address creator,
         uint256 cost
     ) external {
         vm.assume(higher1155Factory > address(9) && higher1155Factory != 0x7109709ECfa91a80626fF3989D68f67F5b1DD12D);
@@ -50,6 +58,6 @@ contract HigherMinterTest is Test {
 
         vm.expectRevert();
         vm.prank(higher1155);
-        minter.mint(account, cost);
+        minter.mint(account, creator, cost);
     }
 }

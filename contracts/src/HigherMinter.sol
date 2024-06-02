@@ -20,9 +20,11 @@ contract HigherMinter is IHigherMinter {
         _higher1155Factory = higher1155Factory;
     }
 
-    function mint(address account, uint256 cost) external override onlyHigher1155 {
+    function mint(address account, address creator, uint256 cost) external override onlyHigher1155 {
         uint256 fee = cost / 10;
-        HigherConstants.HigherToken.transferFrom(account, msg.sender, cost - fee);
+        uint256 earnings = cost - fee;
+        HigherConstants.HigherToken.transferFrom(account, creator, earnings);
         HigherConstants.HigherToken.transferFrom(account, HigherConstants.FeeRecipient, fee);
+        emit Mint(creator, earnings);
     }
 }

@@ -2,5 +2,7 @@
 pragma solidity ^0.8.13;
 
 interface IHigherMinter {
-    function mint(address account, uint256 cost) external;
+    event Mint(address creator, uint256 earnings);
+
+    function mint(address account, address creator, uint256 cost) external;
 }
