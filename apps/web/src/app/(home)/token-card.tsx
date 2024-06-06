@@ -15,7 +15,11 @@ export function TokenCard({ data: token }: TokenProps) {
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src={formatIpfsUri(token.image, 480)}
+        src={
+          token.image.startsWith('ipfs://')
+            ? formatIpfsUri(token.image, 480)
+            : token.image
+        }
         alt="Token image"
         loading="lazy"
       />
