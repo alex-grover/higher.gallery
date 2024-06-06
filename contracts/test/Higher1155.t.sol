@@ -112,6 +112,11 @@ contract Higher1155Test is Test {
             mintParams.account > address(9) && mintParams.account != 0x7109709ECfa91a80626fF3989D68f67F5b1DD12D
                 && mintParams.account != CONSOLE && mintParams.account != address(HigherConstants.HigherToken)
         );
+        vm.assume(
+            mintParams.account != creator && mintParams.account != HigherConstants.HigherCollective
+                && mintParams.account != HigherConstants.FeeRecipient && creator != HigherConstants.HigherCollective
+                && creator != HigherConstants.FeeRecipient
+        );
 
         mintConfig.price = bound(mintConfig.price, 0, 3.4028236692e38);
         mintParams.amount = bound(mintParams.amount, 0, 3.4028236692e38);
@@ -146,12 +151,16 @@ contract Higher1155Test is Test {
         assertEq(higher1155.balanceOf(mintParams.account, id), mintParams.amount);
         assertEq(HigherConstants.HigherToken.balanceOf(mintParams.account), 0);
         assertEq(
-            HigherConstants.HigherToken.balanceOf(HigherConstants.FeeRecipient),
-            mintConfig.price * mintParams.amount / 10
+            HigherConstants.HigherToken.balanceOf(creator),
+            mintConfig.price * mintParams.amount - (mintConfig.price * mintParams.amount / 20) * 2
         );
         assertEq(
-            HigherConstants.HigherToken.balanceOf(creator),
-            mintConfig.price * mintParams.amount - (mintConfig.price * mintParams.amount / 10)
+            HigherConstants.HigherToken.balanceOf(HigherConstants.HigherCollective),
+            mintConfig.price * mintParams.amount / 20
+        );
+        assertEq(
+            HigherConstants.HigherToken.balanceOf(HigherConstants.FeeRecipient),
+            mintConfig.price * mintParams.amount / 20
         );
     }
 
@@ -166,6 +175,11 @@ contract Higher1155Test is Test {
         vm.assume(
             mintParams.account > address(9) && mintParams.account != 0x7109709ECfa91a80626fF3989D68f67F5b1DD12D
                 && mintParams.account != CONSOLE && mintParams.account != address(HigherConstants.HigherToken)
+        );
+        vm.assume(
+            mintParams.account != creator && mintParams.account != HigherConstants.HigherCollective
+                && mintParams.account != HigherConstants.FeeRecipient && creator != HigherConstants.HigherCollective
+                && creator != HigherConstants.FeeRecipient
         );
 
         mintConfig.price = bound(mintConfig.price, 0, 3.4028236692e38);
@@ -201,12 +215,16 @@ contract Higher1155Test is Test {
         assertEq(higher1155.balanceOf(mintParams.account, id), mintParams.amount);
         assertEq(HigherConstants.HigherToken.balanceOf(mintParams.account), 0);
         assertEq(
-            HigherConstants.HigherToken.balanceOf(HigherConstants.FeeRecipient),
-            mintConfig.price * mintParams.amount / 10
+            HigherConstants.HigherToken.balanceOf(creator),
+            mintConfig.price * mintParams.amount - (mintConfig.price * mintParams.amount / 20) * 2
         );
         assertEq(
-            HigherConstants.HigherToken.balanceOf(creator),
-            mintConfig.price * mintParams.amount - (mintConfig.price * mintParams.amount / 10)
+            HigherConstants.HigherToken.balanceOf(HigherConstants.HigherCollective),
+            mintConfig.price * mintParams.amount / 20
+        );
+        assertEq(
+            HigherConstants.HigherToken.balanceOf(HigherConstants.FeeRecipient),
+            mintConfig.price * mintParams.amount / 20
         );
     }
 
@@ -222,6 +240,11 @@ contract Higher1155Test is Test {
         vm.assume(
             mintParams.account > address(9) && mintParams.account != 0x7109709ECfa91a80626fF3989D68f67F5b1DD12D
                 && mintParams.account != CONSOLE && mintParams.account != address(HigherConstants.HigherToken)
+        );
+        vm.assume(
+            mintParams.account != creator && mintParams.account != HigherConstants.HigherCollective
+                && mintParams.account != HigherConstants.FeeRecipient && creator != HigherConstants.HigherCollective
+                && creator != HigherConstants.FeeRecipient
         );
 
         mintConfig.price = bound(mintConfig.price, 0, 3.4028236692e38);
@@ -258,12 +281,16 @@ contract Higher1155Test is Test {
         assertEq(higher1155.balanceOf(mintParams.account, id), mintParams.amount);
         assertEq(HigherConstants.HigherToken.balanceOf(mintParams.account), 0);
         assertEq(
-            HigherConstants.HigherToken.balanceOf(HigherConstants.FeeRecipient),
-            mintConfig.price * mintParams.amount / 10
+            HigherConstants.HigherToken.balanceOf(creator),
+            mintConfig.price * mintParams.amount - (mintConfig.price * mintParams.amount / 20) * 2
         );
         assertEq(
-            HigherConstants.HigherToken.balanceOf(creator),
-            mintConfig.price * mintParams.amount - (mintConfig.price * mintParams.amount / 10)
+            HigherConstants.HigherToken.balanceOf(HigherConstants.HigherCollective),
+            mintConfig.price * mintParams.amount / 20
+        );
+        assertEq(
+            HigherConstants.HigherToken.balanceOf(HigherConstants.FeeRecipient),
+            mintConfig.price * mintParams.amount / 20
         );
     }
 

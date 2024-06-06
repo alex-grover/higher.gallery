@@ -14,6 +14,10 @@ contract HigherMinterTest is Test {
         external
     {
         vm.assume(higher1155Factory > address(9) && higher1155Factory != 0x7109709ECfa91a80626fF3989D68f67F5b1DD12D);
+        vm.assume(
+            account != creator && account != HigherConstants.HigherCollective && account != HigherConstants.FeeRecipient
+                && creator != HigherConstants.HigherCollective && creator != HigherConstants.FeeRecipient
+        );
 
         MockHigher mockHigher = new MockHigher();
         vm.etch(address(HigherConstants.HigherToken), address(mockHigher).code);
@@ -30,10 +34,17 @@ contract HigherMinterTest is Test {
         HigherConstants.HigherToken.approve(address(minter), cost);
 
         vm.expectEmit(address(minter));
-        emit Mint(creator, cost - cost / 10);
+        emit Mint(creator, cost - (cost / 20) * 2);
 
         vm.prank(higher1155);
         minter.mint(account, creator, cost);
+
+        assertEq(MockHigher(address(HigherConstants.HigherToken)).balanceOf(account), 0);
+        assertEq(MockHigher(address(HigherConstants.HigherToken)).balanceOf(creator), cost - (cost / 20) * 2);
+        assertEq(
+            MockHigher(address(HigherConstants.HigherToken)).balanceOf(HigherConstants.HigherCollective), cost / 20
+        );
+        assertEq(MockHigher(address(HigherConstants.HigherToken)).balanceOf(HigherConstants.FeeRecipient), cost / 20);
     }
 
     function test_cannotMintAsNonHigher1155(
