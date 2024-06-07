@@ -8,6 +8,7 @@ export default createSchema((p) => ({
     name: p.string(),
     description: p.string(),
     image: p.string(),
+    tokenCount: p.int(),
   }),
   Token: p.createTable({
     id: p.string(),

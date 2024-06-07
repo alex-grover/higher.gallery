@@ -1,8 +1,9 @@
 'use client'
 
+import { Box, Button, Flex, Text } from '@radix-ui/themes'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
-import { FormEvent, useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { formatEther } from 'viem'
 import { useAccount, usePublicClient } from 'wagmi'
 import { chain } from '@/env'
@@ -17,7 +18,6 @@ import {
 import { UINT256_MAX } from '@/lib/constants'
 import { useMints } from '@/lib/hooks/mints'
 import { address as addressSchema } from '@/lib/zod/address'
-import styles from './mint-section.module.css'
 
 // eslint-disable-next-line import/no-named-as-default-member
 dayjs.extend(relativeTime)
@@ -54,7 +54,7 @@ export function MintSection({ token }: MintButtonProps) {
     return () => {
       clearInterval(interval)
     }
-  }, [mintEndTime])
+  }, [mintEndTime, mintEnded])
 
   const mints = useMints(token)
 
@@ -75,66 +75,62 @@ export function MintSection({ token }: MintButtonProps) {
 
   const { writeContractAsync } = useWriteHigher1155Mint()
 
-  const handleSubmit = useCallback(
-    (event: FormEvent<HTMLFormElement>) => {
-      event.preventDefault()
-
-      async function handle() {
-        if (!client) {
-          alert('Error getting client')
-          return
-        }
-
-        if (allowance === undefined) {
-          alert('Error getting token allowance')
-          return
-        }
-
-        if (allowance < BigInt(token.price)) {
-          const approveHash = await approve({
-            args: [higherMinterAddress[chain.id], UINT256_MAX],
-          })
-
-          const approveReceipt = await client.waitForTransactionReceipt({
-            hash: approveHash,
-            confirmations: 3,
-          })
-
-          if (approveReceipt.status === 'reverted') {
-            alert('Approval transaction reverted')
-            return
-          }
-        }
-
-        const hash = await writeContractAsync({
-          address: addressSchema.parse(token.collection.id),
-          args: [BigInt(token.tokenId), 1n, ''],
-        })
-
-        const receipt = await client.waitForTransactionReceipt({
-          hash,
-          confirmations: 3,
-        })
-        setIsSubmitting(false)
-
-        if (receipt.status === 'reverted') {
-          alert('Transaction reverted')
-          return
-        }
-
-        alert('Minted!')
+  const handleClick = useCallback(() => {
+    async function handle() {
+      if (!client) {
+        alert('Error getting client')
+        return
       }
 
-      void handle()
-    },
-    [client, allowance, approve, writeContractAsync, token],
-  )
+      if (allowance === undefined) {
+        alert('Error getting token allowance')
+        return
+      }
+
+      if (allowance < BigInt(token.price)) {
+        const approveHash = await approve({
+          args: [higherMinterAddress[chain.id], UINT256_MAX],
+        })
+
+        const approveReceipt = await client.waitForTransactionReceipt({
+          hash: approveHash,
+          confirmations: 3,
+        })
+
+        if (approveReceipt.status === 'reverted') {
+          alert('Approval transaction reverted')
+          return
+        }
+      }
+
+      const hash = await writeContractAsync({
+        address: addressSchema.parse(token.collection.id),
+        args: [BigInt(token.tokenId), 1n, ''],
+      })
+
+      const receipt = await client.waitForTransactionReceipt({
+        hash,
+        confirmations: 3,
+      })
+      setIsSubmitting(false)
+
+      if (receipt.status === 'reverted') {
+        alert('Transaction reverted')
+        return
+      }
+
+      alert('Minted!')
+    }
+
+    void handle()
+  }, [client, allowance, approve, writeContractAsync, token])
 
   return (
-    <div className={styles.container}>
-      <form onSubmit={handleSubmit}>
-        <button
-          className={styles.button}
+    <Flex direction="column" gap="3">
+      <Box asChild width="100%">
+        <Button
+          size="3"
+          onClick={handleClick}
           disabled={
             account.status !== 'connected' ||
             balance === undefined ||
@@ -146,21 +142,21 @@ export function MintSection({ token }: MintButtonProps) {
           }
         >
           Mint for {formatEther(BigInt(token.price))} $HIGHER
-        </button>
-      </form>
-      <div className={styles.info}>
+        </Button>
+      </Box>
+      <Text align="center" color="gray" size="1">
         {(!!timeRemaining || mintEnded) && (
           <>
-            {timeRemaining && <span>{timeRemaining} remaining</span>}
-            {mintEnded && <span>Mint ended</span>}
-            <span> &bull; </span>
+            {timeRemaining && <Text>{timeRemaining} remaining</Text>}
+            {mintEnded && <Text>Mint ended</Text>}
+            <Text> &bull; </Text>
           </>
         )}
-        <span>
+        <Text>
           {mints?.count}
           {token.maxSupply && !mintEnded && ` / ${token.maxSupply}`} minted
-        </span>
-      </div>
-    </div>
+        </Text>
+      </Text>
+    </Flex>
   )
 }

@@ -9,6 +9,7 @@ query collections($address: String!) {
       id
       name
       image
+      tokenCount
     }
   }
 }

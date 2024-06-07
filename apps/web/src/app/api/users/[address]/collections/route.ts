@@ -15,6 +15,7 @@ export type ListUserCollectionsResponse = {
   id: Address
   name: string
   image: string
+  tokenCount: number
 }[]
 
 export async function GET(_: Request, { params }: NextRouteContext) {
@@ -29,6 +30,7 @@ export async function GET(_: Request, { params }: NextRouteContext) {
       id: address.parse(collection.id),
       name: collection.name,
       image: collection.image,
+      tokenCount: collection.tokenCount,
     })),
   )
 }

@@ -1,14 +1,13 @@
+import { Theme } from '@radix-ui/themes'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { type Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { ThemeProvider } from 'next-themes'
 import { type PropsWithChildren } from 'react'
 import { Header } from '@/components/header'
 import { ConnectkitProvider } from '@/components/providers/connectkit'
 import { SWRProvider } from '@/components/providers/swr'
 import './globals.css'
-
-const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'higher.gallery',
@@ -17,16 +16,20 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        <SWRProvider>
-          <ConnectkitProvider>
-            <Header />
-            {children}
-          </ConnectkitProvider>
-        </SWRProvider>
-        <Analytics />
-        <SpeedInsights />
+    <html lang="en" suppressHydrationWarning>
+      <body>
+        <ThemeProvider attribute="class">
+          <Theme accentColor="gray" grayColor="slate">
+            <SWRProvider>
+              <ConnectkitProvider>
+                <Header />
+                {children}
+              </ConnectkitProvider>
+            </SWRProvider>
+            <Analytics />
+            <SpeedInsights />
+          </Theme>
+        </ThemeProvider>
       </body>
     </html>
   )

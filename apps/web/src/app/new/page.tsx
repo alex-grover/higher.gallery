@@ -3,6 +3,7 @@
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Suspense } from 'react'
 import { useAccount } from 'wagmi'
+import { PageContainer } from '@/components/container'
 import { address } from '@/lib/zod/address'
 import { CollectionStep } from './collection-step'
 import { CreateTokenForm } from './create-token-form'
@@ -29,16 +30,19 @@ function CreatePageContents() {
 
   const parseResult = address.safeParse(searchParams.get('collectionAddress'))
 
-  return (
-    <main>
-      {parseResult.success ? (
+  if (parseResult.success)
+    return (
+      <PageContainer>
         <CreateTokenForm
           address={account.address}
           collectionAddress={parseResult.data}
         />
-      ) : (
-        <CollectionStep address={account.address} />
-      )}
-    </main>
+      </PageContainer>
+    )
+
+  return (
+    <PageContainer size="2">
+      <CollectionStep address={account.address} />
+    </PageContainer>
   )
 }

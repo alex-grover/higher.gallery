@@ -3,8 +3,10 @@
 import { Masonry } from 'masonic'
 import useSWR from 'swr'
 import { ListTokensResponse } from '@/app/api/tokens/route'
+import { PageContainer } from '@/components/container'
 import { address } from '@/lib/zod/address'
 import { BigIntString } from '@/lib/zod/bigint'
+import styles from './page.module.css'
 import { TokenCard } from './token-card'
 
 export default function HomePage() {
@@ -28,15 +30,16 @@ export default function HomePage() {
   ]
 
   return (
-    <main>
+    <PageContainer>
       <Masonry
         items={tokens}
         render={TokenCard}
         columnWidth={240}
         columnGutter={8}
         tabIndex={-1}
+        className={styles.masonry}
       />
-    </main>
+    </PageContainer>
   )
 }
 

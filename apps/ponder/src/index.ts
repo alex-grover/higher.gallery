@@ -31,6 +31,7 @@ ponder.on(
         name,
         description,
         image,
+        tokenCount: 0,
       },
     })
   },
@@ -59,21 +60,29 @@ ponder.on('Higher1155:Create', async ({ context, event }) => {
   )
   const { name, description, image } = (await response.json()) as Metadata
 
-  await db.Token.create({
-    id: `${event.log.address}-${event.args.id.toString()}`,
-    data: {
-      collectionId: event.log.address,
-      tokenId: event.args.id,
-      timestamp: event.block.timestamp,
-      name,
-      description,
-      image,
-      price: mintConfig.price,
-      maxSupply: mintConfig.maxSupply || undefined,
-      endTimestamp: mintConfig.endTimestamp || undefined,
-      mintCount: 0n,
-    },
-  })
+  await Promise.all([
+    db.Token.create({
+      id: `${event.log.address}-${event.args.id.toString()}`,
+      data: {
+        collectionId: event.log.address,
+        tokenId: event.args.id,
+        timestamp: event.block.timestamp,
+        name,
+        description,
+        image,
+        price: mintConfig.price,
+        maxSupply: mintConfig.maxSupply || undefined,
+        endTimestamp: mintConfig.endTimestamp || undefined,
+        mintCount: 0n,
+      },
+    }),
+    db.Collection.update({
+      id: event.log.address,
+      data: ({ current }) => ({
+        tokenCount: current.tokenCount + 1,
+      }),
+    }),
+  ])
 })
 
 ponder.on('Higher1155:Mint', async ({ context, event }) => {

@@ -1,5 +1,8 @@
+import { Box, Card, Flex, Grid, Text } from '@radix-ui/themes'
+import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import { z } from 'zod'
+import { PageContainer } from '@/components/container'
 import { ponderClient } from '@/lib/ponder'
 import { NextPageContext } from '@/lib/types/next'
 import { truncateEthAddress } from '@/lib/utils/address'
@@ -28,36 +31,47 @@ export default async function TokenPage({ params }: NextPageContext) {
   if (!token) notFound()
 
   return (
-    <main className={styles.container}>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={formatIpfsUri(token.image, 1000)}
-        alt="Token image"
-        className={styles.image}
-      />
-      <div className={styles.details}>
-        <div className={styles.metadata}>
-          <div className={styles.name}>{token.name}</div>
-          <div className={styles.collection}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={formatIpfsUri(token.collection.image, 1000)}
-              alt="Collection image"
-              className={styles.thumbnail}
-            />
-            <div className={styles.ids}>
-              <div className={styles.artist}>
-                {truncateEthAddress(
-                  addressSchema.parse(token.collection.creatorAddress),
-                )}
-              </div>
-              <div className={styles.collection}>{token.collection.name}</div>
-            </div>
-          </div>
-        </div>
-        <MintSection token={token} />
-        <Activity token={token} />
-      </div>
-    </main>
+    <PageContainer>
+      <Grid
+        rows={{ initial: 'auto auto', sm: '1' }}
+        columns={{ initial: '1', sm: '2' }}
+        gap="4"
+      >
+        <Box asChild maxHeight="600px" maxWidth="100%" mx="auto">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={formatIpfsUri(token.image, 1000)} alt="Token image" />
+        </Box>
+        <Flex direction="column" gap="4">
+          <Card>
+            <Text as="div" size="5" weight="medium" mb="1">
+              {token.name}
+            </Text>
+            <Flex direction="row" gap="2">
+              <Box asChild width="48px" height="48px" overflow="hidden">
+                <Image
+                  src={formatIpfsUri(token.collection.image)}
+                  alt="Collection image"
+                  className={styles.collection}
+                  width="48"
+                  height="48"
+                />
+              </Box>
+              <Flex direction="column" gap="1">
+                <Text as="div" size="3" weight="medium">
+                  {truncateEthAddress(
+                    addressSchema.parse(token.collection.creatorAddress),
+                  )}
+                </Text>
+                <Text as="div" size="3" color="gray">
+                  {token.collection.name}
+                </Text>
+              </Flex>
+            </Flex>
+          </Card>
+          <MintSection token={token} />
+          <Activity token={token} />
+        </Flex>
+      </Grid>
+    </PageContainer>
   )
 }

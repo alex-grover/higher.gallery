@@ -1,5 +1,6 @@
 'use client'
 
+import { Box, Flex, Text } from '@radix-ui/themes'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { TokenQuery } from '@/generated/ponder'
@@ -19,21 +20,25 @@ export function Activity({ token }: ActivityProps) {
   const mints = useMints(token)
 
   return (
-    <ol className={styles.list}>
-      {mints?.mints.map((mint) => (
-        <li key={mint.id} className={styles.item}>
-          <div className={styles.content}>
-            <div>
-              {truncateEthAddress(address.parse(mint.minterAddress))}
-              {BigInt(mint.amount) > 1n && ` x${mint.amount}`}
-            </div>
-            <div>
-              {dayjs(new Date(Number(mint.timestamp) * 1000)).fromNow()}
-            </div>
-          </div>
-          <div className={styles.comment}>{mint.comment}</div>
-        </li>
-      ))}
-    </ol>
+    <Flex asChild direction="column" gap="3" p="0">
+      <ol className={styles.list}>
+        {mints?.mints.map((mint) => (
+          <Box key={mint.id} asChild p="0">
+            <li>
+              <Flex align="center" justify="between">
+                <Text as="div">
+                  {truncateEthAddress(address.parse(mint.minterAddress))}
+                  {BigInt(mint.amount) > 1n && ` x${mint.amount}`}
+                </Text>
+                <Text as="div">
+                  {dayjs(new Date(Number(mint.timestamp) * 1000)).fromNow()}
+                </Text>
+              </Flex>
+              {mint.comment && <Text color="gray">{mint.comment}</Text>}
+            </li>
+          </Box>
+        ))}
+      </ol>
+    </Flex>
   )
 }

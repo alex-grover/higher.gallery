@@ -1,3 +1,17 @@
+import * as Form from '@radix-ui/react-form'
+import {
+  AspectRatio,
+  Box,
+  Button,
+  Flex,
+  Grid,
+  Heading,
+  Spinner,
+  Text,
+  TextArea,
+  TextField,
+  VisuallyHidden,
+} from '@radix-ui/themes'
 import { useRouter } from 'next/navigation'
 import { FormEvent, useCallback, useState } from 'react'
 import { mutate } from 'swr'
@@ -125,67 +139,147 @@ export function CreateTokenForm({
 
   return (
     <>
-      <h1 className={styles.heading}>Create</h1>
-      <form onSubmit={handleSubmit} className={styles.form}>
-        <div>
-          <label htmlFor="image" className={styles.upload}>
+      <Heading size="8" weight="bold" mb="4">
+        Create
+      </Heading>
+      <Grid
+        asChild
+        rows={{ initial: 'auto auto', sm: '1' }}
+        columns={{ initial: '1', sm: '2' }}
+        gap="4"
+      >
+        <Form.Root onSubmit={handleSubmit}>
+          <Form.Field name="image">
+            <Form.Label>
+              <Heading as="h2" size="4" mb="1">
+                Image
+              </Heading>
+            </Form.Label>
             {preview ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={preview} alt="Image preview" />
-            ) : isUploading ? (
-              <div>uploading...</div>
+              <Form.Label>
+                <Box asChild maxHeight="600px" width="100%">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={preview}
+                    alt="Image preview"
+                    className={styles.image}
+                  />
+                </Box>
+              </Form.Label>
             ) : (
-              <div>upload ↑</div>
+              <AspectRatio asChild>
+                <Flex
+                  asChild
+                  align="center"
+                  justify="center"
+                  width="100%"
+                  className={styles.upload}
+                >
+                  <Form.Label>
+                    {isUploading ? <Spinner /> : 'upload ↑'}
+                  </Form.Label>
+                </Flex>
+              </AspectRatio>
             )}
-          </label>
-          <input
-            type="file"
-            id="image"
-            name="image"
-            onChange={upload}
-            className={styles.file}
-          />
-          {error && <div className={styles.error}>{error}</div>}
-        </div>
-        <div className={styles.inputs}>
-          <div className={styles.section}>
-            <h2 className={styles.subheading}>Details</h2>
-            <input id="name" name="name" placeholder="Name" autoFocus />
-            <textarea
-              name="description"
-              placeholder="Description"
-              rows={6}
-              className={styles.textarea}
-            />
-          </div>
-          <div className={styles.section}>
-            <h2 className={styles.subheading}>Mint settings</h2>
-            <label htmlFor="price" className={styles.label}>
-              <span>Price (in $HIGHER)</span>
-              <input id="price" name="price" placeholder="50" />
-            </label>
-            <label htmlFor="maxSupply" className={styles.label}>
-              <span>Edition size</span>
-              <input
-                id="maxSupply"
-                name="maxSupply"
-                placeholder="Leave empty for unlimited"
-              />
-            </label>
-            <label htmlFor="mintDuration" className={styles.label}>
-              <span>Mint duration (in days)</span>
-              <input
-                id="mintDuration"
-                name="mintDuration"
-                placeholder="Leave empty for untimed"
-              />
-            </label>
-          </div>
-          <button disabled={isSubmitting} className={styles.button}>
-            Create
-          </button>
-        </div>
-      </form>
+            <VisuallyHidden>
+              <Form.Control asChild>
+                <input type="file" onChange={upload} />
+              </Form.Control>
+            </VisuallyHidden>
+            {error && (
+              <Text as="div" size="2" mt="1" color="red">
+                {error}
+              </Text>
+            )}
+          </Form.Field>
+
+          <Flex direction="column" gap="6">
+            <Flex direction="column" gap="3">
+              <Heading as="h2" size="4">
+                Details
+              </Heading>
+
+              <Form.Field name="name">
+                <Form.Label>
+                  <Text as="div" size="2" mb="1" weight="bold">
+                    Name
+                  </Text>
+                </Form.Label>
+                <Form.Control asChild>
+                  <TextField.Root
+                    placeholder="Enter the edition name"
+                    required
+                  />
+                </Form.Control>
+                <Form.Message asChild match="valueMissing">
+                  <Text as="div" size="2" mt="1" color="red">
+                    Please enter a name
+                  </Text>
+                </Form.Message>
+              </Form.Field>
+
+              <Form.Field name="description">
+                <Form.Label>
+                  <Text as="div" size="2" mb="1" weight="bold">
+                    Description (optional)
+                  </Text>
+                </Form.Label>
+                <Form.Control asChild>
+                  <TextArea placeholder="Enter the edition description" />
+                </Form.Control>
+              </Form.Field>
+            </Flex>
+
+            <Flex direction="column" gap="3">
+              <Heading as="h2" size="4">
+                Mint settings
+              </Heading>
+
+              <Form.Field name="price">
+                <Form.Label>
+                  <Text as="div" size="2" mb="1" weight="bold">
+                    Price (in $HIGHER)
+                  </Text>
+                </Form.Label>
+                <Form.Control asChild>
+                  <TextField.Root placeholder="111" required />
+                </Form.Control>
+                <Form.Message asChild match="valueMissing">
+                  <Text as="div" size="2" mt="1" color="red">
+                    Please enter a price
+                  </Text>
+                </Form.Message>
+              </Form.Field>
+
+              <Form.Field name="maxSupply">
+                <Form.Label>
+                  <Text as="div" size="2" mb="1" weight="bold">
+                    Edition size
+                  </Text>
+                </Form.Label>
+                <Form.Control asChild>
+                  <TextField.Root placeholder="Leave empty for unlimited" />
+                </Form.Control>
+              </Form.Field>
+
+              <Form.Field name="mintDuration">
+                <Form.Label>
+                  <Text as="div" size="2" mb="1" weight="bold">
+                    Mint duration (in days)
+                  </Text>
+                </Form.Label>
+                <Form.Control asChild>
+                  <TextField.Root placeholder="Leave empty for untimed" />
+                </Form.Control>
+              </Form.Field>
+            </Flex>
+
+            <Form.Submit asChild>
+              <Button loading={isSubmitting}>Create</Button>
+            </Form.Submit>
+          </Flex>
+        </Form.Root>
+      </Grid>
     </>
   )
 }

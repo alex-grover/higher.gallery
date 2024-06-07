@@ -1,3 +1,4 @@
+import { Box, Flex, Text } from '@radix-ui/themes'
 import { type RenderComponentProps } from 'masonic'
 import Link from 'next/link'
 import { ListTokensResponse } from '@/app/api/tokens/route'
@@ -9,26 +10,38 @@ type TokenProps = RenderComponentProps<ListTokensResponse['tokens'][number]>
 
 export function TokenCard({ data: token }: TokenProps) {
   return (
-    <Link
-      href={`/${token.collection.id}/${token.tokenId.toString()}`}
-      className={styles.container}
-    >
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={
-          token.image.startsWith('ipfs://')
-            ? formatIpfsUri(token.image, 480)
-            : token.image
-        }
-        alt="Token image"
-        loading="lazy"
-      />
-      <div className={styles.overlay}>
-        <div className={styles.name}>{token.name}</div>
-        <div className={styles.artist}>
-          {truncateEthAddress(token.collection.creatorAddress)}
-        </div>
-      </div>
-    </Link>
+    <Box asChild display="block" position="relative" overflow="hidden">
+      <Link
+        href={`/${token.collection.id}/${token.tokenId.toString()}`}
+        className={styles.link}
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={
+            token.image.startsWith('ipfs://')
+              ? formatIpfsUri(token.image)
+              : token.image
+          }
+          alt="Token image"
+          loading="lazy"
+          className={styles.image}
+        />
+        <Flex
+          position="absolute"
+          inset="0"
+          direction="column"
+          justify="end"
+          p="4"
+          className={styles.overlay}
+        >
+          <Text size="2" weight="medium" className={styles.name}>
+            {token.name}
+          </Text>
+          <Text size="1" className={styles.artist}>
+            {truncateEthAddress(token.collection.creatorAddress)}
+          </Text>
+        </Flex>
+      </Link>
+    </Box>
   )
 }

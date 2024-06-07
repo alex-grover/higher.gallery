@@ -1,7 +1,18 @@
+import * as Form from '@radix-ui/react-form'
 import { PlusIcon } from '@radix-ui/react-icons'
-import { CloseIcon } from 'next/dist/client/components/react-dev-overlay/internal/icons/CloseIcon'
+import {
+  Button,
+  Dialog,
+  Flex,
+  TextField,
+  Text,
+  TextArea,
+  VisuallyHidden,
+  Spinner,
+  Box,
+} from '@radix-ui/themes'
 import { useRouter } from 'next/navigation'
-import { FormEvent, useCallback, useEffect, useRef, useState } from 'react'
+import { FormEvent, useCallback, useState } from 'react'
 import { mutate } from 'swr'
 import { Address } from 'viem'
 import { usePublicClient } from 'wagmi'
@@ -23,28 +34,6 @@ export function CreateCollectionDialog({ address }: CollectionDialogProps) {
   const client = usePublicClient()
 
   const [isSubmitting, setIsSubmitting] = useState(false)
-
-  const ref = useRef<HTMLDialogElement | null>(null)
-  const handleOpen = useCallback(() => {
-    ref.current?.showModal()
-  }, [])
-  const handleClose = useCallback(() => {
-    ref.current?.close()
-  }, [])
-
-  useEffect(() => {
-    function handleKeyDown(e: KeyboardEvent) {
-      if (!ref.current?.open || e.key !== 'Escape') return
-
-      e.preventDefault()
-      handleClose()
-    }
-
-    document.addEventListener('keydown', handleKeyDown)
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown)
-    }
-  }, [handleClose])
 
   const { upload, preview, uri: image, isUploading, error } = useUploadFile()
 
@@ -118,53 +107,100 @@ export function CreateCollectionDialog({ address }: CollectionDialogProps) {
   )
 
   return (
-    <>
-      <button onClick={handleOpen} className={styles.trigger}>
-        <PlusIcon />
-        <span>New collection</span>
-      </button>
-      <dialog ref={ref} className={styles.dialog}>
-        <div className={styles.header}>
-          <h2 className={styles.heading}>New collection</h2>
-          <button onClick={handleClose} className={styles.close}>
-            <CloseIcon />
-          </button>
-        </div>
-        <form onSubmit={handleSubmit} className={styles.form}>
-          <div className={styles.content}>
-            <label htmlFor="image" className={styles.upload}>
+    <Dialog.Root>
+      <Dialog.Trigger>
+        <Button size="4">
+          <PlusIcon /> New collection
+        </Button>
+      </Dialog.Trigger>
+
+      <Dialog.Content maxWidth="450px">
+        <Dialog.Title>New collection</Dialog.Title>
+
+        <Flex asChild direction="column" gap="3">
+          <Form.Root onSubmit={handleSubmit}>
+            <Form.Field name="image">
+              <Form.Label>
+                <Text as="div" size="2" mb="1" weight="bold">
+                  Image (optional)
+                </Text>
+              </Form.Label>
               {preview ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img src={preview} alt="Image preview" />
-              ) : isUploading ? (
-                <div>uploading...</div>
+                <Box asChild height="128px" width="128px">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={preview}
+                    alt="Image preview"
+                    className={styles.image}
+                  />
+                </Box>
               ) : (
-                <div>upload ↑</div>
+                <Flex
+                  asChild
+                  align="center"
+                  justify="center"
+                  width="128px"
+                  height="128px"
+                  className={styles.upload}
+                >
+                  <Form.Label>
+                    {isUploading ? <Spinner /> : 'upload ↑'}
+                  </Form.Label>
+                </Flex>
               )}
-              <input
-                type="file"
-                id="image"
-                name="image"
-                onChange={upload}
-                className={styles.file}
-              />
-              {error && <div>{error}</div>}
-            </label>
-            <div className={styles.inputs}>
-              <input name="name" placeholder="Name" autoFocus />
-              <textarea
-                name="description"
-                placeholder="Description"
-                rows={4}
-                className={styles.textarea}
-              />
-            </div>
-          </div>
-          <button disabled={isSubmitting} className={styles.submit}>
-            Create
-          </button>
-        </form>
-      </dialog>
-    </>
+              <VisuallyHidden>
+                <Form.Control asChild>
+                  <input type="file" onChange={upload} />
+                </Form.Control>
+              </VisuallyHidden>
+              {error && (
+                <Text as="div" size="2" mt="1" color="red">
+                  {error}
+                </Text>
+              )}
+            </Form.Field>
+
+            <Form.Field name="name">
+              <Form.Label>
+                <Text as="div" size="2" mb="1" weight="bold">
+                  Name
+                </Text>
+              </Form.Label>
+              <Form.Control asChild>
+                <TextField.Root
+                  placeholder="Enter the collection name"
+                  required
+                />
+              </Form.Control>
+              <Form.Message asChild match="valueMissing">
+                <Text as="div" size="2" mt="1" color="red">
+                  Please enter a name
+                </Text>
+              </Form.Message>
+            </Form.Field>
+
+            <Form.Field name="description">
+              <Form.Label>
+                <Text as="div" size="2" mb="1" weight="bold">
+                  Description (optional)
+                </Text>
+              </Form.Label>
+              <Form.Control asChild>
+                <TextArea placeholder="Enter the collection description" />
+              </Form.Control>
+            </Form.Field>
+
+            <Flex gap="3" mt="1" justify="end">
+              <Dialog.Close>
+                <Button variant="soft">Cancel</Button>
+              </Dialog.Close>
+              <Form.Submit asChild>
+                <Button loading={isSubmitting}>Create</Button>
+              </Form.Submit>
+            </Flex>
+          </Form.Root>
+        </Flex>
+      </Dialog.Content>
+    </Dialog.Root>
   )
 }

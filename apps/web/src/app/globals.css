@@ -1,32 +1,10 @@
-@import url('open-props/open-props.min.css');
-@import url('open-props/normalize.min.css');
-
-:root {
-  --higher: #3c7e27;
-  --padding-x: var(--size-2);
-}
+@import url('@radix-ui/themes/styles.css');
 
 body {
-  display: flex;
-  flex-direction: column;
+  margin: 0;
 }
 
-@media (width >= 768px) {
-  :root {
-    --padding-x: var(--size-4);
-  }
-}
-
-@media (width >= 1024px) {
-  :root {
-    --padding-x: var(--size-6);
-  }
-}
-
-main {
-  flex-grow: 1;
-  width: 100%;
-  max-width: var(--size-xl);
-  padding: 0 var(--padding-x) var(--padding-x);
-  margin: 0 auto;
+.radix-themes {
+  --container-4: 1640px;
+  --cursor-button: pointer;
 }

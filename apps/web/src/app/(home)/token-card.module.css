@@ -1,24 +1,21 @@
-.container {
-  position: relative;
-  display: block;
-  overflow: hidden;
-  color: var(--text-1);
-  background: var(--surface-2);
+.link {
   border-radius: var(--radius-2);
-  box-shadow: var(--shadow-1);
 }
 
-.container:hover {
-  box-shadow: var(--shadow-3);
+.link:hover {
+  /* --shadow-3 without the hard outline */
+  box-shadow:
+    0 2px 3px -2px var(--gray-a3),
+    0 3px 12px -4px var(--black-a2),
+    0 4px 16px -8px var(--black-a2);
+}
+
+.image {
+  width: 100%;
+  vertical-align: middle;
 }
 
 .overlay {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  padding: var(--size-4);
   background-image: linear-gradient(
     to top,
     rgb(0 0 0 / 45%),
@@ -35,12 +32,9 @@
 }
 
 .name {
-  font-size: var(--font-size-2);
-  font-weight: var(--font-weight-6);
-  color: var(--gray-0);
+  color: var(--gray-1);
 }
 
 .artist {
-  font-size: var(--font-size-1);
   color: var(--gray-4);
 }

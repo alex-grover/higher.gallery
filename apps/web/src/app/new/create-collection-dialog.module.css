@@ -1,83 +1,20 @@
-.trigger {
-  display: flex;
-  gap: var(--size-2);
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  padding: var(--size-4);
-  background: var(--surface-1);
-  border: var(--border-size-2) solid var(--text-2);
-  border-radius: var(--radius-2);
-}
-
-.trigger:hover {
-  background: var(--surface-2);
-}
-
-.dialog {
-  padding: var(--size-4);
-}
-
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: var(--size-4);
-}
-
-.heading {
-  font-size: var(--font-size-4);
-  font-weight: var(--font-weight-4);
-}
-
-.close {
-  background: unset;
-}
-
-.form {
-  display: flex;
-  flex-direction: column;
-  gap: var(--size-4);
-}
-
-.content {
-  display: flex;
-  gap: var(--size-3);
-  align-items: center;
-}
-
+.image,
 .upload {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: var(--size-12);
-  height: var(--size-12);
-  overflow: hidden;
-  font-size: var(--font-size-2);
-  border: var(--border-size-1) solid var(--text-2);
+  border: 1px solid var(--base-card-classic-border-color);
   border-radius: var(--radius-3);
 }
 
-.file {
-  display: none;
+.image {
+  overflow: hidden;
+  object-fit: cover;
 }
 
-.inputs {
-  display: flex;
-  flex-direction: column;
-  gap: var(--size-4);
+.upload {
+  font-size: var(--font-size-2);
+  cursor: var(--cursor-button);
+  background: var(--accent-1);
 }
 
-.textarea {
-  resize: none;
-}
-
-.submit {
-  padding: var(--size-2);
-  background: var(--surface-3);
-  border-radius: var(--radius-2);
-}
-
-.submit:hover {
-  background: var(--surface-4);
+.upload:hover {
+  background: var(--accent-2);
 }
