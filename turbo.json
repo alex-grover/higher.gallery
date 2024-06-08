@@ -1,15 +1,9 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "pipeline": {
-    "web-build": {
-      "dependsOn": ["codegen"]
-    },
-    "ponder#codegen": {
-      "outputs": ["generated/schema.graphql"]
-    },
-    "web#codegen": {
-      "dependsOn": ["ponder#codegen"],
-      "outputs": ["src/generated/ponder.ts"]
+    "web#build": {
+      "dependsOn": ["codegen"],
+      "outputs": [".next/**", "!.next/cache/**"]
     },
     "lint": {},
     "web#lint": {
@@ -19,12 +13,26 @@
     "stylelint": {},
     "test": {},
     "typecheck": {},
-    "contracts#wagmi": {
+    "ponder#codegen": {
+      "outputs": ["generated/schema.graphql"]
+    },
+    "web#codegen": {
+      "dependsOn": ["ponder#codegen"],
+      "outputs": ["src/generated/ponder.ts"]
+    },
+    "contracts#build": {
       "outputs": ["out"]
     },
     "web#wagmi": {
-      "dependsOn": ["contracts#wagmi"],
+      "dependsOn": ["contracts#build"],
       "outputs": ["src/generated/wagmi.ts"]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "web#dev": {
+      "dependsOn": ["web#codegen", "web#wagmi"]
     }
   }
 }

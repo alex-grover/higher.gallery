@@ -1,0 +1,11 @@
+{
+  "$schema": "https://railway.app/railway.schema.json",
+  "build": {
+    "buildCommand": "echo \"No build needed\""
+  },
+  "deploy": {
+    "runtime": "LEGACY",
+    "startCommand": "sleep 3 && cd apps/ponder && pnpm run start",
+    "healthcheckPath": "/health"
+  }
+}
