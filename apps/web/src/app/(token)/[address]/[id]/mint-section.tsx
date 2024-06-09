@@ -4,18 +4,24 @@ import * as Form from '@radix-ui/react-form'
 import { Box, Button, Flex, Text, TextField } from '@radix-ui/themes'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
-import { FormEvent, useCallback, useEffect, useMemo, useState } from 'react'
+import {
+  ChangeEvent,
+  FormEvent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react'
 import { useAccount, usePublicClient } from 'wagmi'
+import { ApproveDialog } from '@/app/(token)/[address]/[id]/approve-dialog'
 import { chain } from '@/env'
 import { TokenQuery } from '@/generated/ponder'
 import {
   iHigher1155FactoryAddress,
   useReadErc20Allowance,
   useReadErc20BalanceOf,
-  useWriteErc20Approve,
   useWriteHigher1155Mint,
 } from '@/generated/wagmi'
-import { UINT256_MAX } from '@/lib/constants'
 import { useMints } from '@/lib/hooks/mints'
 import { address as addressSchema } from '@/lib/zod/address'
 
@@ -29,7 +35,28 @@ export function MintSection({ token }: MintButtonProps) {
   const client = usePublicClient()
   const account = useAccount()
 
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [amount, setAmount] = useState<bigint | ''>(1n)
+  const [comment, setComment] = useState('')
+  const [approveDialogOpen, setApproveDialogOpen] = useState(false)
+
+  const handleAmountChange = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) => {
+      try {
+        if (event.target.value === '') setAmount('')
+        else setAmount(BigInt(event.target.value))
+      } catch {
+        // Do nothing if value is invalid
+      }
+    },
+    [],
+  )
+
+  const handleCommentChange = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) => {
+      setComment(event.target.value)
+    },
+    [],
+  )
 
   const mintEndTime = useMemo(
     () => token.endTimestamp && new Date(Number(token.endTimestamp) * 1000),
@@ -70,72 +97,48 @@ export function MintSection({ token }: MintButtonProps) {
     },
   })
 
-  const { writeContractAsync: approve } = useWriteErc20Approve()
+  const { writeContractAsync, isPending } = useWriteHigher1155Mint()
 
-  const { writeContractAsync } = useWriteHigher1155Mint()
+  const mint = useCallback(() => {
+    async function execute() {
+      if (!client) {
+        alert('Error getting client')
+        return
+      }
+
+      await writeContractAsync({
+        address: addressSchema.parse(token.collection.id),
+        args: [BigInt(token.tokenId), BigInt(amount), comment],
+      })
+
+      alert('Minted!')
+    }
+
+    void execute()
+  }, [client, writeContractAsync, token, amount, comment])
+
+  const hasSufficientApproval = useMemo(() => {
+    if (allowance === undefined || amount === '') return
+    return allowance >= BigInt(token.price) * amount
+  }, [allowance, amount, token.price])
 
   const handleSubmit = useCallback(
     (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault()
 
-      async function handle() {
-        if (!client) {
-          alert('Error getting client')
-          return
-        }
-
-        if (allowance === undefined) {
-          alert('Error getting token allowance')
-          return
-        }
-
-        if (allowance < BigInt(token.price)) {
-          const approveHash = await approve({
-            args: [iHigher1155FactoryAddress[chain.id], UINT256_MAX],
-          })
-
-          const approveReceipt = await client.waitForTransactionReceipt({
-            hash: approveHash,
-            confirmations: 3,
-          })
-
-          if (approveReceipt.status === 'reverted') {
-            alert('Approval transaction reverted')
-            return
-          }
-        }
-
-        const data = new FormData(event.currentTarget)
-        const amount = data.get('amount')
-        const comment = data.get('comment')
-
-        if (typeof amount !== 'string' || typeof comment !== 'string') {
-          alert('Invalid form data')
-          return
-        }
-
-        const hash = await writeContractAsync({
-          address: addressSchema.parse(token.collection.id),
-          args: [BigInt(token.tokenId), BigInt(amount), comment],
-        })
-
-        const receipt = await client.waitForTransactionReceipt({
-          hash,
-          confirmations: 3,
-        })
-        setIsSubmitting(false)
-
-        if (receipt.status === 'reverted') {
-          alert('Transaction reverted')
-          return
-        }
-
-        alert('Minted!')
+      if (hasSufficientApproval === undefined) {
+        alert('Unable to check token approval')
+        return
       }
 
-      void handle()
+      if (!hasSufficientApproval) {
+        setApproveDialogOpen(true)
+        return
+      }
+
+      mint()
     },
-    [client, allowance, approve, writeContractAsync, token],
+    [hasSufficientApproval, mint],
   )
 
   return (
@@ -151,7 +154,8 @@ export function MintSection({ token }: MintButtonProps) {
                 type="number"
                 inputMode="numeric"
                 placeholder="Number of editions to mint"
-                defaultValue="1"
+                value={amount.toString()}
+                onChange={handleAmountChange}
                 min="1"
                 required
               />
@@ -170,7 +174,11 @@ export function MintSection({ token }: MintButtonProps) {
 
           <Form.Field name="comment">
             <Form.Control asChild>
-              <TextField.Root placeholder="Add a comment" />
+              <TextField.Root
+                placeholder="Add a comment"
+                value={comment}
+                onChange={handleCommentChange}
+              />
             </Form.Control>
           </Form.Field>
 
@@ -178,7 +186,7 @@ export function MintSection({ token }: MintButtonProps) {
             <Form.Submit asChild>
               <Button
                 size="3"
-                loading={isSubmitting}
+                loading={isPending}
                 disabled={
                   account.status !== 'connected' ||
                   balance === undefined ||
@@ -189,7 +197,11 @@ export function MintSection({ token }: MintButtonProps) {
                   mintEnded
                 }
               >
-                Mint
+                {account.status !== 'connected' ||
+                hasSufficientApproval === undefined ||
+                hasSufficientApproval
+                  ? 'Mint'
+                  : 'Approve and mint'}
               </Button>
             </Form.Submit>
           </Box>
@@ -209,6 +221,12 @@ export function MintSection({ token }: MintButtonProps) {
           {token.maxSupply && !mintEnded && ` / ${token.maxSupply}`} minted
         </Text>
       </Text>
+
+      <ApproveDialog
+        open={approveDialogOpen}
+        onOpenChange={setApproveDialogOpen}
+        onSuccess={mint}
+      />
     </Flex>
   )
 }
