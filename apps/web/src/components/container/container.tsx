@@ -5,7 +5,7 @@ import {
 import { PropsWithChildren } from 'react'
 import styles from './container.module.css'
 
-const PADDING_PROP = {
+export const CONTAINER_PADDING = {
   initial: '2',
   xs: '2',
   sm: '3',
@@ -15,7 +15,7 @@ const PADDING_PROP = {
 }
 
 export function Container(props: PropsWithChildren<ContainerProps>) {
-  return <BaseContainer px={PADDING_PROP} {...props} />
+  return <BaseContainer px={CONTAINER_PADDING} {...props} />
 }
 
 export function PageContainer({
@@ -23,7 +23,7 @@ export function PageContainer({
   ...props
 }: PropsWithChildren<ContainerProps>) {
   return (
-    <Container asChild pb={PADDING_PROP} {...props}>
+    <Container asChild pb={CONTAINER_PADDING} {...props}>
       <main className={styles.main}>{children}</main>
     </Container>
   )

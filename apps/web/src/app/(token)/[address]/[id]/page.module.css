@@ -1,3 +1,7 @@
+.grid {
+  min-height: var(--content-height);
+}
+
 .image {
   object-fit: contain;
   object-position: top;

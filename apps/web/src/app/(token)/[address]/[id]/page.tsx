@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import { formatEther } from 'viem'
 import { z } from 'zod'
-import { PageContainer } from '@/components/container/container'
+import { CONTAINER_PADDING, PageContainer } from '@/components/container'
 import { Name } from '@/components/name'
 import { ponderClient } from '@/lib/ponder'
 import { NextPageContext } from '@/lib/types/next'
@@ -32,14 +32,15 @@ export default async function TokenPage({ params }: NextPageContext) {
   if (!token) notFound()
 
   return (
-    <PageContainer>
+    <PageContainer pb="0">
       <Grid
-        rows={{ initial: 'auto auto', sm: '1' }}
+        rows={{ initial: 'auto 1fr', sm: '1' }}
         columns={{ initial: '1', sm: '2' }}
         gap="4"
-        height="100%"
+        pb={CONTAINER_PADDING}
+        className={styles.grid}
       >
-        <Box asChild maxHeight="600px" maxWidth="100%" mx="auto">
+        <Box asChild maxHeight="600px" width="100%" mx="auto">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={formatIpfsUri(token.image, 1000)}
