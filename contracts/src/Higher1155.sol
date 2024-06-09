@@ -3,62 +3,65 @@ pragma solidity ^0.8.13;
 
 import {OwnableUpgradeable} from "openzeppelin-contracts-upgradeable/contracts/access/OwnableUpgradeable.sol";
 import {ERC1155} from "solmate/tokens/ERC1155.sol";
-import {IHigher1155} from "src/IHigher1155.sol";
-import {IHigherMinter} from "src/IHigherMinter.sol";
-import {HigherConstants} from "src/HigherConstants.sol";
+import {IHigher1155, MintConfig} from "src/IHigher1155.sol";
+import {IHigher1155Factory} from "src/IHigher1155Factory.sol";
 
 /*
 
-higher ↑
+higher, together ↑
 
 */
 
 contract Higher1155 is IHigher1155, ERC1155, OwnableUpgradeable {
-    address internal _minter;
+    address internal _factory;
     string internal _contractURI;
-    uint256 internal _id;
-    mapping(uint256 => string) internal _uris;
-    mapping(uint256 => MintConfig) internal _mintConfigs;
-    mapping(uint256 => uint256) internal _mintCounts;
+    uint256 internal _nextId;
+    mapping(uint256 id => string uri) internal _uris;
+    mapping(uint256 id => MintConfig mintConfig) internal _mintConfigs;
+    mapping(uint256 id => uint256 mintCount) internal _mintCounts;
 
-    function initialize(address owner, address newMinter, string calldata newContractURI) external initializer {
+    function initialize(address owner, string calldata contractURI_) external initializer {
         __Ownable_init(owner);
-        _minter = newMinter;
-        _contractURI = newContractURI;
-        _id = 1;
+        _factory = msg.sender;
+        _contractURI = contractURI_;
+        _nextId = 1;
     }
 
-    function create(string calldata tokenURI, MintConfig calldata newMintConfig)
-        external
-        override
-        onlyOwner
-        returns (uint256)
-    {
-        _uris[_id] = tokenURI;
-        _mintConfigs[_id] = newMintConfig;
-        emit Create(_id);
-        return _id++;
+    function create(string calldata uri_, MintConfig calldata mintConfig_) external override returns (uint256) {
+        if (msg.sender != _factory && msg.sender != owner()) {
+            revert UnauthorizedCreator(msg.sender);
+        }
+
+        _uris[_nextId] = uri_;
+        _mintConfigs[_nextId] = mintConfig_;
+
+        emit Create(_nextId);
+
+        return _nextId++;
     }
 
     function mint(uint256 id, uint256 amount, string calldata comment) external override {
         if (_mintConfigs[id].maxSupply != 0 && _mintCounts[id] + amount > _mintConfigs[id].maxSupply) {
-            revert MintLimitReached();
+            revert MaxSupplyExceeded(_mintCounts[id], amount, _mintConfigs[id].maxSupply);
         }
         if (_mintConfigs[id].endTimestamp != 0 && block.timestamp > _mintConfigs[id].endTimestamp) {
-            revert MintEnded();
+            revert MintEnded(block.timestamp, _mintConfigs[id].endTimestamp);
         }
-        IHigherMinter(_minter).mint(msg.sender, owner(), amount * _mintConfigs[id].price);
+
+        IHigher1155Factory(_factory).transferPayment(msg.sender, owner(), amount * _mintConfigs[id].price);
+
         _mintCounts[id] += amount;
         _mint(msg.sender, id, amount, "");
+
         emit Mint(id, msg.sender, amount, comment);
+    }
+
+    function factory() external view override returns (address) {
+        return _factory;
     }
 
     function contractURI() external view override returns (string memory) {
         return _contractURI;
-    }
-
-    function minter() external view override returns (address) {
-        return _minter;
     }
 
     function uri(uint256 id) public view override returns (string memory) {
