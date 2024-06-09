@@ -1,6 +1,6 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "pipeline": {
+  "tasks": {
     "contracts#build": {
       "outputs": ["out"]
     },
@@ -17,11 +17,13 @@
     },
     "web#build": {
       "dependsOn": ["codegen"],
-      "outputs": [".next/**", "!.next/cache/**"]
+      "outputs": [".next/**", "!.next/cache/**"],
+      "env": ["PONDER_URL"]
     },
     "lint": {},
     "web#lint": {
-      "dependsOn": ["codegen"]
+      "dependsOn": ["codegen"],
+      "env": ["PONDER_URL"]
     },
     "prettier": {},
     "stylelint": {},
@@ -41,7 +43,8 @@
       "dependsOn": ["ponder#wagmi"]
     },
     "web#dev": {
-      "dependsOn": ["web#codegen", "web#wagmi"]
+      "dependsOn": ["web#codegen", "web#wagmi"],
+      "env": ["PONDER_URL"]
     }
   }
 }
