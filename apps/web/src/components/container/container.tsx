@@ -23,7 +23,7 @@ export function PageContainer({
   ...props
 }: PropsWithChildren<ContainerProps>) {
   return (
-    <Container pb={PADDING_PROP} {...props}>
+    <Container asChild pb={PADDING_PROP} {...props}>
       <main className={styles.main}>{children}</main>
     </Container>
   )

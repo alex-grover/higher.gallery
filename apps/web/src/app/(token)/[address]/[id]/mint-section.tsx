@@ -144,7 +144,9 @@ export function MintSection({ token }: MintButtonProps) {
       <Flex asChild direction="column" gap="3">
         <Form.Root onSubmit={handleSubmit}>
           <Form.Field name="amount">
-            <Form.Label>Amount</Form.Label>
+            <Text as="div" size="2" mb="1" weight="bold">
+              Amount
+            </Text>
             <Form.Control asChild>
               <TextField.Root
                 type="number"
