@@ -542,7 +542,7 @@ export const higher1155Abi = [
 
 /**
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x0000000000000000000000000000000000000000)
- * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x06bbbd0b2eef2e838261f3da0d7959fadb7d9481)
  */
 export const iHigher1155FactoryAbi = [
   {
@@ -618,16 +618,16 @@ export const iHigher1155FactoryAbi = [
 
 /**
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x0000000000000000000000000000000000000000)
- * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x06bbbd0b2eef2e838261f3da0d7959fadb7d9481)
  */
 export const iHigher1155FactoryAddress = {
   8453: '0x0000000000000000000000000000000000000000',
-  84532: '0x0000000000000000000000000000000000000000',
+  84532: '0x06BbBD0b2eEf2E838261F3dA0D7959fAdb7d9481',
 } as const
 
 /**
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x0000000000000000000000000000000000000000)
- * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x06bbbd0b2eef2e838261f3da0d7959fadb7d9481)
  */
 export const iHigher1155FactoryConfig = {
   address: iHigher1155FactoryAddress,
@@ -1218,7 +1218,7 @@ export const useWatchHigher1155UriEvent =
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link iHigher1155FactoryAbi}__
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x0000000000000000000000000000000000000000)
- * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x06bbbd0b2eef2e838261f3da0d7959fadb7d9481)
  */
 export const useWriteIHigher1155Factory = /*#__PURE__*/ createUseWriteContract({
   abi: iHigher1155FactoryAbi,
@@ -1229,7 +1229,7 @@ export const useWriteIHigher1155Factory = /*#__PURE__*/ createUseWriteContract({
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link iHigher1155FactoryAbi}__ and `functionName` set to `"deploy"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x0000000000000000000000000000000000000000)
- * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x06bbbd0b2eef2e838261f3da0d7959fadb7d9481)
  */
 export const useWriteIHigher1155FactoryDeploy =
   /*#__PURE__*/ createUseWriteContract({
@@ -1242,7 +1242,7 @@ export const useWriteIHigher1155FactoryDeploy =
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link iHigher1155FactoryAbi}__ and `functionName` set to `"transferPayment"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x0000000000000000000000000000000000000000)
- * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x06bbbd0b2eef2e838261f3da0d7959fadb7d9481)
  */
 export const useWriteIHigher1155FactoryTransferPayment =
   /*#__PURE__*/ createUseWriteContract({
@@ -1255,7 +1255,7 @@ export const useWriteIHigher1155FactoryTransferPayment =
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link iHigher1155FactoryAbi}__
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x0000000000000000000000000000000000000000)
- * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x06bbbd0b2eef2e838261f3da0d7959fadb7d9481)
  */
 export const useSimulateIHigher1155Factory =
   /*#__PURE__*/ createUseSimulateContract({
@@ -1267,7 +1267,7 @@ export const useSimulateIHigher1155Factory =
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link iHigher1155FactoryAbi}__ and `functionName` set to `"deploy"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x0000000000000000000000000000000000000000)
- * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x06bbbd0b2eef2e838261f3da0d7959fadb7d9481)
  */
 export const useSimulateIHigher1155FactoryDeploy =
   /*#__PURE__*/ createUseSimulateContract({
@@ -1280,7 +1280,7 @@ export const useSimulateIHigher1155FactoryDeploy =
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link iHigher1155FactoryAbi}__ and `functionName` set to `"transferPayment"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x0000000000000000000000000000000000000000)
- * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x06bbbd0b2eef2e838261f3da0d7959fadb7d9481)
  */
 export const useSimulateIHigher1155FactoryTransferPayment =
   /*#__PURE__*/ createUseSimulateContract({
@@ -1293,7 +1293,7 @@ export const useSimulateIHigher1155FactoryTransferPayment =
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link iHigher1155FactoryAbi}__
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x0000000000000000000000000000000000000000)
- * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x06bbbd0b2eef2e838261f3da0d7959fadb7d9481)
  */
 export const useWatchIHigher1155FactoryEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -1305,7 +1305,7 @@ export const useWatchIHigher1155FactoryEvent =
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link iHigher1155FactoryAbi}__ and `eventName` set to `"Higher1155Deployed"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x0000000000000000000000000000000000000000)
- * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x06bbbd0b2eef2e838261f3da0d7959fadb7d9481)
  */
 export const useWatchIHigher1155FactoryHigher1155DeployedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -1318,7 +1318,7 @@ export const useWatchIHigher1155FactoryHigher1155DeployedEvent =
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link iHigher1155FactoryAbi}__ and `eventName` set to `"PaymentTransferred"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x0000000000000000000000000000000000000000)
- * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x0000000000000000000000000000000000000000)
+ * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x06bbbd0b2eef2e838261f3da0d7959fadb7d9481)
  */
 export const useWatchIHigher1155FactoryPaymentTransferredEvent =
   /*#__PURE__*/ createUseWatchContractEvent({

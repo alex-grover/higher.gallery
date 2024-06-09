@@ -16,7 +16,7 @@ export default defineConfig({
         },
         IHigher1155Factory: {
           [base.id]: '0x0000000000000000000000000000000000000000',
-          [baseSepolia.id]: '0x0000000000000000000000000000000000000000',
+          [baseSepolia.id]: '0x06bbbd0b2eef2e838261f3da0d7959fadb7d9481',
         },
       },
     }),
