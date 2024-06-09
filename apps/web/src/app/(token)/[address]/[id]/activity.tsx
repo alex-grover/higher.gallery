@@ -8,7 +8,6 @@ import { TokenQuery } from '@/generated/ponder'
 import { useMints } from '@/lib/hooks/mints'
 import styles from './activity.module.css'
 
-// eslint-disable-next-line import/no-named-as-default-member
 dayjs.extend(relativeTime)
 
 type ActivityProps = {

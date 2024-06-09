@@ -19,7 +19,6 @@ import { UINT256_MAX } from '@/lib/constants'
 import { useMints } from '@/lib/hooks/mints'
 import { address as addressSchema } from '@/lib/zod/address'
 
-// eslint-disable-next-line import/no-named-as-default-member
 dayjs.extend(relativeTime)
 
 type MintButtonProps = {
