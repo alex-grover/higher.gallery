@@ -3,7 +3,7 @@
 import { Masonry } from 'masonic'
 import useSWR from 'swr'
 import { ListTokensResponse } from '@/app/api/tokens/route'
-import { PageContainer } from '@/components/container'
+import { PageContainer } from '@/components/container/container'
 import { address } from '@/lib/zod/address'
 import { BigIntString } from '@/lib/zod/bigint'
 import styles from './page.module.css'

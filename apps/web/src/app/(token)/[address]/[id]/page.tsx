@@ -1,8 +1,9 @@
 import { Box, Card, Flex, Grid, Text } from '@radix-ui/themes'
 import Image from 'next/image'
 import { notFound } from 'next/navigation'
+import { formatEther } from 'viem'
 import { z } from 'zod'
-import { PageContainer } from '@/components/container'
+import { PageContainer } from '@/components/container/container'
 import { Name } from '@/components/name'
 import { ponderClient } from '@/lib/ponder'
 import { NextPageContext } from '@/lib/types/next'
@@ -36,38 +37,48 @@ export default async function TokenPage({ params }: NextPageContext) {
         rows={{ initial: 'auto auto', sm: '1' }}
         columns={{ initial: '1', sm: '2' }}
         gap="4"
+        height="100%"
       >
         <Box asChild maxHeight="600px" maxWidth="100%" mx="auto">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={formatIpfsUri(token.image, 1000)} alt="Token image" />
+          <img
+            src={formatIpfsUri(token.image, 1000)}
+            alt="Token image"
+            className={styles.image}
+          />
         </Box>
         <Flex direction="column" gap="4">
           <Card>
-            <Text as="div" size="5" weight="medium" mb="1">
-              {token.name}
-            </Text>
-            <Flex direction="row" gap="2">
-              <Box asChild width="48px" height="48px" overflow="hidden">
-                <Image
-                  src={formatIpfsUri(token.collection.image)}
-                  alt="Collection image"
-                  className={styles.collection}
-                  width="48"
-                  height="48"
-                />
-              </Box>
-              <Flex direction="column" gap="1">
-                <Text as="div" size="3" weight="medium">
-                  <Name
-                    address={addressSchema.parse(
-                      token.collection.creatorAddress,
-                    )}
+            <Flex direction="column" gap="2">
+              <Text as="div" size="5" weight="medium">
+                {token.name}
+              </Text>
+              <Flex direction="row" gap="2">
+                <Box asChild width="48px" height="48px" overflow="hidden">
+                  <Image
+                    src={formatIpfsUri(token.collection.image)}
+                    alt="Collection image"
+                    className={styles.collection}
+                    width="48"
+                    height="48"
                   />
-                </Text>
-                <Text as="div" size="3" color="gray">
-                  {token.collection.name}
-                </Text>
+                </Box>
+                <Flex direction="column" gap="1">
+                  <Text as="div" size="3" weight="medium">
+                    <Name
+                      address={addressSchema.parse(
+                        token.collection.creatorAddress,
+                      )}
+                    />
+                  </Text>
+                  <Text as="div" size="3" color="gray">
+                    {token.collection.name}
+                  </Text>
+                </Flex>
               </Flex>
+              <Text as="div" color="gray">
+                {formatEther(BigInt(token.price))} $HIGHER
+              </Text>
             </Flex>
           </Card>
           <MintSection token={token} />

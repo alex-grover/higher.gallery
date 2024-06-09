@@ -1,5 +1,9 @@
 @import url('@radix-ui/themes/styles.css');
 
+:root {
+  --header-height: 80px;
+}
+
 body {
   margin: 0;
 }

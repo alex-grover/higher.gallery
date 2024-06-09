@@ -3,6 +3,7 @@ import {
   type ContainerProps,
 } from '@radix-ui/themes'
 import { PropsWithChildren } from 'react'
+import styles from './container.module.css'
 
 const PADDING_PROP = {
   initial: '2',
@@ -14,7 +15,7 @@ const PADDING_PROP = {
 }
 
 export function Container(props: PropsWithChildren<ContainerProps>) {
-  return <BaseContainer asChild px={PADDING_PROP} {...props} />
+  return <BaseContainer px={PADDING_PROP} {...props} />
 }
 
 export function PageContainer({
@@ -23,7 +24,7 @@ export function PageContainer({
 }: PropsWithChildren<ContainerProps>) {
   return (
     <Container pb={PADDING_PROP} {...props}>
-      <main>{children}</main>
+      <main className={styles.main}>{children}</main>
     </Container>
   )
 }

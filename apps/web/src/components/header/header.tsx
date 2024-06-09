@@ -5,16 +5,16 @@ import { ConnectKitButton } from 'connectkit'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useAccount } from 'wagmi'
-import { Container } from '@/components/container'
+import { Container } from '@/components/container/container'
 import styles from './header.module.css'
 
 export function Header() {
   const { status } = useAccount()
 
   return (
-    <Container asChild>
-      <header>
-        <Flex align="center" justify="between" py="2" width="100%">
+    <Container>
+      <Flex asChild align="center" justify="between">
+        <header className={styles.header}>
           <Flex asChild align="center">
             <Link href="/" className={styles.link}>
               <Image
@@ -36,8 +36,8 @@ export function Header() {
               <ConnectKitButton showAvatar={false} />
             </nav>
           </Flex>
-        </Flex>
-      </header>
+        </header>
+      </Flex>
     </Container>
   )
 }

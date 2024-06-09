@@ -1,6 +1,5 @@
 import { env } from '@/env'
 
-// TODO
 export function formatIpfsUri(ipfsUri: string, width?: number) {
   if (!width)
     return ipfsUri.replace('ipfs://', env.NEXT_PUBLIC_IPFS_GATEWAY_BASE_URL)
