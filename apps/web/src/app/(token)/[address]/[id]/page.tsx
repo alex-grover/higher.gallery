@@ -3,9 +3,9 @@ import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import { z } from 'zod'
 import { PageContainer } from '@/components/container'
+import { Name } from '@/components/name'
 import { ponderClient } from '@/lib/ponder'
 import { NextPageContext } from '@/lib/types/next'
-import { truncateEthAddress } from '@/lib/utils/address'
 import { formatIpfsUri } from '@/lib/utils/ipfs'
 import { address as addressSchema } from '@/lib/zod/address'
 import { Activity } from './activity'
@@ -58,9 +58,11 @@ export default async function TokenPage({ params }: NextPageContext) {
               </Box>
               <Flex direction="column" gap="1">
                 <Text as="div" size="3" weight="medium">
-                  {truncateEthAddress(
-                    addressSchema.parse(token.collection.creatorAddress),
-                  )}
+                  <Name
+                    address={addressSchema.parse(
+                      token.collection.creatorAddress,
+                    )}
+                  />
                 </Text>
                 <Text as="div" size="3" color="gray">
                   {token.collection.name}

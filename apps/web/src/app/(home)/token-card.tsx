@@ -2,7 +2,7 @@ import { Box, Flex, Text } from '@radix-ui/themes'
 import { type RenderComponentProps } from 'masonic'
 import Link from 'next/link'
 import { ListTokensResponse } from '@/app/api/tokens/route'
-import { truncateEthAddress } from '@/lib/utils/address'
+import { Name } from '@/components/name'
 import { formatIpfsUri } from '@/lib/utils/ipfs'
 import styles from './token-card.module.css'
 
@@ -38,7 +38,7 @@ export function TokenCard({ data: token }: TokenProps) {
             {token.name}
           </Text>
           <Text size="1" className={styles.artist}>
-            {truncateEthAddress(token.collection.creatorAddress)}
+            <Name address={token.collection.creatorAddress} />
           </Text>
         </Flex>
       </Link>

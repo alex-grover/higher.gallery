@@ -3,10 +3,9 @@
 import { Box, Flex, Text } from '@radix-ui/themes'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
+import { Name } from '@/components/name'
 import { TokenQuery } from '@/generated/ponder'
 import { useMints } from '@/lib/hooks/mints'
-import { truncateEthAddress } from '@/lib/utils/address'
-import { address } from '@/lib/zod/address'
 import styles from './activity.module.css'
 
 // eslint-disable-next-line import/no-named-as-default-member
@@ -27,7 +26,7 @@ export function Activity({ token }: ActivityProps) {
             <li>
               <Flex align="center" justify="between">
                 <Text as="div">
-                  {truncateEthAddress(address.parse(mint.minterAddress))}
+                  <Name address={mint.minterAddress} />
                   {BigInt(mint.amount) > 1n && ` x${mint.amount}`}
                 </Text>
                 <Text as="div">
