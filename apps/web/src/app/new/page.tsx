@@ -3,10 +3,16 @@
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Suspense } from 'react'
 import { useAccount } from 'wagmi'
+import { z } from 'zod'
 import { PageContainer } from '@/components/container'
 import { address } from '@/lib/zod/address'
 import { CollectionStep } from './collection-step'
 import { CreateTokenForm } from './create-token-form'
+
+const schema = z.union([
+  z.object({ collectionAddress: address }),
+  z.object({ contractURI: z.string().min(1) }),
+])
 
 export default function CreatePage() {
   return (
@@ -28,15 +34,14 @@ function CreatePageContents() {
     return null
   }
 
-  const parseResult = address.safeParse(searchParams.get('collectionAddress'))
+  const parseResult = schema.safeParse(
+    Object.fromEntries(searchParams.entries()),
+  )
 
   if (parseResult.success)
     return (
       <PageContainer>
-        <CreateTokenForm
-          address={account.address}
-          collectionAddress={parseResult.data}
-        />
+        <CreateTokenForm address={account.address} {...parseResult.data} />
       </PageContainer>
     )
 

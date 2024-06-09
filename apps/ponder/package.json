@@ -9,7 +9,8 @@
     "serve": "ponder serve",
     "lint": "eslint **/*.ts",
     "prettier": "prettier --check .",
-    "typecheck": "tsc"
+    "typecheck": "tsc",
+    "wagmi": "wagmi generate"
   },
   "dependencies": {
     "@ponder/core": "^0.4.30",
@@ -23,6 +24,7 @@
     "@types/node": "^20.10.0",
     "@typescript-eslint/eslint-plugin": "^7.11.0",
     "@typescript-eslint/parser": "^7.11.0",
+    "@wagmi/cli": "^2.1.8",
     "eslint": "^8.57.0",
     "eslint-config-higher": "workspace:^",
     "eslint-config-ponder": "^0.4.30",

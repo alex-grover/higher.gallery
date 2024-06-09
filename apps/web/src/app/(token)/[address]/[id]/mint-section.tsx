@@ -9,7 +9,7 @@ import { useAccount, usePublicClient } from 'wagmi'
 import { chain } from '@/env'
 import { TokenQuery } from '@/generated/ponder'
 import {
-  higherMinterAddress,
+  iHigher1155FactoryAddress,
   useReadErc20Allowance,
   useReadErc20BalanceOf,
   useWriteErc20Approve,
@@ -65,7 +65,7 @@ export function MintSection({ token }: MintButtonProps) {
     },
   })
   const { data: allowance } = useReadErc20Allowance({
-    args: [account.address ?? '0x', higherMinterAddress[chain.id]],
+    args: [account.address ?? '0x', iHigher1155FactoryAddress[chain.id]],
     query: {
       enabled: account.status === 'connected',
     },
@@ -89,7 +89,7 @@ export function MintSection({ token }: MintButtonProps) {
 
       if (allowance < BigInt(token.price)) {
         const approveHash = await approve({
-          args: [higherMinterAddress[chain.id], UINT256_MAX],
+          args: [iHigher1155FactoryAddress[chain.id], UINT256_MAX],
         })
 
         const approveReceipt = await client.waitForTransactionReceipt({

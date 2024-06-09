@@ -1,16 +1,14 @@
 import { createConfig } from '@ponder/core'
 import { getAbiItem, http } from 'viem'
 import { base, baseSepolia } from 'viem/chains'
-import { Higher1155Abi } from './abis/Higher1155Abi'
-import { IHigher1155FactoryAbi } from './abis/IHigher1155FactoryAbi'
+import {
+  higher1155Abi,
+  iHigher1155FactoryAbi,
+  iHigher1155FactoryAddress,
+} from './src/generated/wagmi'
 import { env } from './src/lib/env'
 
 const chain = env.ENV === 'production' ? base : baseSepolia
-
-const address = {
-  [base.id]: '0x0000000000000000000000000000000000000000' as const,
-  [baseSepolia.id]: '0x05DfF58D334aF8B9a47B65184Bd878658af2b05c' as const,
-}[chain.id]
 
 const startBlock = {
   [base.id]: 15172306,
@@ -27,17 +25,17 @@ export default createConfig({
   contracts: {
     IHigher1155Factory: {
       network: 'base',
-      abi: IHigher1155FactoryAbi,
-      address,
+      abi: iHigher1155FactoryAbi,
+      address: iHigher1155FactoryAddress[chain.id],
       startBlock,
     },
     Higher1155: {
       network: 'base',
-      abi: Higher1155Abi,
+      abi: higher1155Abi,
       factory: {
-        address,
+        address: iHigher1155FactoryAddress[chain.id],
         event: getAbiItem({
-          abi: IHigher1155FactoryAbi,
+          abi: iHigher1155FactoryAbi,
           name: 'Higher1155Deployed',
         }),
         parameter: 'higher1155',

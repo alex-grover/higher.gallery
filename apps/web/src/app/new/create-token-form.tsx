@@ -19,32 +19,51 @@ import useSWRImmutable from 'swr/immutable'
 import { Address, parseEther } from 'viem'
 import { usePublicClient } from 'wagmi'
 import { GetCollectionResponse } from '@/app/api/collections/[address]/route'
-import { higher1155Abi, useWriteHigher1155Create } from '@/generated/wagmi'
+import { chain } from '@/env'
+import {
+  higher1155Abi,
+  iHigher1155FactoryAbi,
+  iHigher1155FactoryAddress,
+  useWriteHigher1155Create,
+  useWriteIHigher1155FactoryDeploy,
+} from '@/generated/wagmi'
 import { uploadJSON, useUploadFile } from '@/lib/ipfs'
 import styles from './create-token-form.module.css'
 
 type CreateTokenFormProps = {
   address: Address
-  collectionAddress: Address
-}
+} & (
+  | {
+      collectionAddress: Address
+      contractURI?: never
+    }
+  | {
+      collectionAddress?: never
+      contractURI: string
+    }
+)
 
 export function CreateTokenForm({
   address,
-  collectionAddress,
+  collectionAddress: existingCollectionAddress,
+  contractURI,
 }: CreateTokenFormProps) {
   const router = useRouter()
   const client = usePublicClient()
 
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const { data, isLoading } = useSWRImmutable<GetCollectionResponse>(
-    `/api/collections/${collectionAddress}`,
-    { shouldRetryOnError: false },
-  )
+  const { data: collection, isLoading } =
+    useSWRImmutable<GetCollectionResponse>(
+      existingCollectionAddress &&
+        `/api/collections/${existingCollectionAddress}`,
+      { shouldRetryOnError: false },
+    )
 
   const { upload, preview, uri: image, isUploading, error } = useUploadFile()
 
-  const { writeContractAsync } = useWriteHigher1155Create()
+  const { writeContractAsync: deploy } = useWriteIHigher1155FactoryDeploy()
+  const { writeContractAsync: create } = useWriteHigher1155Create()
 
   const handleSubmit = useCallback(
     (event: FormEvent<HTMLFormElement>) => {
@@ -90,25 +109,55 @@ export function CreateTokenForm({
           return
         }
 
-        const { request, result } = await client.simulateContract({
-          account: address,
-          address: collectionAddress,
-          abi: higher1155Abi,
-          functionName: 'create',
-          args: [
-            uri,
-            {
-              price: parseEther(price),
-              maxSupply: BigInt(maxSupply),
-              endTimestamp:
-                BigInt(mintDuration) &&
-                BigInt(Math.floor(new Date().valueOf() / 1000)) +
-                  BigInt(mintDuration) * 24n * 60n * 60n,
-            },
-          ],
-        })
+        let hash, collectionAddress, id
+        if (contractURI) {
+          const { request, result } = await client.simulateContract({
+            account: address,
+            address: iHigher1155FactoryAddress[chain.id],
+            abi: iHigher1155FactoryAbi,
+            functionName: 'deploy',
+            args: [
+              contractURI,
+              uri,
+              {
+                price: parseEther(price),
+                maxSupply: BigInt(maxSupply),
+                endTimestamp:
+                  BigInt(mintDuration) &&
+                  BigInt(Math.floor(new Date().valueOf() / 1000)) +
+                    BigInt(mintDuration) * 24n * 60n * 60n,
+              },
+            ],
+          })
 
-        const hash = await writeContractAsync(request)
+          hash = await deploy(request)
+          collectionAddress = result
+          id = 1n
+        } else if (existingCollectionAddress) {
+          const { request, result } = await client.simulateContract({
+            account: address,
+            address: existingCollectionAddress,
+            abi: higher1155Abi,
+            functionName: 'create',
+            args: [
+              uri,
+              {
+                price: parseEther(price),
+                maxSupply: BigInt(maxSupply),
+                endTimestamp:
+                  BigInt(mintDuration) &&
+                  BigInt(Math.floor(new Date().valueOf() / 1000)) +
+                    BigInt(mintDuration) * 24n * 60n * 60n,
+              },
+            ],
+          })
+
+          hash = await create(request)
+          collectionAddress = existingCollectionAddress
+          id = result
+        } else {
+          throw new Error('Invalid collection params')
+        }
 
         const receipt = await client.waitForTransactionReceipt({
           hash,
@@ -122,17 +171,29 @@ export function CreateTokenForm({
 
         await mutate(`/api/tokens`)
 
-        router.push(`/${collectionAddress}/${result.toString()}`)
+        router.push(`/${collectionAddress}/${id.toString()}`)
       }
 
       void handle()
     },
-    [client, image, writeContractAsync, address, collectionAddress, router],
+    [
+      client,
+      image,
+      deploy,
+      create,
+      address,
+      contractURI,
+      existingCollectionAddress,
+      router,
+    ],
   )
 
   if (isLoading) return null
 
-  if (!data || data.creatorAddress !== address) {
+  if (
+    existingCollectionAddress &&
+    (!collection || collection.creatorAddress !== address)
+  ) {
     router.replace('/new')
     return null
   }

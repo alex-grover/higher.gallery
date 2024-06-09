@@ -1,11 +1,10 @@
 import { defineConfig } from '@wagmi/cli'
-import { foundry, react } from '@wagmi/cli/plugins'
-import { base, baseSepolia } from 'wagmi/chains'
+import { foundry } from '@wagmi/cli/plugins'
+import { base, baseSepolia } from 'viem/chains'
 
 export default defineConfig({
   out: 'src/generated/wagmi.ts',
   plugins: [
-    react(),
     foundry({
       project: '../../contracts',
       include: ['Higher1155.sol/*', 'IHigher1155Factory.sol/*', 'ERC20.sol/*'],

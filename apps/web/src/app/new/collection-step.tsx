@@ -31,7 +31,7 @@ export function CollectionStep({ address }: CollectionStepProps) {
         <Heading size="8" weight="bold">
           Select a collection
         </Heading>
-        <CreateCollectionDialog address={address} />
+        <CreateCollectionDialog />
         {data && data.length > 0 && (
           <Table.Root variant="surface">
             <Table.Body>

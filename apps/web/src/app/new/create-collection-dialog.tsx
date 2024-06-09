@@ -1,43 +1,29 @@
 import * as Form from '@radix-ui/react-form'
 import { PlusIcon } from '@radix-ui/react-icons'
 import {
+  Box,
   Button,
   Dialog,
   Flex,
-  TextField,
+  Spinner,
   Text,
   TextArea,
+  TextField,
   VisuallyHidden,
-  Spinner,
-  Box,
 } from '@radix-ui/themes'
 import { useRouter } from 'next/navigation'
 import { FormEvent, useCallback, useState } from 'react'
-import { mutate } from 'swr'
-import { Address } from 'viem'
 import { usePublicClient } from 'wagmi'
-import { chain } from '@/env'
-import {
-  higher1155FactoryAbi,
-  higher1155FactoryAddress,
-  useWriteHigher1155FactoryDeploy,
-} from '@/generated/wagmi'
 import { uploadJSON, useUploadFile } from '@/lib/ipfs'
 import styles from './create-collection-dialog.module.css'
 
-type CollectionDialogProps = {
-  address: Address
-}
-
-export function CreateCollectionDialog({ address }: CollectionDialogProps) {
+export function CreateCollectionDialog() {
   const router = useRouter()
   const client = usePublicClient()
 
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const { upload, preview, uri: image, isUploading, error } = useUploadFile()
-
-  const { writeContractAsync } = useWriteHigher1155FactoryDeploy()
 
   const handleSubmit = useCallback(
     (event: FormEvent<HTMLFormElement>) => {
@@ -74,36 +60,14 @@ export function CreateCollectionDialog({ address }: CollectionDialogProps) {
           return
         }
 
-        const { request, result } = await client.simulateContract({
-          account: address,
-          address: higher1155FactoryAddress[chain.id],
-          abi: higher1155FactoryAbi,
-          functionName: 'deploy',
-          args: [uri],
-        })
-
-        const hash = await writeContractAsync(request)
-
-        const receipt = await client.waitForTransactionReceipt({
-          hash,
-          confirmations: 3,
-        })
-        if (receipt.status === 'reverted') {
-          alert('Transaction reverted')
-          setIsSubmitting(false)
-          return
-        }
-
-        await mutate(`/api/users/${address}/collections`)
-
         router.push(
-          `/new?${new URLSearchParams({ collectionAddress: result }).toString()}`,
+          `/new?${new URLSearchParams({ contractURI: uri }).toString()}`,
         )
       }
 
       void handle()
     },
-    [client, image, writeContractAsync, address, router],
+    [client, image, router],
   )
 
   return (
