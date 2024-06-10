@@ -11,7 +11,7 @@ export default defineConfig({
       deployments: {
         IHigher1155Factory: {
           [base.id]: '0x0000000000000000000000000000000000000000',
-          [baseSepolia.id]: '0x06bbbd0b2eef2e838261f3da0d7959fadb7d9481',
+          [baseSepolia.id]: '0xd29ec6d67258f5aa8d59b738890a546dcead5104',
         },
       },
     }),

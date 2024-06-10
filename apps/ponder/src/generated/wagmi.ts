@@ -382,7 +382,7 @@ export const higher1155Abi = [
 
 /**
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x0000000000000000000000000000000000000000)
- * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x06bbbd0b2eef2e838261f3da0d7959fadb7d9481)
+ * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0xd29ec6d67258f5aa8d59b738890a546dcead5104)
  */
 export const iHigher1155FactoryAbi = [
   {
@@ -465,16 +465,16 @@ export const iHigher1155FactoryAbi = [
 
 /**
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x0000000000000000000000000000000000000000)
- * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x06bbbd0b2eef2e838261f3da0d7959fadb7d9481)
+ * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0xd29ec6d67258f5aa8d59b738890a546dcead5104)
  */
 export const iHigher1155FactoryAddress = {
   8453: '0x0000000000000000000000000000000000000000',
-  84532: '0x06BbBD0b2eEf2E838261F3dA0D7959fAdb7d9481',
+  84532: '0xd29Ec6d67258F5aA8d59b738890A546DceaD5104',
 } as const
 
 /**
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x0000000000000000000000000000000000000000)
- * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x06bbbd0b2eef2e838261f3da0d7959fadb7d9481)
+ * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0xd29ec6d67258f5aa8d59b738890a546dcead5104)
  */
 export const iHigher1155FactoryConfig = {
   address: iHigher1155FactoryAddress,

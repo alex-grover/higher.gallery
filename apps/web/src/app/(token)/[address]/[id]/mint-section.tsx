@@ -12,6 +12,7 @@ import {
   useMemo,
   useState,
 } from 'react'
+import { Signature } from 'viem'
 import { useAccount, usePublicClient } from 'wagmi'
 import { ApproveDialog } from '@/app/(token)/[address]/[id]/approve-dialog'
 import { chain } from '@/env'
@@ -20,8 +21,10 @@ import {
   iHigher1155FactoryAddress,
   useReadErc20PermitAllowance,
   useReadErc20PermitBalanceOf,
+  useWriteHigher1155ApproveAndMint,
   useWriteHigher1155Mint,
 } from '@/generated/wagmi'
+import { UINT256_MAX } from '@/lib/constants'
 import { useMints } from '@/lib/hooks/mints'
 import { address as addressSchema } from '@/lib/zod/address'
 
@@ -29,6 +32,10 @@ dayjs.extend(relativeTime)
 
 type MintButtonProps = {
   token: NonNullable<TokenQuery['token']>
+}
+
+export type ApproveParams = Signature & {
+  deadline: bigint
 }
 
 export function MintSection({ token }: MintButtonProps) {
@@ -97,25 +104,61 @@ export function MintSection({ token }: MintButtonProps) {
     },
   })
 
-  const { writeContractAsync, isPending } = useWriteHigher1155Mint()
+  const {
+    writeContractAsync: approveAndMint,
+    isPending: approveAndMintPending,
+  } = useWriteHigher1155ApproveAndMint()
+  const { writeContractAsync: mint, isPending: mintPending } =
+    useWriteHigher1155Mint()
 
-  const mint = useCallback(() => {
-    async function execute() {
-      if (!client) {
-        alert('Error getting client')
-        return
+  const handleMint = useCallback(
+    (approveParams?: ApproveParams) => {
+      async function execute() {
+        if (!client) {
+          alert('Error getting client')
+          return
+        }
+
+        if (account.status !== 'connected') {
+          alert('Error getting connected account')
+          return
+        }
+
+        if (approveParams) {
+          if (approveParams.v === undefined) {
+            alert('Invalid signature')
+            return
+          }
+
+          await approveAndMint({
+            address: addressSchema.parse(token.collection.id),
+            args: [
+              account.address,
+              iHigher1155FactoryAddress[chain.id],
+              UINT256_MAX,
+              approveParams.deadline,
+              Number(approveParams.v),
+              approveParams.r,
+              approveParams.s,
+              BigInt(token.tokenId),
+              BigInt(amount),
+              comment,
+            ],
+          })
+        } else {
+          await mint({
+            address: addressSchema.parse(token.collection.id),
+            args: [BigInt(token.tokenId), BigInt(amount), comment],
+          })
+        }
+
+        alert('Minted!')
       }
 
-      await writeContractAsync({
-        address: addressSchema.parse(token.collection.id),
-        args: [BigInt(token.tokenId), BigInt(amount), comment],
-      })
-
-      alert('Minted!')
-    }
-
-    void execute()
-  }, [client, writeContractAsync, token, amount, comment])
+      void execute()
+    },
+    [client, account, approveAndMint, mint, token, amount, comment],
+  )
 
   const hasSufficientApproval = useMemo(() => {
     if (allowance === undefined || amount === '') return
@@ -136,9 +179,9 @@ export function MintSection({ token }: MintButtonProps) {
         return
       }
 
-      mint()
+      handleMint()
     },
-    [hasSufficientApproval, mint],
+    [hasSufficientApproval, handleMint],
   )
 
   return (
@@ -186,7 +229,7 @@ export function MintSection({ token }: MintButtonProps) {
             <Form.Submit asChild>
               <Button
                 size="3"
-                loading={isPending}
+                loading={approveAndMintPending || mintPending}
                 disabled={
                   account.status !== 'connected' ||
                   balance === undefined ||
@@ -225,7 +268,7 @@ export function MintSection({ token }: MintButtonProps) {
       <ApproveDialog
         open={approveDialogOpen}
         onOpenChange={setApproveDialogOpen}
-        onSuccess={mint}
+        onSuccess={handleMint}
       />
     </Flex>
   )
