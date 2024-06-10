@@ -32,7 +32,7 @@ export function TokenCard({ data: token }: TokenProps) {
           direction="column"
           justify="end"
           p="4"
-          className={styles.overlay}
+          className={`light ${styles.overlay}`}
         >
           <Text size="2" weight="medium" className={styles.name}>
             {token.name}
