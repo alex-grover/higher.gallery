@@ -19,6 +19,19 @@ interface IHigher1155 {
 
     function create(string calldata uri, MintConfig calldata mintConfig) external returns (uint256 id);
 
+    function approveAndMint(
+        address owner,
+        address spender,
+        uint256 value,
+        uint256 deadline,
+        uint8 v,
+        bytes32 r,
+        bytes32 s,
+        uint256 id,
+        uint256 amount,
+        string calldata comment
+    ) external;
+
     function mint(uint256 id, uint256 amount, string calldata comment) external;
 
     function factory() external view returns (address);

@@ -18,8 +18,8 @@ import { chain } from '@/env'
 import { TokenQuery } from '@/generated/ponder'
 import {
   iHigher1155FactoryAddress,
-  useReadErc20Allowance,
-  useReadErc20BalanceOf,
+  useReadErc20PermitAllowance,
+  useReadErc20PermitBalanceOf,
   useWriteHigher1155Mint,
 } from '@/generated/wagmi'
 import { useMints } from '@/lib/hooks/mints'
@@ -84,13 +84,13 @@ export function MintSection({ token }: MintButtonProps) {
 
   const mints = useMints(token)
 
-  const { data: balance } = useReadErc20BalanceOf({
+  const { data: balance } = useReadErc20PermitBalanceOf({
     args: [account.address ?? '0x'],
     query: {
       enabled: account.status === 'connected',
     },
   })
-  const { data: allowance } = useReadErc20Allowance({
+  const { data: allowance } = useReadErc20PermitAllowance({
     args: [account.address ?? '0x', iHigher1155FactoryAddress[chain.id]],
     query: {
       enabled: account.status === 'connected',

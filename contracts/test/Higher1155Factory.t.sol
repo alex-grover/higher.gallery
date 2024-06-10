@@ -12,10 +12,10 @@ import {IHigher1155Factory} from "src/IHigher1155Factory.sol";
 import {MockHigherToken} from "test/MockHigherToken.sol";
 
 contract Higher1155FactoryTest is Test {
+    Higher1155Factory internal _factory;
+
     event Higher1155Deployed(address indexed creator, address higher1155);
     event PaymentTransferred(address indexed to, uint256 proceeds);
-
-    Higher1155Factory internal _factory;
 
     function setUp() public {
         Higher1155 higher1155Implementation = new Higher1155();

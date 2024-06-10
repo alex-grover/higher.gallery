@@ -3,7 +3,7 @@ import { ComponentProps, useCallback } from 'react'
 import { chain } from '@/env'
 import {
   iHigher1155FactoryAddress,
-  useWriteErc20Approve,
+  useWriteErc20PermitApprove,
 } from '@/generated/wagmi'
 import { UINT256_MAX } from '@/lib/constants'
 
@@ -16,7 +16,7 @@ export function ApproveDialog({
   onOpenChange,
   ...props
 }: ApproveDialogProps) {
-  const { writeContractAsync, isPending } = useWriteErc20Approve()
+  const { writeContractAsync, isPending } = useWriteErc20PermitApprove()
 
   const handleApprove = useCallback(() => {
     async function handle() {

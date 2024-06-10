@@ -8,9 +8,13 @@ export default defineConfig({
     react(),
     foundry({
       project: '../../contracts',
-      include: ['Higher1155.sol/*', 'IHigher1155Factory.sol/*', 'ERC20.sol/*'],
+      include: [
+        'Higher1155.sol/*',
+        'IHigher1155Factory.sol/*',
+        'ERC20Permit.sol/*',
+      ],
       deployments: {
-        ERC20: {
+        ERC20Permit: {
           [base.id]: '0x0578d8A44db98B23BF096A382e016e29a5Ce0ffe',
           [baseSepolia.id]: '0x92F6e588F74bBbc07565dEC525C98599cfe02726',
         },

@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.13;
 
+import {IERC20Permit} from "openzeppelin-contracts/contracts/token/ERC20/extensions/IERC20Permit.sol";
 import {OwnableUpgradeable} from "openzeppelin-contracts-upgradeable/contracts/access/OwnableUpgradeable.sol";
 import {ERC1155} from "solmate/tokens/ERC1155.sol";
 import {IHigher1155, MintConfig} from "src/IHigher1155.sol";
@@ -40,7 +41,23 @@ contract Higher1155 is IHigher1155, ERC1155, OwnableUpgradeable {
         return _nextId++;
     }
 
-    function mint(uint256 id, uint256 amount, string calldata comment) external override {
+    function approveAndMint(
+        address owner,
+        address spender,
+        uint256 value,
+        uint256 deadline,
+        uint8 v,
+        bytes32 r,
+        bytes32 s,
+        uint256 id,
+        uint256 amount,
+        string calldata comment
+    ) external override {
+        IERC20Permit(IHigher1155Factory(_factory).higherToken()).permit(owner, spender, value, deadline, v, r, s);
+        mint(id, amount, comment);
+    }
+
+    function mint(uint256 id, uint256 amount, string calldata comment) public override {
         if (_mintConfigs[id].maxSupply != 0 && _mintCounts[id] + amount > _mintConfigs[id].maxSupply) {
             revert MaxSupplyExceeded(_mintCounts[id], amount, _mintConfigs[id].maxSupply);
         }

@@ -2,23 +2,21 @@
 pragma solidity ^0.8.13;
 
 import "forge-std/Test.sol";
+import {IERC20Permit} from "openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Permit.sol";
 import {Initializable} from "openzeppelin-contracts-upgradeable/contracts/proxy/utils/Initializable.sol";
-import {ERC1155TokenReceiver} from "solmate/tokens/ERC1155.sol";
 import {Higher1155} from "src/Higher1155.sol";
 import {IHigher1155, MintConfig} from "src/IHigher1155.sol";
 import {IHigher1155Factory} from "src/IHigher1155Factory.sol";
-
-address constant higherToken = 0x0578d8A44db98B23BF096A382e016e29a5Ce0ffe;
-address constant higherCollective = 0x8177b34687bC8B99C205e533ae7DD7c6C9D07a66;
-address constant feeRecipient = 0xEf62D2dD8F856AaB964Bddf476d15F211eCF1323;
+import {MockERC1155TokenReceiver} from "test/MockERC1155TokenReceiver.sol";
+import {MockHigherToken} from "test/MockHigherToken.sol";
 
 contract Higher1155Test is Test {
-    event Create(uint256 id);
-    event Mint(uint256 indexed id, address minter, uint256 amount, string comment);
-
     Higher1155 internal _higher1155;
     address internal _creator = makeAddr("creator");
     address internal _factory = makeAddr("factory");
+
+    event Create(uint256 id);
+    event Mint(uint256 indexed id, address minter, uint256 amount, string comment);
 
     function setUp() external {
         _higher1155 = new Higher1155();
@@ -106,6 +104,83 @@ contract Higher1155Test is Test {
         address minter;
         uint256 amount;
         string comment;
+    }
+
+    struct ERC20PermitParams {
+        address owner;
+        address spender;
+        uint256 value;
+        uint256 deadline;
+        uint8 v;
+        bytes32 r;
+        bytes32 s;
+    }
+
+    function test_approveAndMint(
+        string calldata tokenURI,
+        MintConfig memory mintConfig,
+        MintParams memory mintParams,
+        ERC20PermitParams calldata permitParams
+    ) external {
+        vm.assume(mintParams.minter != address(_higher1155));
+
+        mintConfig.price = bound(mintConfig.price, 0, 3.4028236692e38);
+        mintParams.amount = bound(mintParams.amount, 0, 3.4028236692e38);
+        mintConfig.maxSupply = bound(mintConfig.maxSupply, mintParams.amount, type(uint256).max);
+        vm.warp(mintConfig.endTimestamp);
+
+        MockHigherToken higherToken = new MockHigherToken();
+        vm.mockCall(
+            _factory, abi.encodeWithSelector(IHigher1155Factory.higherToken.selector), abi.encode(address(higherToken))
+        );
+        vm.mockCall(
+            address(higherToken),
+            abi.encodeWithSelector(
+                IERC20Permit.permit.selector,
+                permitParams.owner,
+                permitParams.spender,
+                permitParams.value,
+                permitParams.deadline,
+                permitParams.v,
+                permitParams.r,
+                permitParams.s
+            ),
+            abi.encode()
+        );
+        vm.mockCall(
+            _factory,
+            abi.encodeWithSelector(
+                IHigher1155Factory.transferPayment.selector,
+                mintParams.minter,
+                _creator,
+                mintParams.amount * mintConfig.price
+            ),
+            abi.encode()
+        );
+
+        setUpTokenReceiver(mintParams.minter);
+
+        vm.prank(_creator);
+        uint256 id = _higher1155.create(tokenURI, mintConfig);
+
+        vm.expectEmit(address(_higher1155));
+        emit Mint(id, mintParams.minter, mintParams.amount, mintParams.comment);
+
+        vm.prank(mintParams.minter);
+        _higher1155.approveAndMint(
+            permitParams.owner,
+            permitParams.spender,
+            permitParams.value,
+            permitParams.deadline,
+            permitParams.v,
+            permitParams.r,
+            permitParams.s,
+            id,
+            mintParams.amount,
+            mintParams.comment
+        );
+
+        assertEq(_higher1155.balanceOf(mintParams.minter, id), mintParams.amount);
     }
 
     function test_mint(string calldata tokenURI, MintConfig memory mintConfig, MintParams memory mintParams) external {
@@ -269,5 +344,3 @@ contract Higher1155Test is Test {
         vm.etch(tokenReceiver, type(MockERC1155TokenReceiver).runtimeCode);
     }
 }
-
-contract MockERC1155TokenReceiver is ERC1155TokenReceiver {}
