@@ -14,12 +14,13 @@ import {
 import { useRouter } from 'next/navigation'
 import { FormEvent, useCallback, useState } from 'react'
 import { usePublicClient } from 'wagmi'
+import { chain } from '@/env'
 import { uploadJSON, useUploadFile } from '@/lib/ipfs'
 import styles from './create-collection-dialog.module.css'
 
 export function CreateCollectionDialog() {
   const router = useRouter()
-  const client = usePublicClient()
+  const client = usePublicClient({ chainId: chain.id })
 
   const [isSubmitting, setIsSubmitting] = useState(false)
 

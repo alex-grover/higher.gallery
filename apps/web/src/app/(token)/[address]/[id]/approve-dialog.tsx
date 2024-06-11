@@ -26,13 +26,17 @@ export function ApproveDialog({
   const { signTypedDataAsync, isPending } = useSignTypedData()
 
   const { data: nonce } = useReadErc20PermitNonces({
+    chainId: chain.id,
     args: [account.address ?? '0x'],
     query: {
       enabled: account.status === 'connected',
     },
   })
 
-  const { data: block } = useBlock({ watch: true })
+  const { data: block } = useBlock({
+    chainId: chain.id,
+    watch: true,
+  })
 
   const handleApprove = useCallback(() => {
     async function handle() {

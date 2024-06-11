@@ -49,7 +49,9 @@ export function CreateTokenForm({
   contractURI,
 }: CreateTokenFormProps) {
   const router = useRouter()
-  const client = usePublicClient()
+  const client = usePublicClient({
+    chainId: chain.id,
+  })
 
   const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -112,6 +114,7 @@ export function CreateTokenForm({
         let hash, collectionAddress, id
         if (contractURI) {
           const { request, result } = await client.simulateContract({
+            chain,
             account: address,
             address: iHigher1155FactoryAddress[chain.id],
             abi: iHigher1155FactoryAbi,
@@ -135,6 +138,7 @@ export function CreateTokenForm({
           id = 1n
         } else if (existingCollectionAddress) {
           const { request, result } = await client.simulateContract({
+            chain,
             account: address,
             address: existingCollectionAddress,
             abi: higher1155Abi,

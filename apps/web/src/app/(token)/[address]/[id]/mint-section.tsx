@@ -49,7 +49,7 @@ export type ApproveParams = Signature & {
 }
 
 export function MintSection({ token }: MintButtonProps) {
-  const client = usePublicClient()
+  const client = usePublicClient({ chainId: chain.id })
   const account = useAccount()
 
   const [amount, setAmount] = useState<bigint | ''>(1n)
@@ -102,19 +102,24 @@ export function MintSection({ token }: MintButtonProps) {
   const mints = useMints(token)
 
   const { data: balance } = useReadErc20PermitBalanceOf({
+    chainId: chain.id,
     args: [account.address ?? '0x'],
     query: {
       enabled: account.status === 'connected',
     },
   })
   const { data: allowance } = useReadErc20PermitAllowance({
+    chainId: chain.id,
     args: [account.address ?? '0x', iHigher1155FactoryAddress[chain.id]],
     query: {
       enabled: account.status === 'connected',
     },
   })
-  const { data: gasEstimate } = useEstimateGas()
+  const { data: gasEstimate } = useEstimateGas({
+    chainId: chain.id,
+  })
   const { data: ethBalance } = useBalance({
+    chainId: chain.id,
     address: account.address ?? '0x',
     query: {
       enabled: account.status === 'connected',
@@ -148,6 +153,7 @@ export function MintSection({ token }: MintButtonProps) {
           }
 
           await approveAndMint({
+            chainId: chain.id,
             address: addressSchema.parse(token.collection.id),
             args: [
               account.address,
@@ -164,6 +170,7 @@ export function MintSection({ token }: MintButtonProps) {
           })
         } else {
           await mint({
+            chainId: chain.id,
             address: addressSchema.parse(token.collection.id),
             args: [BigInt(token.tokenId), BigInt(amount), comment],
           })
