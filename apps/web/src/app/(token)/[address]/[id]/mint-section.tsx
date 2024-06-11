@@ -1,9 +1,19 @@
 'use client'
 
 import * as Form from '@radix-ui/react-form'
-import { Box, Button, Flex, Text, TextField } from '@radix-ui/themes'
+import { ExternalLinkIcon } from '@radix-ui/react-icons'
+import {
+  Box,
+  Button,
+  ButtonProps,
+  Flex,
+  Link as RadixLink,
+  Text,
+  TextField,
+} from '@radix-ui/themes'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
+import Link from 'next/link'
 import {
   ChangeEvent,
   FormEvent,
@@ -13,9 +23,9 @@ import {
   useState,
 } from 'react'
 import { Signature } from 'viem'
-import { useAccount, usePublicClient } from 'wagmi'
+import { useAccount, useBalance, useEstimateGas, usePublicClient } from 'wagmi'
 import { ApproveDialog } from '@/app/(token)/[address]/[id]/approve-dialog'
-import { chain } from '@/env'
+import { chain, env } from '@/env'
 import { TokenQuery } from '@/generated/ponder'
 import {
   iHigher1155FactoryAddress,
@@ -103,6 +113,13 @@ export function MintSection({ token }: MintButtonProps) {
       enabled: account.status === 'connected',
     },
   })
+  const { data: gasEstimate } = useEstimateGas()
+  const { data: ethBalance } = useBalance({
+    address: account.address ?? '0x',
+    query: {
+      enabled: account.status === 'connected',
+    },
+  })
 
   const {
     writeContractAsync: approveAndMint,
@@ -160,10 +177,29 @@ export function MintSection({ token }: MintButtonProps) {
     [client, account, approveAndMint, mint, token, amount, comment],
   )
 
-  const hasSufficientApproval = useMemo(() => {
-    if (allowance === undefined || amount === '') return
-    return allowance >= BigInt(token.price) * amount
-  }, [allowance, amount, token.price])
+  const hasSufficientBalance = useMemo(
+    () =>
+      balance !== undefined
+        ? balance >= BigInt(token.price) * (amount || 0n)
+        : undefined,
+    [balance, token.price, amount],
+  )
+
+  const hasSufficientApproval = useMemo(
+    () =>
+      allowance !== undefined
+        ? allowance >= BigInt(token.price) * (amount || 0n)
+        : undefined,
+    [allowance, token.price, amount],
+  )
+
+  const hasSufficientGas = useMemo(
+    () =>
+      ethBalance !== undefined && gasEstimate !== undefined
+        ? ethBalance.value >= gasEstimate
+        : undefined,
+    [ethBalance, gasEstimate],
+  )
 
   const handleSubmit = useCallback(
     (event: FormEvent<HTMLFormElement>) => {
@@ -225,27 +261,51 @@ export function MintSection({ token }: MintButtonProps) {
             </Form.Control>
           </Form.Field>
 
+          {hasSufficientBalance === false && (
+            <Flex asChild align="center" gap="1">
+              <RadixLink asChild>
+                <Link
+                  href={
+                    env.NEXT_PUBLIC_VERCEL_ENV === 'production'
+                      ? 'https://app.uniswap.org/swap?chain=base&inputCurrency=ETH&outputCurrency=0x0578d8A44db98B23BF096A382e016e29a5Ce0ffe'
+                      : 'https://sepolia.basescan.org/address/0x2499426138486d85b7e145e0057c42ed74af1512#writeContract#F2'
+                  }
+                  target="_blank"
+                >
+                  Get $HIGHER <ExternalLinkIcon />
+                </Link>
+              </RadixLink>
+            </Flex>
+          )}
+
           <Box asChild width="100%">
             <Form.Submit asChild>
               <Button
                 size="3"
-                loading={approveAndMintPending || mintPending}
-                disabled={
-                  account.status !== 'connected' ||
-                  balance === undefined ||
-                  balance < BigInt(token.price) ||
-                  (!!token.maxSupply &&
-                    (!mints ||
-                      BigInt(mints.count) >= BigInt(token.maxSupply))) ||
-                  mintEnded
+                loading={
+                  typeof window === 'undefined' ||
+                  account.status === 'connecting' ||
+                  account.status === 'reconnecting' ||
+                  (account.status === 'connected' &&
+                    (balance === undefined ||
+                      hasSufficientApproval === undefined ||
+                      hasSufficientGas === undefined)) ||
+                  (!!token.maxSupply && !mints) ||
+                  approveAndMintPending ||
+                  mintPending
                 }
-              >
-                {account.status !== 'connected' ||
-                hasSufficientApproval === undefined ||
-                hasSufficientApproval
-                  ? 'Mint'
-                  : 'Approve and mint'}
-              </Button>
+                {...getButtonProps(
+                  mintEnded,
+                  !!token.maxSupply &&
+                    !!mints &&
+                    BigInt(mints.count) + (amount || 0n) >=
+                      BigInt(token.maxSupply),
+                  account.status === 'connected',
+                  hasSufficientBalance,
+                  hasSufficientGas,
+                  hasSufficientApproval,
+                )}
+              />
             </Form.Submit>
           </Box>
         </Form.Root>
@@ -272,4 +332,52 @@ export function MintSection({ token }: MintButtonProps) {
       />
     </Flex>
   )
+}
+
+function getButtonProps(
+  mintEnded: boolean,
+  supplyLimitExceeded: boolean,
+  connected: boolean,
+  hasSufficientBalance: boolean | undefined,
+  hasSufficientGas: boolean | undefined,
+  hasSufficientApproval: boolean | undefined,
+): ButtonProps {
+  if (mintEnded)
+    return {
+      disabled: true,
+      children: 'Mint ended',
+    }
+
+  if (supplyLimitExceeded)
+    return {
+      disabled: true,
+      children: 'Max supply exceeded',
+    }
+
+  if (!connected)
+    return {
+      disabled: true,
+      children: 'Connect wallet to mint',
+    }
+
+  if (hasSufficientBalance === false)
+    return {
+      disabled: true,
+      children: 'Insufficient $HIGHER balance',
+    }
+
+  if (hasSufficientGas === false)
+    return {
+      disabled: true,
+      children: 'Insufficient ETH for gas',
+    }
+
+  if (hasSufficientApproval === false)
+    return {
+      children: 'Approve and mint',
+    }
+
+  return {
+    children: 'Mint',
+  }
 }
