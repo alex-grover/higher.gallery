@@ -7,13 +7,16 @@ import { GetUserResponse } from '@/app/api/users/[address]/route'
 import { truncateEthAddress } from '@/lib/utils/address'
 
 type NameProps = {
-  address: Address
+  address?: Address
 }
 
 export function Name({ address }: NameProps) {
   const { data, isLoading } = useSWRImmutable<GetUserResponse>(
-    `/api/users/${address}`,
+    address && `/api/users/${address}`,
   )
+
+  if (!address)
+    return truncateEthAddress('0x0000000000000000000000000000000000000000')
 
   return (
     <Skeleton loading={isLoading}>

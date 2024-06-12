@@ -8,6 +8,7 @@ import {
   ButtonProps,
   Flex,
   Link as RadixLink,
+  Skeleton,
   Text,
   TextField,
 } from '@radix-ui/themes'
@@ -393,10 +394,12 @@ export function MintSection({ token }: MintButtonProps) {
             <Text> &bull; </Text>
           </>
         )}
-        <Text>
-          {mints?.count}
-          {token.maxSupply && !mintEnded && ` / ${token.maxSupply}`} minted
-        </Text>
+        <Skeleton loading={!mints}>
+          <Text>
+            {mints?.count}
+            {token.maxSupply && !mintEnded && ` / ${token.maxSupply}`} minted
+          </Text>
+        </Skeleton>
       </Text>
 
       <ApproveDialog
