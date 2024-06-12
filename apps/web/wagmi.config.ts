@@ -23,6 +23,9 @@ export default defineConfig({
           [baseSepolia.id]: '0xd29ec6d67258f5aa8d59b738890a546dcead5104',
         },
       },
+      forge: {
+        build: false,
+      },
     }),
   ],
 })
