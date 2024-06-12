@@ -40,7 +40,6 @@ import {
   useWriteHigher1155ApproveAndMint,
   useWriteHigher1155Mint,
 } from '@/generated/wagmi'
-import { UINT256_MAX } from '@/lib/constants'
 import { useMints } from '@/lib/hooks/mints'
 import { address as addressSchema } from '@/lib/zod/address'
 
@@ -51,6 +50,7 @@ type MintButtonProps = {
 }
 
 export type ApproveParams = Signature & {
+  value: bigint
   deadline: bigint
 }
 
@@ -174,7 +174,7 @@ export function MintSection({ token }: MintButtonProps) {
               args: [
                 account.address,
                 iHigher1155FactoryAddress[chain.id],
-                UINT256_MAX,
+                approveParams.value,
                 approveParams.deadline,
                 Number(approveParams.v),
                 approveParams.r,
@@ -400,6 +400,7 @@ export function MintSection({ token }: MintButtonProps) {
       </Text>
 
       <ApproveDialog
+        minimum={amount !== '' ? BigInt(token.price) * BigInt(amount) : 0n}
         open={approveDialogOpen}
         onOpenChange={setApproveDialogOpen}
         onSuccess={handleMint}
