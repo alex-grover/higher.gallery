@@ -1,7 +1,7 @@
 import { Button, Dialog, Flex } from '@radix-ui/themes'
 import { ComponentProps, useCallback } from 'react'
 import { toast } from 'sonner'
-import { parseSignature } from 'viem'
+import { parseSignature, SignTypedDataErrorType } from 'viem'
 import { useAccount, useBlock, useSignTypedData } from 'wagmi'
 import { ApproveParams } from '@/app/(token)/[address]/[id]/mint-section'
 import { chain } from '@/env'
@@ -58,46 +58,53 @@ export function ApproveDialog({
 
       const deadline = block.timestamp + FIVE_MINUTES_IN_SECONDS
 
-      const signature = await signTypedDataAsync({
-        domain: {
-          name: 'higher',
-          version: '1',
-          chainId: chain.id,
-          verifyingContract: erc20PermitAddress[chain.id],
-        },
-        types: {
-          Permit: [
-            {
-              name: 'owner',
-              type: 'address',
-            },
-            {
-              name: 'spender',
-              type: 'address',
-            },
-            {
-              name: 'value',
-              type: 'uint256',
-            },
-            {
-              name: 'nonce',
-              type: 'uint256',
-            },
-            {
-              name: 'deadline',
-              type: 'uint256',
-            },
-          ],
-        },
-        primaryType: 'Permit',
-        message: {
-          owner: account.address,
-          spender: iHigher1155FactoryAddress[chain.id],
-          value: UINT256_MAX,
-          nonce,
-          deadline,
-        },
-      })
+      let signature
+      try {
+        signature = await signTypedDataAsync({
+          domain: {
+            name: 'higher',
+            version: '1',
+            chainId: chain.id,
+            verifyingContract: erc20PermitAddress[chain.id],
+          },
+          types: {
+            Permit: [
+              {
+                name: 'owner',
+                type: 'address',
+              },
+              {
+                name: 'spender',
+                type: 'address',
+              },
+              {
+                name: 'value',
+                type: 'uint256',
+              },
+              {
+                name: 'nonce',
+                type: 'uint256',
+              },
+              {
+                name: 'deadline',
+                type: 'uint256',
+              },
+            ],
+          },
+          primaryType: 'Permit',
+          message: {
+            owner: account.address,
+            spender: iHigher1155FactoryAddress[chain.id],
+            value: UINT256_MAX,
+            nonce,
+            deadline,
+          },
+        })
+      } catch (e) {
+        const error = e as SignTypedDataErrorType
+        toast.error(error.message)
+        return
+      }
 
       const parsedSignature = parseSignature(signature)
 

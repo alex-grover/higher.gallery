@@ -23,7 +23,11 @@ import {
   useState,
 } from 'react'
 import { toast } from 'sonner'
-import { Signature } from 'viem'
+import {
+  Signature,
+  WaitForTransactionReceiptErrorType,
+  WriteContractErrorType,
+} from 'viem'
 import { useAccount, useBalance, useEstimateGas, usePublicClient } from 'wagmi'
 import { ApproveDialog } from '@/app/(token)/[address]/[id]/approve-dialog'
 import { chain, env } from '@/env'
@@ -157,40 +161,77 @@ export function MintSection({ token }: MintButtonProps) {
             return
           }
 
-          hash = await approveAndMint({
-            chainId: chain.id,
-            address: addressSchema.parse(token.collection.id),
-            args: [
-              account.address,
-              iHigher1155FactoryAddress[chain.id],
-              UINT256_MAX,
-              approveParams.deadline,
-              Number(approveParams.v),
-              approveParams.r,
-              approveParams.s,
-              BigInt(token.tokenId),
-              BigInt(amount),
-              comment,
-            ],
-          })
+          try {
+            hash = await approveAndMint({
+              chainId: chain.id,
+              address: addressSchema.parse(token.collection.id),
+              args: [
+                account.address,
+                iHigher1155FactoryAddress[chain.id],
+                UINT256_MAX,
+                approveParams.deadline,
+                Number(approveParams.v),
+                approveParams.r,
+                approveParams.s,
+                BigInt(token.tokenId),
+                BigInt(amount),
+                comment,
+              ],
+            })
+          } catch (e) {
+            const error = e as WriteContractErrorType
+            if (
+              error.name === 'TransactionExecutionError' &&
+              error.details.includes('User rejected the request')
+            ) {
+              toast.info('Transaction canceled')
+            } else {
+              toast.error(error.message)
+            }
+
+            setTransactionPending(false)
+            return
+          }
         } else {
-          hash = await mint({
-            chainId: chain.id,
-            address: addressSchema.parse(token.collection.id),
-            args: [BigInt(token.tokenId), BigInt(amount), comment],
-          })
+          try {
+            hash = await mint({
+              chainId: chain.id,
+              address: addressSchema.parse(token.collection.id),
+              args: [BigInt(token.tokenId), BigInt(amount), comment],
+            })
+          } catch (e) {
+            const error = e as WriteContractErrorType
+            if (
+              error.name === 'TransactionExecutionError' &&
+              error.details.includes('User rejected the request')
+            ) {
+              toast.info('Transaction canceled')
+            } else {
+              toast.error(error.message)
+            }
+
+            setTransactionPending(false)
+            return
+          }
         }
 
-        const receipt = await client.waitForTransactionReceipt({
-          hash,
-        })
+        try {
+          const receipt = await client.waitForTransactionReceipt({
+            hash,
+          })
 
-        setTransactionPending(false)
-
-        if (receipt.status === 'reverted') {
-          toast.error('Transaction reverted')
+          if (receipt.status === 'reverted') {
+            toast.error('Transaction reverted')
+            return
+          }
+        } catch (e) {
+          const error = e as WaitForTransactionReceiptErrorType
+          toast.error(error.message)
+          setTransactionPending(false)
           return
         }
+
+        setTransactionPending(false)
 
         await mutate()
 

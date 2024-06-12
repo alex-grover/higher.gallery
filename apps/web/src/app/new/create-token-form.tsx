@@ -17,7 +17,13 @@ import { FormEvent, useCallback, useState } from 'react'
 import { toast } from 'sonner'
 import { mutate } from 'swr'
 import useSWRImmutable from 'swr/immutable'
-import { Address, parseEther } from 'viem'
+import {
+  Address,
+  parseEther,
+  SimulateContractErrorType,
+  WaitForTransactionReceiptErrorType,
+  WriteContractErrorType,
+} from 'viem'
 import { usePublicClient } from 'wagmi'
 import { GetCollectionResponse } from '@/app/api/collections/[address]/route'
 import { chain } from '@/env'
@@ -114,63 +120,115 @@ export function CreateTokenForm({
 
         let hash, collectionAddress, id
         if (contractURI) {
-          const { request, result } = await client.simulateContract({
-            chain,
-            account: address,
-            address: iHigher1155FactoryAddress[chain.id],
-            abi: iHigher1155FactoryAbi,
-            functionName: 'deploy',
-            args: [
-              contractURI,
-              uri,
-              {
-                price: parseEther(price),
-                maxSupply: BigInt(maxSupply),
-                endTimestamp:
-                  BigInt(mintDuration) &&
-                  BigInt(Math.floor(new Date().valueOf() / 1000)) +
-                    BigInt(mintDuration) * 24n * 60n * 60n,
-              },
-            ],
-          })
+          let request, result
+          try {
+            // eslint-disable-next-line no-extra-semi
+            ;({ request, result } = await client.simulateContract({
+              chain,
+              account: address,
+              address: iHigher1155FactoryAddress[chain.id],
+              abi: iHigher1155FactoryAbi,
+              functionName: 'deploy',
+              args: [
+                contractURI,
+                uri,
+                {
+                  price: parseEther(price),
+                  maxSupply: BigInt(maxSupply),
+                  endTimestamp:
+                    BigInt(mintDuration) &&
+                    BigInt(Math.floor(new Date().valueOf() / 1000)) +
+                      BigInt(mintDuration) * 24n * 60n * 60n,
+                },
+              ],
+            }))
+          } catch (e) {
+            const error = e as SimulateContractErrorType
+            toast.error(error.message)
+            return
+          }
 
-          hash = await deploy(request)
+          try {
+            hash = await deploy(request)
+          } catch (e) {
+            const error = e as WriteContractErrorType
+            if (
+              error.name === 'TransactionExecutionError' &&
+              error.details.includes('User rejected the request')
+            ) {
+              toast.info('Transaction canceled')
+            } else {
+              toast.error(error.message)
+            }
+
+            return
+          }
+
           collectionAddress = result
           id = 1n
         } else if (existingCollectionAddress) {
-          const { request, result } = await client.simulateContract({
-            chain,
-            account: address,
-            address: existingCollectionAddress,
-            abi: higher1155Abi,
-            functionName: 'create',
-            args: [
-              uri,
-              {
-                price: parseEther(price),
-                maxSupply: BigInt(maxSupply),
-                endTimestamp:
-                  BigInt(mintDuration) &&
-                  BigInt(Math.floor(new Date().valueOf() / 1000)) +
-                    BigInt(mintDuration) * 24n * 60n * 60n,
-              },
-            ],
-          })
+          let request, result
+          try {
+            // eslint-disable-next-line no-extra-semi
+            ;({ request, result } = await client.simulateContract({
+              chain,
+              account: address,
+              address: existingCollectionAddress,
+              abi: higher1155Abi,
+              functionName: 'create',
+              args: [
+                uri,
+                {
+                  price: parseEther(price),
+                  maxSupply: BigInt(maxSupply),
+                  endTimestamp:
+                    BigInt(mintDuration) &&
+                    BigInt(Math.floor(new Date().valueOf() / 1000)) +
+                      BigInt(mintDuration) * 24n * 60n * 60n,
+                },
+              ],
+            }))
+          } catch (e) {
+            const error = e as SimulateContractErrorType
+            toast.error(error.message)
+            return
+          }
 
-          hash = await create(request)
+          try {
+            hash = await create(request)
+          } catch (e) {
+            const error = e as WriteContractErrorType
+            if (
+              error.name === 'TransactionExecutionError' &&
+              error.details.includes('User rejected the request')
+            ) {
+              toast.info('Transaction canceled')
+            } else {
+              toast.error(error.message)
+            }
+
+            return
+          }
+
           collectionAddress = existingCollectionAddress
           id = result
         } else {
           throw new Error('Invalid collection params')
         }
 
-        const receipt = await client.waitForTransactionReceipt({
-          hash,
-          confirmations: 2,
-        })
-        if (receipt.status === 'reverted') {
-          toast.error('Transaction reverted')
-          setIsSubmitting(false)
+        try {
+          const receipt = await client.waitForTransactionReceipt({
+            hash,
+            confirmations: 2,
+          })
+          if (receipt.status === 'reverted') {
+            toast.error('Transaction reverted')
+            setIsSubmitting(false)
+            return
+          }
+        } catch (e) {
+          const error = e as WaitForTransactionReceiptErrorType
+          toast.error(error.message)
           return
         }
 

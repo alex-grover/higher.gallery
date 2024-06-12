@@ -25,7 +25,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
               <ConnectkitProvider>
                 <Header />
                 {children}
-                <Toaster />
+                <Toaster theme="system" />
               </ConnectkitProvider>
             </SWRProvider>
             <Analytics />
