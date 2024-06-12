@@ -18,12 +18,12 @@
     "web#build": {
       "dependsOn": ["codegen"],
       "outputs": [".next/**", "!.next/cache/**"],
-      "env": ["PONDER_URL"]
+      "env": ["MAINNET_RPC_URL", "PONDER_URL"]
     },
     "lint": {},
     "web#lint": {
       "dependsOn": ["codegen"],
-      "env": ["PONDER_URL"]
+      "env": ["MAINNET_RPC_URL", "PONDER_URL"]
     },
     "prettier": {},
     "stylelint": {},
@@ -44,7 +44,7 @@
     },
     "web#dev": {
       "dependsOn": ["web#codegen", "web#wagmi"],
-      "env": ["PONDER_URL"]
+      "env": ["MAINNET_RPC_URL", "PONDER_URL"]
     }
   }
 }

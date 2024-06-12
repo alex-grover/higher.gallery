@@ -44,6 +44,7 @@ jobs:
           NEXT_PUBLIC_PINATA_JWT: jwt
           NEXT_PUBLIC_VERCEL_ENV: preview
           NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID: walletconnect
+          MAINNET_RPC_URL: http://localhost:3000
           PONDER_URL: http://localhost:3000
       - run: pnpm run prettier
       - run: pnpm run stylelint

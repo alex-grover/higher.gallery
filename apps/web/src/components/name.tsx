@@ -1,8 +1,9 @@
 'use client'
 
+import { Skeleton } from '@radix-ui/themes'
+import useSWRImmutable from 'swr/immutable'
 import { Address } from 'viem'
-import { useEnsName } from 'wagmi'
-import { mainnet } from 'wagmi/chains'
+import { GetUserResponse } from '@/app/api/users/[address]/route'
 import { truncateEthAddress } from '@/lib/utils/address'
 
 type NameProps = {
@@ -10,10 +11,13 @@ type NameProps = {
 }
 
 export function Name({ address }: NameProps) {
-  const { data: ensName } = useEnsName({
-    address,
-    chainId: mainnet.id,
-  })
+  const { data, isLoading } = useSWRImmutable<GetUserResponse>(
+    `/api/users/${address}`,
+  )
 
-  return ensName ?? truncateEthAddress(address)
+  return (
+    <Skeleton loading={isLoading}>
+      {data?.ensName ?? truncateEthAddress(address)}
+    </Skeleton>
+  )
 }
