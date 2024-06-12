@@ -11,6 +11,7 @@ import {
   Text,
   TextField,
 } from '@radix-ui/themes'
+import { useModal } from 'connectkit'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import Link from 'next/link'
@@ -56,11 +57,16 @@ export type ApproveParams = Signature & {
 export function MintSection({ token }: MintButtonProps) {
   const client = usePublicClient({ chainId: chain.id })
   const account = useAccount()
+  const { setOpen } = useModal()
 
   const [amount, setAmount] = useState<bigint | ''>(1n)
   const [comment, setComment] = useState('')
   const [approveDialogOpen, setApproveDialogOpen] = useState(false)
   const [transactionPending, setTransactionPending] = useState(false)
+
+  const showModal = useCallback(() => {
+    setOpen(true)
+  }, [setOpen])
 
   const handleAmountChange = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
@@ -368,6 +374,7 @@ export function MintSection({ token }: MintButtonProps) {
                     BigInt(mints.count) + (amount || 0n) >=
                       BigInt(token.maxSupply),
                   account.status === 'connected',
+                  showModal,
                   hasSufficientBalance,
                   hasSufficientGas,
                   hasSufficientApproval,
@@ -405,6 +412,7 @@ function getButtonProps(
   mintEnded: boolean,
   supplyLimitExceeded: boolean,
   connected: boolean,
+  showModal: () => void,
   hasSufficientBalance: boolean | undefined,
   hasSufficientGas: boolean | undefined,
   hasSufficientApproval: boolean | undefined,
@@ -423,8 +431,8 @@ function getButtonProps(
 
   if (!connected)
     return {
-      disabled: true,
       children: 'Connect wallet to mint',
+      onClick: showModal,
     }
 
   if (hasSufficientBalance === false)
