@@ -22,6 +22,7 @@ import {
   useMemo,
   useState,
 } from 'react'
+import { toast } from 'sonner'
 import { Signature } from 'viem'
 import { useAccount, useBalance, useEstimateGas, usePublicClient } from 'wagmi'
 import { ApproveDialog } from '@/app/(token)/[address]/[id]/approve-dialog'
@@ -55,6 +56,7 @@ export function MintSection({ token }: MintButtonProps) {
   const [amount, setAmount] = useState<bigint | ''>(1n)
   const [comment, setComment] = useState('')
   const [approveDialogOpen, setApproveDialogOpen] = useState(false)
+  const [transactionPending, setTransactionPending] = useState(false)
 
   const handleAmountChange = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
@@ -99,7 +101,7 @@ export function MintSection({ token }: MintButtonProps) {
     }
   }, [mintEndTime, mintEnded])
 
-  const mints = useMints(token)
+  const { mints, mutate } = useMints(token)
 
   const { data: balance } = useReadErc20PermitBalanceOf({
     chainId: chain.id,
@@ -137,22 +139,25 @@ export function MintSection({ token }: MintButtonProps) {
     (approveParams?: ApproveParams) => {
       async function execute() {
         if (!client) {
-          alert('Error getting client')
+          toast.error('Error getting client')
           return
         }
 
         if (account.status !== 'connected') {
-          alert('Error getting connected account')
+          toast.error('Error getting connected account')
           return
         }
 
+        setTransactionPending(true)
+
+        let hash
         if (approveParams) {
           if (approveParams.v === undefined) {
-            alert('Invalid signature')
+            toast.error('Invalid signature')
             return
           }
 
-          await approveAndMint({
+          hash = await approveAndMint({
             chainId: chain.id,
             address: addressSchema.parse(token.collection.id),
             args: [
@@ -169,19 +174,32 @@ export function MintSection({ token }: MintButtonProps) {
             ],
           })
         } else {
-          await mint({
+          hash = await mint({
             chainId: chain.id,
             address: addressSchema.parse(token.collection.id),
             args: [BigInt(token.tokenId), BigInt(amount), comment],
           })
         }
 
-        alert('Minted!')
+        const receipt = await client.waitForTransactionReceipt({
+          hash,
+        })
+
+        setTransactionPending(false)
+
+        if (receipt.status === 'reverted') {
+          toast.error('Transaction reverted')
+          return
+        }
+
+        await mutate()
+
+        toast.success('Minted!')
       }
 
       void execute()
     },
-    [client, account, approveAndMint, mint, token, amount, comment],
+    [client, account, approveAndMint, mint, token, amount, comment, mutate],
   )
 
   const hasSufficientBalance = useMemo(
@@ -213,7 +231,7 @@ export function MintSection({ token }: MintButtonProps) {
       event.preventDefault()
 
       if (hasSufficientApproval === undefined) {
-        alert('Unable to check token approval')
+        toast.error('Unable to check token approval')
         return
       }
 
@@ -299,7 +317,8 @@ export function MintSection({ token }: MintButtonProps) {
                       hasSufficientGas === undefined)) ||
                   (!!token.maxSupply && !mints) ||
                   approveAndMintPending ||
-                  mintPending
+                  mintPending ||
+                  transactionPending
                 }
                 {...getButtonProps(
                   mintEnded,

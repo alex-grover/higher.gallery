@@ -15,7 +15,7 @@ type ActivityProps = {
 }
 
 export function Activity({ token }: ActivityProps) {
-  const mints = useMints(token)
+  const { mints } = useMints(token)
 
   return (
     <Flex direction="column" gap="3">

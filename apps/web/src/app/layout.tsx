@@ -4,6 +4,7 @@ import { SpeedInsights } from '@vercel/speed-insights/next'
 import { type Metadata } from 'next'
 import { ThemeProvider } from 'next-themes'
 import { type PropsWithChildren } from 'react'
+import { Toaster } from 'sonner'
 import { Header } from '@/components/header'
 import { ConnectkitProvider } from '@/components/providers/connectkit'
 import { SWRProvider } from '@/components/providers/swr'
@@ -24,6 +25,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
               <ConnectkitProvider>
                 <Header />
                 {children}
+                <Toaster />
               </ConnectkitProvider>
             </SWRProvider>
             <Analytics />

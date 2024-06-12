@@ -14,6 +14,7 @@ import {
 } from '@radix-ui/themes'
 import { useRouter } from 'next/navigation'
 import { FormEvent, useCallback, useState } from 'react'
+import { toast } from 'sonner'
 import { mutate } from 'swr'
 import useSWRImmutable from 'swr/immutable'
 import { Address, parseEther } from 'viem'
@@ -73,7 +74,7 @@ export function CreateTokenForm({
 
       async function handle() {
         if (!client) {
-          alert('Error getting client')
+          toast.error('Error getting client')
           return
         }
 
@@ -91,7 +92,7 @@ export function CreateTokenForm({
           typeof maxSupply !== 'string' ||
           typeof mintDuration !== 'string'
         ) {
-          alert('Invalid form data')
+          toast.error('Invalid form data')
           return
         }
 
@@ -106,7 +107,7 @@ export function CreateTokenForm({
           })
         } catch (e) {
           const error = e as Error
-          alert(error.message)
+          toast.error(error.message)
           setIsSubmitting(false)
           return
         }
@@ -168,7 +169,7 @@ export function CreateTokenForm({
           confirmations: 2,
         })
         if (receipt.status === 'reverted') {
-          alert('Transaction reverted')
+          toast.error('Transaction reverted')
           setIsSubmitting(false)
           return
         }

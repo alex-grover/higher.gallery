@@ -5,10 +5,13 @@ import { TokenQuery } from '@/generated/ponder'
 type Token = NonNullable<TokenQuery['token']>
 
 export function useMints(token: Token) {
-  const { data } = useSWR<ListTokenMintsResponse>(
+  const { data: mints, mutate } = useSWR<ListTokenMintsResponse>(
     `/api/tokens/${token.collection.id}/${token.tokenId}/mints`,
     { refreshInterval: 10000 },
   )
 
-  return data
+  return {
+    mints,
+    mutate,
+  }
 }

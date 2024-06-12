@@ -13,6 +13,7 @@ import {
 } from '@radix-ui/themes'
 import { useRouter } from 'next/navigation'
 import { FormEvent, useCallback, useState } from 'react'
+import { toast } from 'sonner'
 import { usePublicClient } from 'wagmi'
 import { chain } from '@/env'
 import { uploadJSON, useUploadFile } from '@/lib/ipfs'
@@ -32,7 +33,7 @@ export function CreateCollectionDialog() {
 
       async function handle() {
         if (!client) {
-          alert('Error getting client')
+          toast.error('Error creating client')
           return
         }
 
@@ -41,7 +42,7 @@ export function CreateCollectionDialog() {
         const description = data.get('description')
 
         if (typeof name !== 'string' || typeof description !== 'string') {
-          alert('Invalid form data')
+          toast.error('Invalid form data')
           return
         }
 
@@ -56,7 +57,7 @@ export function CreateCollectionDialog() {
           })
         } catch (e) {
           const error = e as Error
-          alert(error.message)
+          toast.error(error.message)
           setIsSubmitting(false)
           return
         }

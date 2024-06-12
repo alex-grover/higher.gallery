@@ -1,5 +1,6 @@
 import { Button, Dialog, Flex } from '@radix-ui/themes'
 import { ComponentProps, useCallback } from 'react'
+import { toast } from 'sonner'
 import { parseSignature } from 'viem'
 import { useAccount, useBlock, useSignTypedData } from 'wagmi'
 import { ApproveParams } from '@/app/(token)/[address]/[id]/mint-section'
@@ -41,17 +42,17 @@ export function ApproveDialog({
   const handleApprove = useCallback(() => {
     async function handle() {
       if (account.status !== 'connected') {
-        alert('Error getting connected account')
+        toast.error('Error getting connected account')
         return
       }
 
       if (nonce === undefined) {
-        alert('Error getting nonce')
+        toast.error('Error getting nonce')
         return
       }
 
       if (!block) {
-        alert('Error getting current block')
+        toast.error('Error getting current block')
         return
       }
 
