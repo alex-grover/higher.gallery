@@ -102,7 +102,15 @@ export function ApproveDialog({
         })
       } catch (e) {
         const error = e as SignTypedDataErrorType
-        toast.error(error.message)
+        if (
+          error.name === 'InternalRpcError' &&
+          error.details.includes('User rejected the request')
+        ) {
+          toast.info('Signature rejected')
+        } else {
+          toast.error(error.message)
+        }
+
         return
       }
 
