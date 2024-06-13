@@ -1,3 +1,7 @@
 .masonry {
   margin-bottom: calc(-1 * var(--space-2));
 }
+
+.placeholder {
+  border-radius: var(--radius-2);
+}

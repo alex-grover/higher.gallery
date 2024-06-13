@@ -1,5 +1,6 @@
 'use client'
 
+import { AspectRatio, Grid, Skeleton } from '@radix-ui/themes'
 import { Masonry } from 'masonic'
 import useSWR from 'swr'
 import { ListTokensResponse } from '@/app/api/tokens/route'
@@ -12,10 +13,40 @@ import { TokenCard } from './token-card'
 export default function HomePage() {
   const { data } = useSWR<ListTokensResponse>('/api/tokens')
 
-  if (!data) return null
+  return (
+    <PageContainer>
+      {data ? (
+        <Masonry
+          items={getPlaceholderData(data.tokens)}
+          render={TokenCard}
+          columnWidth={240}
+          columnGutter={8}
+          tabIndex={-1}
+          className={styles.masonry}
+        />
+      ) : (
+        <Grid columns="repeat(auto-fill, minmax(240px, 1fr))" gap="2">
+          {Array(25)
+            .fill(null)
+            .map((_, i) => (
+              <Skeleton
+                key={i}
+                loading
+                height="100%"
+                className={styles.placeholder}
+              >
+                <AspectRatio />
+              </Skeleton>
+            ))}
+        </Grid>
+      )}
+    </PageContainer>
+  )
+}
 
-  const tokens = [
-    ...data.tokens,
+function getPlaceholderData<T>(items: T[]) {
+  return [
+    ...items,
     ...PLACEHOLDER_IMAGES.map((image) => ({
       collection: {
         id: address.parse('0x0000000000000000000000000000000000000000'),
@@ -28,19 +59,6 @@ export default function HomePage() {
       image,
     })),
   ]
-
-  return (
-    <PageContainer>
-      <Masonry
-        items={tokens}
-        render={TokenCard}
-        columnWidth={240}
-        columnGutter={8}
-        tabIndex={-1}
-        className={styles.masonry}
-      />
-    </PageContainer>
-  )
 }
 
 const PLACEHOLDER_IMAGES = [
