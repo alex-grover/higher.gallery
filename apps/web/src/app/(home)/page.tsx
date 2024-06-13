@@ -33,7 +33,7 @@ export default function HomePage() {
                 key={i}
                 loading
                 height="100%"
-                className={styles.placeholder}
+                className={styles.skeleton}
               >
                 <AspectRatio />
               </Skeleton>

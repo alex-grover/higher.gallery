@@ -6,3 +6,7 @@
   object-fit: cover;
   border-radius: 9999px;
 }
+
+.skeleton {
+  border-radius: var(--radius-2);
+}

@@ -2,6 +2,6 @@
   margin-bottom: calc(-1 * var(--space-2));
 }
 
-.placeholder {
+.skeleton {
   border-radius: var(--radius-2);
 }
