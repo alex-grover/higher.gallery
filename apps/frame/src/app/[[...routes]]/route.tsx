@@ -5,10 +5,7 @@ import { devtools } from 'frog/dev'
 import { handle } from 'frog/next'
 import { serveStatic } from 'frog/serve-static'
 
-const app = new Frog({
-  assetsPath: '/',
-  basePath: '/api',
-})
+export const app = new Frog()
 
 export const runtime = 'edge'
 

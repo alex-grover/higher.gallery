@@ -2,7 +2,7 @@
   "name": "higher.gallery",
   "license": "MIT",
   "scripts": {
-    "dev": "turbo run dev",
+    "dev": "turbo run dev frog",
     "build": "turbo run build --cache-dir=.turbo",
     "lint": "turbo run lint --cache-dir=.turbo",
     "prettier": "turbo run prettier --cache-dir=.turbo",

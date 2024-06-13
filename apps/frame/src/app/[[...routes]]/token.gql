@@ -1,0 +1,6 @@
+query token($token: String!) {
+  token(id: $token) {
+    image
+    price
+  }
+}

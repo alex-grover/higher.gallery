@@ -15,15 +15,28 @@
       "dependsOn": ["ponder#codegen"],
       "outputs": ["src/generated/ponder.ts"]
     },
+    "frame#codegen": {
+      "dependsOn": ["ponder#codegen"],
+      "outputs": ["src/generated/ponder.ts"]
+    },
     "web#build": {
       "dependsOn": ["codegen"],
       "outputs": [".next/**", "!.next/cache/**"],
       "env": ["MAINNET_RPC_URL", "PONDER_URL"]
     },
+    "frame#build": {
+      "dependsOn": ["codegen"],
+      "outputs": [".next/**", "!.next/cache/**"],
+      "env": ["PONDER_URL"]
+    },
     "lint": {},
     "web#lint": {
       "dependsOn": ["codegen"],
       "env": ["MAINNET_RPC_URL", "PONDER_URL"]
+    },
+    "frame#lint": {
+      "dependsOn": ["codegen"],
+      "env": ["PONDER_URL"]
     },
     "prettier": {},
     "stylelint": {},
@@ -33,6 +46,9 @@
     },
     "web#typecheck": {
       "dependsOn": ["codegen", "wagmi"]
+    },
+    "frame#typecheck": {
+      "dependsOn": ["codegen"]
     },
     "test": {},
     "dev": {
@@ -45,6 +61,14 @@
     "web#dev": {
       "dependsOn": ["web#codegen", "web#wagmi"],
       "env": ["MAINNET_RPC_URL", "PONDER_URL"]
+    },
+    "frame#dev": {
+      "dependsOn": ["frame#codegen"],
+      "env": ["PONDER_URL"]
+    },
+    "frog": {
+      "cache": false,
+      "persistent": true
     }
   }
 }
