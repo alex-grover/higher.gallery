@@ -387,14 +387,14 @@ export function MintSection({ token }: MintButtonProps) {
       </Flex>
 
       <Text align="center" color="gray" size="1">
-        {(!!timeRemaining || mintEnded) && (
-          <>
-            {timeRemaining && <Text>{timeRemaining} remaining</Text>}
-            {mintEnded && <Text>Mint ended</Text>}
-            <Text> &bull; </Text>
-          </>
-        )}
         <Skeleton loading={!mints}>
+          {(!!timeRemaining || mintEnded) && (
+            <>
+              {timeRemaining && <Text>{timeRemaining} remaining</Text>}
+              {mintEnded && <Text>Mint ended</Text>}
+              <Text> &bull; </Text>
+            </>
+          )}
           <Text>
             {mints?.count}
             {token.maxSupply && !mintEnded && ` / ${token.maxSupply}`} minted
