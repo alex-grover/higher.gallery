@@ -14,7 +14,7 @@ export const runtime = 'edge'
 
 app.frame('/', (c) => {
   const { buttonValue, inputText, status } = c
-  const fruit = inputText || buttonValue
+  const fruit = inputText ?? buttonValue
   return c.res({
     image: (
       <div
@@ -53,6 +53,7 @@ app.frame('/', (c) => {
       </div>
     ),
     intents: [
+      /* eslint-disable react/jsx-key */
       <TextInput placeholder="Enter custom fruit..." />,
       <Button value="apples">Apples</Button>,
       <Button value="oranges">Oranges</Button>,
