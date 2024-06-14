@@ -48,7 +48,7 @@
       "dependsOn": ["codegen", "wagmi"]
     },
     "frame#typecheck": {
-      "dependsOn": ["codegen"]
+      "dependsOn": ["codegen", "wagmi"]
     },
     "test": {},
     "dev": {
@@ -63,7 +63,7 @@
       "env": ["MAINNET_RPC_URL", "PONDER_URL"]
     },
     "frame#dev": {
-      "dependsOn": ["frame#codegen"],
+      "dependsOn": ["frame#codegen", "frame#wagmi"],
       "env": ["PONDER_URL"]
     },
     "frog": {

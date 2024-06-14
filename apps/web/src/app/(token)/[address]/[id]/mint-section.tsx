@@ -327,7 +327,7 @@ export function MintSection({ token }: MintButtonProps) {
           <Form.Field name="comment">
             <Form.Control asChild>
               <TextField.Root
-                placeholder="Add a comment"
+                placeholder="Add a comment..."
                 value={comment}
                 onChange={handleCommentChange}
               />
