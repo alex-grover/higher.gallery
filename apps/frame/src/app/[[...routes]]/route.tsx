@@ -1,11 +1,12 @@
 /** @jsxImportSource frog/jsx */
 
-import { Button, Frog, TextInput } from 'frog'
+import { Button, TextInput } from 'frog'
 import { devtools } from 'frog/dev'
 import { handle } from 'frog/next'
 import { serveStatic } from 'frog/serve-static'
 import { formatEther } from 'viem'
 import { z } from 'zod'
+import { app } from '@/app/app'
 import { chain } from '@/env'
 import {
   erc20PermitAbi,
@@ -14,11 +15,10 @@ import {
   iHigher1155FactoryAddress,
 } from '@/generated/wagmi'
 import { UINT256_MAX } from '@/lib/constants'
+import { formatIpfsUri } from '@/lib/ipfs'
 import { ponderClient } from '@/lib/ponder'
-import { formatIpfsUri } from '@/lib/utils/ipfs'
+import { Box, Heading, Text, VStack } from '@/lib/ui'
 import { address } from '@/lib/zod/address'
-
-export const app = new Frog()
 
 export const runtime = 'edge'
 
@@ -30,7 +30,7 @@ const schema = z.object({
   id: z.string().pipe(z.coerce.bigint().positive()),
 })
 
-app.frame('/:address/:id', async (c) => {
+app.frame('/token/:address/:id', async (c) => {
   const parseResult = schema.safeParse({
     address: c.req.param('address'),
     id: c.req.param('id'),
@@ -47,19 +47,18 @@ app.frame('/:address/:id', async (c) => {
   return c.res({
     title: token.name,
     image: formatIpfsUri(token.image, 1000),
-    imageAspectRatio: '1:1',
     intents: [
       /* eslint-disable react/jsx-key */
       <TextInput placeholder="Add a comment..." />,
       <Button.Transaction
-        target={`/${parseResult.data.address}/${parseResult.data.id.toString()}/approve`}
-        action={`/${parseResult.data.address}/${parseResult.data.id.toString()}/approve/finish`}
+        target="/approve"
+        action={`/token/${address}/${id.toString()}/approve/finish`}
       >
         Approve $HIGHER
       </Button.Transaction>,
       <Button.Transaction
-        target={`/${parseResult.data.address}/${parseResult.data.id.toString()}/mint`}
-        action={`/${parseResult.data.address}/${parseResult.data.id.toString()}/mint/finish`}
+        target={`/token/${address}/${id.toString()}/mint`}
+        action="/mint/finish"
       >
         Mint for {formatEther(BigInt(token.price))} $HIGHER
       </Button.Transaction>,
@@ -67,20 +66,7 @@ app.frame('/:address/:id', async (c) => {
   })
 })
 
-app.transaction('/:address/:id/approve', async (c) => {
-  const parseResult = schema.safeParse({
-    address: c.req.param('address'),
-    id: c.req.param('id'),
-  })
-  if (!parseResult.success)
-    return new Response(parseResult.error.message, { status: 400 })
-  const { address, id } = parseResult.data
-
-  const { token } = await ponderClient.token({
-    token: `${address}-${id.toString()}`,
-  })
-  if (!token) return new Response('Not found', { status: 404 })
-
+app.transaction('/approve', (c) => {
   return c.contract({
     abi: erc20PermitAbi,
     chainId,
@@ -90,9 +76,7 @@ app.transaction('/:address/:id/approve', async (c) => {
   })
 })
 
-app.frame('/approve/finish', async (c) => {})
-
-app.transaction('/:address/:id/mint', async (c) => {
+app.frame('/token/:address/:id/approve/finish', (c) => {
   const parseResult = schema.safeParse({
     address: c.req.param('address'),
     id: c.req.param('id'),
@@ -101,10 +85,42 @@ app.transaction('/:address/:id/mint', async (c) => {
     return new Response(parseResult.error.message, { status: 400 })
   const { address, id } = parseResult.data
 
-  const { token } = await ponderClient.token({
-    token: `${address}-${id.toString()}`,
+  return c.res({
+    image: (
+      <Box
+        grow
+        alignHorizontal="center"
+        alignVertical="center"
+        backgroundColor="background"
+        padding="32"
+      >
+        <VStack gap="4">
+          <Heading align="center">Sent approval transaction!</Heading>
+          <Text color="text200" size="20" align="center">
+            Transaction hash: {c.transactionId}
+          </Text>
+        </VStack>
+      </Box>
+    ),
+    intents: [
+      <Button.Transaction
+        target={`/${address}/${id.toString()}/mint`}
+        action="/mint/finish"
+      >
+        Mint
+      </Button.Transaction>,
+    ],
   })
-  if (!token) return new Response('Not found', { status: 404 })
+})
+
+app.transaction('/token/:address/:id/mint', (c) => {
+  const parseResult = schema.safeParse({
+    address: c.req.param('address'),
+    id: c.req.param('id'),
+  })
+  if (!parseResult.success)
+    return new Response(parseResult.error.message, { status: 400 })
+  const { address, id } = parseResult.data
 
   return c.contract({
     abi: higher1155Abi,
@@ -115,7 +131,26 @@ app.transaction('/:address/:id/mint', async (c) => {
   })
 })
 
-app.frame('/mint/finish', async (c) => {})
+app.frame('/mint/finish', (c) => {
+  return c.res({
+    image: (
+      <Box
+        grow
+        alignHorizontal="center"
+        alignVertical="center"
+        backgroundColor="background"
+        padding="32"
+      >
+        <VStack gap="4">
+          <Heading align="center">Sent mint transaction!</Heading>
+          <Text color="text200" size="20" align="center">
+            Transaction hash: {c.transactionId}
+          </Text>
+        </VStack>
+      </Box>
+    ),
+  })
+})
 
 devtools(app, { serveStatic })
 
