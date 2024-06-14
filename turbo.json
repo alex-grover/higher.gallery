@@ -22,21 +22,21 @@
     "web#build": {
       "dependsOn": ["codegen"],
       "outputs": [".next/**", "!.next/cache/**"],
-      "env": ["MAINNET_RPC_URL", "PONDER_URL"]
+      "env": ["FRAME_URL", "MAINNET_RPC_URL", "PONDER_URL"]
     },
     "frame#build": {
       "dependsOn": ["codegen"],
       "outputs": [".next/**", "!.next/cache/**"],
-      "env": ["PONDER_URL"]
+      "env": ["APP_URL", "IPFS_GATEWAY_BASE_URL", "PONDER_URL", "VERCEL_ENV"]
     },
     "lint": {},
     "web#lint": {
       "dependsOn": ["codegen"],
-      "env": ["MAINNET_RPC_URL", "PONDER_URL"]
+      "env": ["FRAME_URL", "MAINNET_RPC_URL", "PONDER_URL"]
     },
     "frame#lint": {
       "dependsOn": ["codegen"],
-      "env": ["PONDER_URL"]
+      "env": ["APP_URL", "IPFS_GATEWAY_BASE_URL", "PONDER_URL", "VERCEL_ENV"]
     },
     "prettier": {},
     "stylelint": {},
@@ -60,11 +60,11 @@
     },
     "web#dev": {
       "dependsOn": ["web#codegen", "web#wagmi"],
-      "env": ["MAINNET_RPC_URL", "PONDER_URL"]
+      "env": ["FRAME_URL", "MAINNET_RPC_URL", "PONDER_URL"]
     },
     "frame#dev": {
       "dependsOn": ["frame#codegen", "frame#wagmi"],
-      "env": ["PONDER_URL"]
+      "env": ["APP_URL", "IPFS_GATEWAY_BASE_URL", "PONDER_URL", "VERCEL_ENV"]
     },
     "frog": {
       "cache": false,

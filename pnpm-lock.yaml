@@ -202,6 +202,9 @@ importers:
       dayjs:
         specifier: ^1.11.11
         version: 1.11.11
+      frog:
+        specifier: ^0.11.7
+        version: 0.11.7(@types/node@20.12.12)(bufferutil@4.0.8)(hono@4.3.11)(terser@5.31.0)(typescript@5.4.5)(zod@3.23.8)
       graphql:
         specifier: ^16.8.1
         version: 16.8.1

@@ -4,6 +4,7 @@ import { z } from 'zod'
 
 export const env = createEnv({
   server: {
+    APP_URL: z.string().url(),
     IPFS_GATEWAY_BASE_URL: z.string().url(),
     PONDER_URL: z.string().url(),
     VERCEL_ENV: z.enum(['production', 'preview', 'development']),

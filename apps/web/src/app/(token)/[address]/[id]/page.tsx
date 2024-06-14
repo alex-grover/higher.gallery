@@ -1,10 +1,13 @@
 import { Box, Card, Flex, Grid, Text } from '@radix-ui/themes'
+import { getFrameMetadata } from 'frog/next'
+import { Metadata } from 'next'
 import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import { formatEther } from 'viem'
 import { z } from 'zod'
 import { CONTAINER_PADDING, PageContainer } from '@/components/container'
 import { Name } from '@/components/name'
+import { env } from '@/env'
 import { ponderClient } from '@/lib/ponder'
 import { NextPageContext } from '@/lib/types/next'
 import { formatIpfsUri } from '@/lib/utils/ipfs'
@@ -88,4 +91,20 @@ export default async function TokenPage({ params }: NextPageContext) {
       </Grid>
     </PageContainer>
   )
+}
+
+export async function generateMetadata({
+  params,
+}: NextPageContext): Promise<Metadata> {
+  const parseResult = schema.safeParse(params)
+  if (!parseResult.success) notFound()
+  const { address, id } = parseResult.data
+
+  const frameMetadata = await getFrameMetadata(
+    `${env.FRAME_URL}/token/${address}/${id.toString()}`,
+  )
+
+  return {
+    other: frameMetadata,
+  }
 }

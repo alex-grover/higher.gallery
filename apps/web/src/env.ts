@@ -10,6 +10,7 @@ export const env = createEnv({
     NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID: z.string().min(1),
   },
   server: {
+    FRAME_URL: z.string().url(),
     MAINNET_RPC_URL: z.string().url(),
     PONDER_URL: z.string().url(),
   },
