@@ -1,5 +1,5 @@
 import { ponder } from '@/generated'
-import { env } from './lib/env'
+import { env } from '@/lib/env'
 
 type Metadata = {
   name: string

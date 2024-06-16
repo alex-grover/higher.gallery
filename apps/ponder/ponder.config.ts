@@ -5,8 +5,8 @@ import {
   higher1155Abi,
   iHigher1155FactoryAbi,
   iHigher1155FactoryAddress,
-} from './src/generated/wagmi'
-import { env } from './src/lib/env'
+} from '@/generated/wagmi'
+import { env } from '@/lib/env'
 
 const chain = env.ENV === 'production' ? base : baseSepolia
 
