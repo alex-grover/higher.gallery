@@ -27,7 +27,7 @@ type ApproveDialogProps = ComponentProps<typeof Dialog.Root> & {
 
 type State =
   | {
-      mode: 'minimum' | 'unlimited'
+      mode: 'minimum' | '5000' | 'unlimited'
     }
   | {
       mode: 'custom'
@@ -206,6 +206,15 @@ export function ApproveDialog({
             Minimum
           </Button>
           <Button
+            variant={state.mode === '5000' ? 'solid' : 'soft'}
+            onClick={() => {
+              setState({ mode: '5000' })
+              setError('')
+            }}
+          >
+            5,000
+          </Button>
+          <Button
             variant={state.mode === 'unlimited' ? 'solid' : 'soft'}
             onClick={() => {
               setState({ mode: 'unlimited' })
@@ -279,6 +288,8 @@ function getValue(state: State, minimum: bigint) {
   switch (state.mode) {
     case 'minimum':
       return minimum
+    case '5000':
+      return parseEther('5000')
     case 'unlimited':
       return UINT256_MAX
     case 'custom':
