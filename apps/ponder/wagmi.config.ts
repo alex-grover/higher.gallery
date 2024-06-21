@@ -10,7 +10,7 @@ export default defineConfig({
       include: ['Higher1155.sol/*', 'IHigher1155Factory.sol/*'],
       deployments: {
         IHigher1155Factory: {
-          [base.id]: '0x0000000000000000000000000000000000000000',
+          [base.id]: '0x0000000084df404a033b74ee686bc0080357ed9b',
           [baseSepolia.id]: '0xd29ec6d67258f5aa8d59b738890a546dcead5104',
         },
       },
