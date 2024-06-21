@@ -372,7 +372,7 @@ export function MintSection({ token }: MintButtonProps) {
                   mintEnded,
                   !!token.maxSupply &&
                     !!mints &&
-                    BigInt(mints.count) + (amount || 0n) >=
+                    BigInt(mints.count) + (amount || 0n) >
                       BigInt(token.maxSupply),
                   account.status === 'connected',
                   showModal,
