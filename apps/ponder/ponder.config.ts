@@ -20,6 +20,7 @@ export default createConfig({
     base: {
       chainId: chain.id,
       transport: http(env.RPC_URL),
+      pollingInterval: 2000,
     },
   },
   contracts: {
