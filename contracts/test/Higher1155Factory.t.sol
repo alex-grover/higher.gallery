@@ -2,8 +2,8 @@
 pragma solidity ^0.8.13;
 
 import "forge-std/Test.sol";
+import {ERC1967Proxy} from "openzeppelin-contracts/contracts/proxy/ERC1967/ERC1967Proxy.sol";
 import {OwnableUpgradeable} from "openzeppelin-contracts-upgradeable/contracts/access/OwnableUpgradeable.sol";
-import {Clones} from "openzeppelin-contracts/contracts/proxy/Clones.sol";
 import {IERC1155MetadataURI} from "openzeppelin-contracts/contracts/token/ERC1155/extensions/IERC1155MetadataURI.sol";
 import {Higher1155} from "src/Higher1155.sol";
 import {Higher1155Factory} from "src/Higher1155Factory.sol";
@@ -52,17 +52,12 @@ contract Higher1155FactoryTest is Test {
     ) external {
         vm.assume(creator != address(0));
 
-        address predictedAddress = Clones.predictDeterministicAddress(
-            _factory.higher1155Implementation(), keccak256(abi.encodePacked(creator, contractURI)), address(_factory)
-        );
-
-        vm.expectEmit(address(_factory));
-        emit Higher1155Deployed(creator, predictedAddress);
+        vm.expectEmit(true, true, true, false, address(_factory));
+        emit Higher1155Deployed(creator, address(0));
 
         vm.prank(creator);
         address higher1155 = _factory.deploy(contractURI, tokenURI, mintConfig);
 
-        this.assertCloneCode(higher1155.code, _factory.higher1155Implementation());
         assertEq(OwnableUpgradeable(higher1155).owner(), creator);
         assertEq(IHigher1155(higher1155).factory(), address(_factory));
         assertEq(IHigher1155(higher1155).contractURI(), contractURI);
@@ -99,6 +94,7 @@ contract Higher1155FactoryTest is Test {
         vm.prank(higher1155);
         _factory.transferPayment(from, to, value);
 
+        assertEq(higher1155.code, type(ERC1967Proxy).runtimeCode);
         assertEq(higherToken.balanceOf(from), 0);
         assertEq(higherToken.balanceOf(to), value - (value / 20) * 2);
         assertEq(higherToken.balanceOf(_factory.higherCollective()), value / 20);
@@ -116,11 +112,5 @@ contract Higher1155FactoryTest is Test {
         );
         vm.prank(unauthorizedHigher1155);
         _factory.transferPayment(from, to, value);
-    }
-
-    function assertCloneCode(bytes calldata code, address implementation) public pure {
-        assertEq(code[0:10], hex"363d3d373d3d3d363d73");
-        assertEq(code[10:30], bytes(abi.encodePacked(implementation)));
-        assertEq(code[30:], hex"5af43d82803e903d91602b57fd5bf3");
     }
 }

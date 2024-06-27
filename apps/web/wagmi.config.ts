@@ -19,8 +19,8 @@ export default defineConfig({
           [baseSepolia.id]: '0x2499426138486d85b7E145E0057C42ED74AF1512',
         },
         IHigher1155Factory: {
-          [base.id]: '0x0000000084df404a033b74ee686bc0080357ed9b',
-          [baseSepolia.id]: '0xd29ec6d67258f5aa8d59b738890a546dcead5104',
+          [base.id]: '0x00000000F3652DA8F114B3BCd60B86C8D8e1127E',
+          [baseSepolia.id]: '0x3d0e846799f8f52b35248f809eef38a5801147bd',
         },
       },
       forge: {

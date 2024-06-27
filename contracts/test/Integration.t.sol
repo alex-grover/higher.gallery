@@ -9,9 +9,9 @@ import {MockERC1155TokenReceiver} from "test/MockERC1155TokenReceiver.sol";
 import {MockHigherToken} from "test/MockHigherToken.sol";
 
 address constant higherCollective = 0x8177b34687bC8B99C205e533ae7DD7c6C9D07a66;
-address constant feeRecipient = 0xEf62D2dD8F856AaB964Bddf476d15F211eCF1323;
+address constant feeRecipient = 0x00000000C2Ea98e101c8D7BC1cAc1b0E1309f325;
 
-contract TestIntegration is Test {
+contract IntegrationTest is Test {
     struct Params {
         address creator;
         string contractURI;
@@ -22,6 +22,8 @@ contract TestIntegration is Test {
     }
 
     function test_integration(Params memory params) external {
+        vm.assume(params.creator != address(0));
+
         params.mintConfig.price = bound(params.mintConfig.price, 0, 3.4028236692e38);
         params.amount = bound(params.amount, 0, 3.4028236692e38);
         params.mintConfig.maxSupply = bound(params.mintConfig.maxSupply, params.amount, type(uint256).max);
@@ -29,7 +31,7 @@ contract TestIntegration is Test {
 
         MockHigherToken higherToken = new MockHigherToken();
         (address minter, uint256 minterPk) = makeAddrAndKey("minter");
-        setUpTokenReceiver(minter);
+        vm.etch(minter, type(MockERC1155TokenReceiver).runtimeCode);
 
         Higher1155 implementation = new Higher1155();
         Higher1155Factory factory =
@@ -64,14 +66,5 @@ contract TestIntegration is Test {
         );
 
         assertEq(Higher1155(collection).balanceOf(minter, 1), params.amount);
-    }
-
-    function setUpTokenReceiver(address tokenReceiver) internal {
-        vm.assume(
-            tokenReceiver > address(9) && tokenReceiver != 0x7109709ECfa91a80626fF3989D68f67F5b1DD12D
-                && tokenReceiver != CONSOLE
-        );
-
-        vm.etch(tokenReceiver, type(MockERC1155TokenReceiver).runtimeCode);
     }
 }

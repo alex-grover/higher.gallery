@@ -2,6 +2,7 @@
 pragma solidity ^0.8.13;
 
 import {IERC20Permit} from "openzeppelin-contracts/contracts/token/ERC20/extensions/IERC20Permit.sol";
+import {UUPSUpgradeable} from "openzeppelin-contracts/contracts/proxy/utils/UUPSUpgradeable.sol";
 import {OwnableUpgradeable} from "openzeppelin-contracts-upgradeable/contracts/access/OwnableUpgradeable.sol";
 import {ERC1155} from "solmate/tokens/ERC1155.sol";
 import {IHigher1155, MintConfig} from "src/IHigher1155.sol";
@@ -13,7 +14,7 @@ higher, together ↑
 
 */
 
-contract Higher1155 is IHigher1155, ERC1155, OwnableUpgradeable {
+contract Higher1155 is IHigher1155, ERC1155, OwnableUpgradeable, UUPSUpgradeable {
     address internal _factory;
     string internal _contractURI;
     uint256 internal _nextId;
@@ -88,4 +89,6 @@ contract Higher1155 is IHigher1155, ERC1155, OwnableUpgradeable {
     function mintConfig(uint256 id) external view override returns (MintConfig memory) {
         return _mintConfigs[id];
     }
+
+    function _authorizeUpgrade(address) internal override onlyOwner {}
 }

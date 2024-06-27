@@ -1,1 +1,1 @@
-turbo run lint prettier stylelint test typecheck
+pnpm exec turbo run lint prettier stylelint test typecheck

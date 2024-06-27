@@ -10,7 +10,7 @@ import {Higher1155Factory} from "src/Higher1155Factory.sol";
 
 address constant higherToken = 0x0578d8A44db98B23BF096A382e016e29a5Ce0ffe;
 address constant higherCollective = 0x8177b34687bC8B99C205e533ae7DD7c6C9D07a66;
-address constant feeRecipient = 0x00000000C2Ea98e101c8D7BC1cAc1b0E1309f325;
+address constant owner = 0x00000000C2Ea98e101c8D7BC1cAc1b0E1309f325;
 
 contract DeployScript is Script {
     function run() external {
@@ -19,7 +19,7 @@ contract DeployScript is Script {
 
         Higher1155 implementation = new Higher1155{salt: vm.envBytes32("HIGHER_1155_SALT")}();
         new Higher1155Factory{salt: vm.envBytes32("HIGHER_1155_FACTORY_SALT")}(
-            address(implementation), higherToken, higherCollective, feeRecipient
+            address(implementation), higherToken, higherCollective, owner
         );
 
         vm.stopBroadcast();

@@ -15,5 +15,7 @@ interface IHigher1155Factory {
 
     function transferPayment(address from, address to, uint256 value) external;
 
+    function setHigher1155Implementation(address newHigher1155Implementation) external;
+
     function higherToken() external view returns (address);
 }

@@ -5,6 +5,13 @@
 export const higher1155Abi = [
   {
     type: 'function',
+    inputs: [],
+    name: 'UPGRADE_INTERFACE_VERSION',
+    outputs: [{ name: '', internalType: 'string', type: 'string' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
     inputs: [
       { name: 'owner', internalType: 'address', type: 'address' },
       { name: 'spender', internalType: 'address', type: 'address' },
@@ -135,6 +142,13 @@ export const higher1155Abi = [
   {
     type: 'function',
     inputs: [],
+    name: 'proxiableUUID',
+    outputs: [{ name: '', internalType: 'bytes32', type: 'bytes32' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
     name: 'renounceOwnership',
     outputs: [],
     stateMutability: 'nonpayable',
@@ -188,6 +202,16 @@ export const higher1155Abi = [
     name: 'transferOwnership',
     outputs: [],
     stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'newImplementation', internalType: 'address', type: 'address' },
+      { name: 'data', internalType: 'bytes', type: 'bytes' },
+    ],
+    name: 'upgradeToAndCall',
+    outputs: [],
+    stateMutability: 'payable',
   },
   {
     type: 'function',
@@ -340,6 +364,33 @@ export const higher1155Abi = [
     ],
     name: 'URI',
   },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'implementation',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+    ],
+    name: 'Upgraded',
+  },
+  {
+    type: 'error',
+    inputs: [{ name: 'target', internalType: 'address', type: 'address' }],
+    name: 'AddressEmptyCode',
+  },
+  {
+    type: 'error',
+    inputs: [
+      { name: 'implementation', internalType: 'address', type: 'address' },
+    ],
+    name: 'ERC1967InvalidImplementation',
+  },
+  { type: 'error', inputs: [], name: 'ERC1967NonPayable' },
+  { type: 'error', inputs: [], name: 'FailedInnerCall' },
   { type: 'error', inputs: [], name: 'InvalidInitialization' },
   {
     type: 'error',
@@ -369,6 +420,12 @@ export const higher1155Abi = [
     inputs: [{ name: 'account', internalType: 'address', type: 'address' }],
     name: 'OwnableUnauthorizedAccount',
   },
+  { type: 'error', inputs: [], name: 'UUPSUnauthorizedCallContext' },
+  {
+    type: 'error',
+    inputs: [{ name: 'slot', internalType: 'bytes32', type: 'bytes32' }],
+    name: 'UUPSUnsupportedProxiableUUID',
+  },
   {
     type: 'error',
     inputs: [{ name: 'msgSender', internalType: 'address', type: 'address' }],
@@ -382,7 +439,7 @@ export const higher1155Abi = [
 
 /**
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x0000000084df404a033b74ee686bc0080357ed9b)
- * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0xd29ec6d67258f5aa8d59b738890a546dcead5104)
+ * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x3d0e846799f8f52b35248f809eef38a5801147bd)
  */
 export const iHigher1155FactoryAbi = [
   {
@@ -411,6 +468,19 @@ export const iHigher1155FactoryAbi = [
     name: 'higherToken',
     outputs: [{ name: '', internalType: 'address', type: 'address' }],
     stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'newHigher1155Implementation',
+        internalType: 'address',
+        type: 'address',
+      },
+    ],
+    name: 'setHigher1155Implementation',
+    outputs: [],
+    stateMutability: 'nonpayable',
   },
   {
     type: 'function',
@@ -465,16 +535,16 @@ export const iHigher1155FactoryAbi = [
 
 /**
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x0000000084df404a033b74ee686bc0080357ed9b)
- * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0xd29ec6d67258f5aa8d59b738890a546dcead5104)
+ * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x3d0e846799f8f52b35248f809eef38a5801147bd)
  */
 export const iHigher1155FactoryAddress = {
   8453: '0x0000000084DF404A033B74EE686bc0080357ED9B',
-  84532: '0xd29Ec6d67258F5aA8d59b738890A546DceaD5104',
+  84532: '0x3d0e846799F8F52B35248f809eeF38a5801147BD',
 } as const
 
 /**
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x0000000084df404a033b74ee686bc0080357ed9b)
- * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0xd29ec6d67258f5aa8d59b738890a546dcead5104)
+ * - [__View Contract on Base Sepolia Basescan__](https://sepolia.basescan.org/address/0x3d0e846799f8f52b35248f809eef38a5801147bd)
  */
 export const iHigher1155FactoryConfig = {
   address: iHigher1155FactoryAddress,

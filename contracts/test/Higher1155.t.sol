@@ -2,7 +2,10 @@
 pragma solidity ^0.8.13;
 
 import "forge-std/Test.sol";
+import {ERC1967Proxy} from "openzeppelin-contracts/contracts/proxy/ERC1967/ERC1967Proxy.sol";
+import {UUPSUpgradeable} from "openzeppelin-contracts/contracts/proxy/utils/UUPSUpgradeable.sol";
 import {IERC20Permit} from "openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Permit.sol";
+import {OwnableUpgradeable} from "openzeppelin-contracts-upgradeable/contracts/access/OwnableUpgradeable.sol";
 import {Initializable} from "openzeppelin-contracts-upgradeable/contracts/proxy/utils/Initializable.sol";
 import {Higher1155} from "src/Higher1155.sol";
 import {IHigher1155, MintConfig} from "src/IHigher1155.sol";
@@ -17,6 +20,7 @@ contract Higher1155Test is Test {
 
     event Create(uint256 id);
     event Mint(uint256 indexed id, address minter, uint256 amount, string comment);
+    event Upgraded(address indexed implementation);
 
     function setUp() external {
         _higher1155 = new Higher1155();
@@ -333,6 +337,30 @@ contract Higher1155Test is Test {
             abi.encodeWithSelector(IHigher1155.MintEnded.selector, block.timestamp, mintConfig.endTimestamp)
         );
         _higher1155.mint(id, amount, comment);
+    }
+
+    function test_upgrade(address owner, string calldata contractURI) external {
+        ERC1967Proxy proxy =
+            new ERC1967Proxy(address(_higher1155), abi.encodeCall(IHigher1155.initialize, (owner, contractURI)));
+
+        Higher1155 newImplementation = new Higher1155();
+
+        vm.expectEmit(address(proxy));
+        emit Upgraded(address(newImplementation));
+
+        vm.prank(owner);
+        UUPSUpgradeable(address(proxy)).upgradeToAndCall(address(newImplementation), "");
+    }
+
+    function test_cannotUpgradeAsNonOwner(address owner, address nonOwner, string calldata contractURI) external {
+        ERC1967Proxy proxy =
+            new ERC1967Proxy(address(_higher1155), abi.encodeCall(IHigher1155.initialize, (owner, contractURI)));
+
+        Higher1155 newImplementation = new Higher1155();
+
+        vm.expectRevert(abi.encodeWithSelector(OwnableUpgradeable.OwnableUnauthorizedAccount.selector, (nonOwner)));
+        vm.prank(nonOwner);
+        UUPSUpgradeable(address(proxy)).upgradeToAndCall(address(newImplementation), "");
     }
 
     function setUpTokenReceiver(address tokenReceiver) internal {
